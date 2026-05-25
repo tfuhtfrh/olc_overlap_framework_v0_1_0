@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: olc-overlap-framework
+Version: 0.1.0
+Summary: Modular OLC overlap experiment framework with minimap2 candidates, DP refinement, MI edge weights, and evaluation.
+Requires-Python: >=3.10
+Requires-Dist: parasail
+Provides-Extra: layout
+Requires-Dist: ortools; extra == "layout"
+Provides-Extra: qubo
+Requires-Dist: dwave-samplers; extra == "qubo"
+Requires-Dist: dimod; extra == "qubo"

@@ -1,0 +1,8 @@
+parasail
+
+[layout]
+ortools
+
+[qubo]
+dwave-samplers
+dimod

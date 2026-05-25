@@ -1,0 +1,9 @@
+# Version: 0.1.0
+# minimap2 is a command-line dependency and should be installed separately, e.g.:
+#   conda install -c bioconda minimap2
+
+# Required for DP overlap refinement:
+parasail
+
+# Optional future modules:
+# ortools

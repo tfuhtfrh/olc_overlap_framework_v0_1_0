@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "olc-overlap-framework"
+version = "0.1.0"
+description = "Modular OLC overlap experiment framework with minimap2 candidates, DP refinement, MI edge weights, and evaluation."
+requires-python = ">=3.10"
+dependencies = ["parasail"]
+
+[project.optional-dependencies]
+layout = ["ortools"]
+qubo = ["dwave-samplers", "dimod"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
