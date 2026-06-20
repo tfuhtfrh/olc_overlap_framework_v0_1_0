@@ -1,4 +1,18 @@
 {
     "python-envs.defaultEnvManager": "ms-python.python:conda",
-    "python-envs.defaultPackageManager": "ms-python.python:conda"
+    "python-envs.defaultPackageManager": "ms-python.python:conda",
+    "python.terminal.activateEnvironment": false,
+    "terminal.integrated.profiles.windows": {
+        "OLC WSL venv": {
+            "path": "C:\\Windows\\System32\\wsl.exe",
+            "args": [
+                "-d",
+                "Ubuntu",
+                "--",
+                "bash",
+                "-lc",
+                "cd /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/olc_overlap_framework && source .venv/bin/activate && exec bash -i"
+            ]
+        }
+    }
 }

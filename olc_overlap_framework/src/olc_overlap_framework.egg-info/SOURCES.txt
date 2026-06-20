@@ -9,6 +9,7 @@ src/olc_pipeline/__init__.py
 src/olc_pipeline/candidate_finder.py
 src/olc_pipeline/data.py
 src/olc_pipeline/evaluator.py
+src/olc_pipeline/graph_viz.py
 src/olc_pipeline/io_utils.py
 src/olc_pipeline/layout_solver.py
 src/olc_pipeline/mi_scorer.py

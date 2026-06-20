@@ -1,0 +1,4 @@
+case,reads_used,edge_limit,candidate_edges,qubo_variables,quadratic_terms,degree_penalty,isolate_penalty,path_break_penalty,reward_scale,seed,energy,true_energy,energy_gap,ground_hit,valid_path_cover,single_path_layout,path_count,selected_edge_count,source_constraint_violations,sink_constraint_violations,in_degree_violations,out_degree_violations,isolated_node_count,uncovered_node_count,selected_adjacent_correct,selected_jump_correct,selected_wrong,anneal_sec,total_sec
+1,75,all,294,444,1555,80.0,120.0,20.0,20.0,40,-1012.0,-1460.0,448.0,False,True,False,5,70,0,0,0,0,0,0,28,42,0,14.840977374999056,14.842287973999191
+2,75,all,294,444,1555,80.0,120.0,20.0,20.0,41,-1096.0,-1460.0,364.0,False,True,False,5,70,0,0,0,0,0,0,36,34,0,13.0953349779993,13.096756078000908
+3,75,all,294,444,1555,80.0,120.0,20.0,20.0,42,-1136.0,-1460.0,324.0,False,True,False,2,73,0,0,0,0,0,0,26,47,0,12.278565682998305,12.28010408299815

@@ -1,0 +1,2 @@
+case,count_penalty,degree_penalty,reward_scale,seed,energy,true_energy,energy_gap,ground_hit,valid_edge_path,selected_edge_count,edge_count_violation,in_degree_violations,out_degree_violations,selected_adjacent_correct,selected_jump_correct,selected_wrong,anneal_sec,total_sec
+1,100.0,120.0,20.0,44,-680.0,-680.0,0.0,True,True,34,0,0,0,34,0,0,8.094133593999914,8.096401993999962

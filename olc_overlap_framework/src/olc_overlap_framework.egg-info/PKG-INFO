@@ -9,3 +9,10 @@ Requires-Dist: ortools; extra == "layout"
 Provides-Extra: qubo
 Requires-Dist: dwave-samplers; extra == "qubo"
 Requires-Dist: dimod; extra == "qubo"
+Provides-Extra: sqa
+Requires-Dist: openjij; extra == "sqa"
+Provides-Extra: qpu
+Requires-Dist: dwave-system; extra == "qpu"
+Provides-Extra: qa
+Requires-Dist: openjij; extra == "qa"
+Requires-Dist: dwave-system; extra == "qa"

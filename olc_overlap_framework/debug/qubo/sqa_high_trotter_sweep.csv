@@ -1,0 +1,7 @@
+case,status,backend,read_penalty,position_penalty,missing_penalty,reward_scale,beta,trotter,energy,true_energy,energy_gap,valid,read_violations,position_violations,adjacent_correct,wrong_adjacencies,inversions,anneal_sec,total_sec
+1,ok,openjij-sqa,100.0,100.0,50.0,30.0,default,16,-298.0,-450.0,152.0,True,0,0,8,7,17,5.068054237999604,5.0700024380003015
+2,ok,openjij-sqa,100.0,100.0,50.0,30.0,default,32,-266.0,-450.0,184.0,True,0,0,11,4,30,4.651606482000716,4.671159376001015
+3,ok,openjij-sqa,100.0,100.0,50.0,30.0,default,48,-138.0,-450.0,312.0,True,0,0,5,10,60,6.777265950999208,6.7797586520009645
+4,ok,openjij-sqa,100.0,100.0,50.0,30.0,default,64,-236.0,-450.0,214.0,True,0,0,7,8,9,11.850153626000974,11.853239927000686
+5,ok,openjij-sqa,100.0,100.0,50.0,30.0,default,96,-218.0,-450.0,232.0,True,0,0,7,8,65,17.27788923300068,17.280525232999935
+6,ok,openjij-sqa,100.0,100.0,50.0,30.0,default,128,-64.0,-450.0,386.0,True,0,0,5,10,48,17.642495449999842,17.645292248998885

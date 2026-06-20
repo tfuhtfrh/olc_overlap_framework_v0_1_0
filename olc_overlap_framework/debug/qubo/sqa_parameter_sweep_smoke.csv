@@ -1,0 +1,2 @@
+case,status,backend,read_penalty,position_penalty,missing_penalty,reward_scale,beta,trotter,energy,true_energy,energy_gap,valid,read_violations,position_violations,adjacent_correct,wrong_adjacencies,inversions,anneal_sec,total_sec
+1,ok,openjij-sqa,100.0,100.0,30.0,10.0,default,default,1212.0,-70.0,1282.0,False,5,5,4,3,1,3.034417199999999,3.0347577

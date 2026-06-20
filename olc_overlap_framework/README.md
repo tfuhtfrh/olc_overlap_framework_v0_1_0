@@ -62,6 +62,14 @@ pip install ".[qubo]"
 pip install dwave-samplers dimod
 ```
 
+Optional simulated quantum annealing and real D-Wave QPU backends:
+
+```bash
+pip install ".[sqa]"   # OpenJij simulated quantum annealing
+pip install ".[qpu]"   # D-Wave Ocean QPU interface
+pip install ".[qa]"    # both OpenJij SQA and D-Wave QPU support
+```
+
 Version 0.1.0 uses `parasail` for semi-global DP refinement. The demo also requires command-line `minimap2`.
 
 ## Run demos
@@ -163,9 +171,116 @@ QUBO_EDGE_REWARD_SCALE = 2.0
 QUBO_NORMALIZE_REWARDS = True
 ```
 
+### DAG edge-path Hamiltonian
+
+`EdgePathDAGQUBOHamiltonian` uses one binary variable for each unique valid
+directed overlap edge:
+
+```text
+y[u,v] = 1 when overlap edge u -> v is selected
+```
+
+For `N` reads it minimizes:
+
+```text
+A_count * (sum_e y[e] - (N - 1))^2
++ A_degree * incoming/outgoing pair conflicts
+- B_reward * sum_e normalized_reward[e] * y[e]
+```
+
+The degree terms penalize selecting more than one incoming or outgoing edge at
+any read. If the candidate graph is a DAG, selecting exactly `N-1` edges with
+these degree limits produces one path covering every read. The builder checks
+that the candidate graph is acyclic and, by default, that it contains a
+Hamiltonian path before annealing.
+
+This reduces the variable count from `N^2` to `|E|`, although the exact edge
+count constraint still introduces dense pairwise couplings between edge
+variables. Select it in `demo.py` with:
+
+```python
+QUBO_HAMILTONIAN = "edge_path_dag"
+QUBO_EDGE_COUNT_PENALTY = 100.0
+QUBO_EDGE_DEGREE_PENALTY = 120.0
+QUBO_EDGE_REWARD_SCALE = 20.0
+```
+
+For the current 35-read, 131-edge zero-error demo, a 10-seed scan
+(`seed=40..49`, `100 reads`, `1000 sweeps`, `trotter=32`) found:
+
+```text
+edge count penalty = 100
+degree penalty     = 120
+ground-state hits = 10 / 10
+valid path hits   = 10 / 10
+```
+
+The nearby `degree=115` setting reached `8/10`. Lower degree penalties tended
+to leave one incoming/outgoing conflict; higher degree penalties tended to
+select only 33 of the required 34 edges. The dedicated sweep command is:
+
+```bash
+python demo_edge_path_parameter_sweep.py
+```
+
+It writes `debug/qubo/edge_path_dag_parameter_sweep.csv` by default.
+
+The same script can change the simulated read density and report larger QUBO
+sizes before running SQA:
+
+```bash
+python demo_edge_path_parameter_sweep.py \
+  --step 250 \
+  --read-counts 16,35,50,69 \
+  --describe-only
+```
+
+Current zero-error scale measurements with a 20,000 bp genome and 3,000 bp
+reads are:
+
+```text
+step  reads  edge variables  quadratic terms
+500      35             131            8,515
+350      49             315           49,455
+250      69             577          166,176
+200      86             954          454,581
+```
+
+The dense quadratic growth comes mainly from
+`(sum_e y[e] - (N - 1))^2`. With `100 reads`, `1000 sweeps`, `trotter=32`,
+and multiple annealer seeds, the observed penalty trend was:
+
+```text
+variables  count/degree  ground hits
+       54       100/120           5/5
+      131       100/120         10/10
+      217       100/120           5/5
+      315       120/140          4/10
+      405       140/160          2/10
+      577       about 190/210     0/3
+```
+
+The preferred penalties move upward as the edge-variable model grows, but
+coefficient tuning alone does not preserve success rate. Beyond roughly 300
+variables in this dense formulation, increasing annealing effort or replacing
+the global edge-count square with a less densely coupled encoding becomes more
+important than further penalty scaling.
+
 `demo.py` now runs a small QUBO layout demo after DP refinement. It uses the
 D-Wave sampler backend when `dwave-samplers` and `dimod` are installed, and
 falls back to the built-in binary simulated annealer otherwise.
+
+Annealer backend selection:
+
+```python
+QUBO_ANNEALER_BACKEND = "dwave_sa"     # local classical SA via dwave-samplers
+QUBO_ANNEALER_BACKEND = "openjij_sqa"  # local simulated quantum annealing
+QUBO_ANNEALER_BACKEND = "dwave_qpu"    # real D-Wave QPU via dwave-system
+```
+
+All backends consume the same `QUBOModel` and Hamiltonian builders. The QPU
+backend is reserved for real D-Wave access and may require `dwave config create`
+or explicit token/endpoint settings.
 
 The demo can optionally write a Graphviz DOT file for the overlap graph:
 
@@ -187,6 +302,56 @@ Render it in Windows PowerShell with:
 dot -Tsvg debug\qubo\overlap_graph.dot -o debug\qubo\overlap_graph.svg
 dot -Tpng debug\qubo\overlap_graph.dot -o debug\qubo\overlap_graph.png
 ```
+
+Run a small SQA/SA parameter sweep:
+
+```bash
+python demo_sqa_parameter_sweep.py
+```
+
+By default this scans a high-Trotter curve with fixed representative QUBO
+coefficients:
+
+```text
+read/position penalty = 100
+missing edge penalty  = 50
+edge reward scale     = 30
+trotter               = 16,32,48,64,96,128
+```
+
+Useful focused scans:
+
+```bash
+python demo_sqa_parameter_sweep.py --max-reads 16 --num-reads 50 --num-sweeps 1000
+python demo_sqa_parameter_sweep.py --backend dwave-sa --max-reads 16 --num-reads 50 --num-sweeps 1000
+python demo_sqa_parameter_sweep.py --trotters 16,32,48,64,96,128
+python demo_sqa_parameter_sweep.py --trotters none,16,32 --read-penalties 100,200,500 --missing-penalties 30,50,100 --reward-scales 10,20,30
+```
+
+The sweep writes `debug/qubo/sqa_parameter_sweep.csv`. First check whether
+`valid` becomes `True` and whether read/position violations go to zero. For
+layout quality, prefer rows with small `missing_edge_count`; `connected_layout`
+means zero missing adjacent graph edges, and `acceptable_connected_layout` uses
+the `--acceptable-missing-edges` threshold. When one or two missing edges are
+acceptable, compare `legal_true_adjacent_count` next: it counts true adjacent
+read pairs among layout adjacencies that are also legal overlap-graph edges.
+
+Current SQA starting point from the 16-read sweep:
+
+```python
+QUBO_READ_ONCE_PENALTY = 100.0
+QUBO_POSITION_ONCE_PENALTY = 100.0
+QUBO_MISSING_EDGE_PENALTY = 120.0
+QUBO_EDGE_REWARD_SCALE = 20.0
+QUBO_OPENJIJ_TROTTER = 32
+```
+
+The first 16-read grid around `trotter=32` found a single seed-sensitive
+ground-state hit at `75/75/60/40`. A later multi-seed scan prioritized connected
+overlap layouts instead of exact ground-state hits. The current starting point
+above was valid for all tested seeds and usually kept missing adjacent overlap
+edges to one or two. Treat it as a local tuning result for the current demo
+scale, not a universal optimum.
 
 The QUBO demo also has an optional permutation-aware polish step:
 
@@ -221,6 +386,23 @@ cd /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/olc_overlap_framework
 source .venv/bin/activate
 python -m pip install -e ".[qubo]"
 python demo.py
+```
+
+Quick WSL shell from VSCode:
+
+- Open the terminal dropdown and choose `OLC WSL venv`.
+- Or run `Ctrl+Shift+P` -> `Tasks: Run Task` -> `OLC: WSL venv shell`.
+- Or run from Windows PowerShell:
+
+```powershell
+.\olc_overlap_framework\tools\enter_wsl_venv.ps1
+```
+
+All three entry points run:
+
+```bash
+cd /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/olc_overlap_framework
+source .venv/bin/activate
 ```
 
 ## Notes

@@ -1,0 +1,6 @@
+case,reads_used,edge_limit,candidate_edges,qubo_variables,quadratic_terms,degree_penalty,isolate_penalty,path_break_penalty,reward_scale,seed,energy,true_energy,energy_gap,ground_hit,valid_path_cover,single_path_layout,path_count,selected_edge_count,source_constraint_violations,sink_constraint_violations,in_degree_violations,out_degree_violations,isolated_node_count,uncovered_node_count,selected_adjacent_correct,selected_jump_correct,selected_wrong,anneal_sec,total_sec
+1,55,all,212,322,1115,80.0,120.0,20.0,20.0,40,-776.0,-1060.0,284.0,False,True,False,3,52,0,0,0,0,0,0,22,30,0,7.217035558998759,7.217910159000894
+2,55,all,212,322,1115,80.0,120.0,20.0,20.0,41,-788.0,-1060.0,272.0,False,True,False,3,52,0,0,0,0,0,0,24,28,0,4.72460464300093,4.726429644000746
+3,55,all,212,322,1115,80.0,120.0,20.0,20.0,42,-776.0,-1060.0,284.0,False,True,False,3,52,0,0,0,0,0,0,22,30,0,4.404199262000475,4.405451861999609
+4,55,all,212,322,1115,80.0,120.0,20.0,20.0,43,-832.0,-1060.0,228.0,False,True,False,2,53,0,0,0,0,0,0,18,35,0,4.423317614997359,4.424314714997308
+5,55,all,212,322,1115,80.0,120.0,20.0,20.0,44,-840.0,-1060.0,220.0,False,True,False,2,53,0,0,0,0,0,0,26,27,0,4.8260000869995565,4.827006387000438

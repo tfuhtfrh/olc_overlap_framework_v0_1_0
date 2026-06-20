@@ -21,14 +21,23 @@ from olc_pipeline.layout_solver import (
     BinaryAnnealingConfig,
     BinarySimulatedAnnealer,
     DWaveAnnealingConfig,
+    DWaveQPUAnnealer,
+    DWaveQPUConfig,
     DWaveSimulatedAnnealer,
+    EdgePathDAGHamiltonianConfig,
+    EdgePathDAGQUBOHamiltonian,
+    EdgePathCoverDAGHamiltonianConfig,
+    EdgePathCoverDAGQUBOHamiltonian,
     MissingEdgeHamiltonianConfig,
     MissingEdgeQUBOHamiltonian,
+    OpenJijSQAConfig,
+    OpenJijSimulatedQuantumAnnealer,
     PermutationLocalSearchPolisher,
     PermutationPolishConfig,
     QUBOLayoutSolver,
     WeightedOverlapHamiltonianConfig,
     WeightedOverlapQUBOHamiltonian,
+    qubo_sample_for_order,
 )
 from olc_pipeline.graph_viz import write_overlap_graph_dot
 
@@ -36,17 +45,32 @@ from olc_pipeline.graph_viz import write_overlap_graph_dot
 USE_QUBO_LAYOUT = True
 # Keep this small for quick demo runs. Set to None to use every read and every
 # edge whose endpoints are present in the selected read set.
-QUBO_LAYOUT_MAX_READS = 100
-QUBO_READ_ONCE_PENALTY = 500.0
-QUBO_POSITION_ONCE_PENALTY = 500.0
-QUBO_MISSING_EDGE_PENALTY = 50.0
-QUBO_HAMILTONIAN = "weighted_overlap"  # "missing_edge" or "weighted_overlap"
-QUBO_SCORE_MODE = "overlap_len"  # "overlap_len", "identity", "dp", "mi", "nmi", "mapq", "matches", "quality"
-QUBO_EDGE_REWARD_SCALE = 20.0
+QUBO_LAYOUT_MAX_READS = None
+QUBO_READ_ONCE_PENALTY = 100.0
+QUBO_POSITION_ONCE_PENALTY = 100.0
+QUBO_MISSING_EDGE_PENALTY = 120.0
+QUBO_HAMILTONIAN = "edge_path_cover_dag"  # "missing_edge", "weighted_overlap", "edge_path_dag", or "edge_path_cover_dag"
+QUBO_SCORE_MODE = "overlap_len_power"  # "overlap_len", "overlap_len_power", "overlap_len_power2", "overlap_len_power3", "identity", "dp", "mi", "nmi", "mapq", "matches", "quality"
+QUBO_SCORE_GAMMA = 3.0
+QUBO_EDGE_REWARD_SCALE = 40.0
 QUBO_NORMALIZE_REWARDS = True
+QUBO_EDGE_COUNT_PENALTY = 100.0
+QUBO_EDGE_DEGREE_PENALTY = 120.0
+QUBO_EDGE_ISOLATE_PENALTY = 160.0
+QUBO_PATH_BREAK_PENALTY = 10.0
+QUBO_MAX_PATH_COUNT = 2
+QUBO_PATH_COUNT_CAP_PENALTY = 120.0
+QUBO_ANNEALER_BACKEND = "openjij_sqa"  # "dwave_sa", "openjij_sqa", or "dwave_qpu"
 QUBO_DWAVE_NUM_READS = 1000
 QUBO_DWAVE_NUM_SWEEPS = 1000
-QUBO_SEED = 42
+QUBO_OPENJIJ_NUM_READS = 60
+QUBO_OPENJIJ_NUM_SWEEPS = 700
+QUBO_OPENJIJ_BETA = None
+QUBO_OPENJIJ_TROTTER = 32
+QUBO_DWAVE_QPU_NUM_READS = 100
+QUBO_DWAVE_QPU_CHAIN_STRENGTH = None
+QUBO_DWAVE_QPU_ANNEALING_TIME = None
+QUBO_SEED = 44
 WRITE_QUBO_GRAPH_DOT = True
 QUBO_GRAPH_DOT_PATH = Path("debug/qubo/overlap_graph.dot")
 QUBO_POLISH_LAYOUT = False
@@ -271,12 +295,13 @@ def run_qubo_layout_demo(reads, edges) -> None:
     print_kv("Reads used", f"{len(layout_reads)} / {len(reads)}")
     print_kv("Edges used", f"{len(layout_edges)} / {len(edges)}")
     print_qubo_config()
+    effective_score_mode = qubo_effective_score_mode()
     if WRITE_QUBO_GRAPH_DOT:
         dot_path = write_overlap_graph_dot(
             layout_reads,
             layout_edges,
             QUBO_GRAPH_DOT_PATH,
-            score_mode=QUBO_SCORE_MODE,
+            score_mode=effective_score_mode,
             normalize_rewards=QUBO_NORMALIZE_REWARDS,
         )
         print_kv("Graph DOT", dot_path)
@@ -284,16 +309,12 @@ def run_qubo_layout_demo(reads, edges) -> None:
     hamiltonian = build_qubo_hamiltonian()
     solver = QUBOLayoutSolver(
         hamiltonian=hamiltonian,
-        annealer=DWaveSimulatedAnnealer(DWaveAnnealingConfig(
-            num_reads=QUBO_DWAVE_NUM_READS,
-            num_sweeps=QUBO_DWAVE_NUM_SWEEPS,
-            seed=QUBO_SEED,
-        )),
+        annealer=build_qubo_annealer(),
         polisher=build_qubo_polisher(),
     )
 
     try:
-        layout = solver.solve(layout_reads, layout_edges, weight_mode=QUBO_SCORE_MODE)
+        layout = solver.solve(layout_reads, layout_edges, weight_mode=effective_score_mode)
     except RuntimeError as exc:
         print_kv("D-Wave backend", f"unavailable ({exc})")
         print_kv("Fallback", "built-in binary simulated annealer")
@@ -310,9 +331,13 @@ def run_qubo_layout_demo(reads, edges) -> None:
             )),
             polisher=build_qubo_polisher(),
         )
-        layout = solver.solve(layout_reads, layout_edges, weight_mode=QUBO_SCORE_MODE)
+        layout = solver.solve(layout_reads, layout_edges, weight_mode=effective_score_mode)
 
     report = LayoutEvaluator().evaluate_order(layout_reads, layout.order)
+    selected_edge_report = selected_edge_truth_counts(
+        layout_reads,
+        layout.metadata.get("selected_edges", []),
+    )
     print_kv("Backend", layout.metadata.get("annealer_backend", "unknown"))
     print_kv("Energy", fmt_float(layout.objective_value, 3))
     if solver.last_model is not None:
@@ -323,35 +348,135 @@ def run_qubo_layout_demo(reads, edges) -> None:
     print_kv("Polish improvements", layout.metadata.get("polish_improvements"))
     print_kv("QUBO total time", fmt_seconds(layout.metadata.get("total_sec")))
     print_kv("Valid binary layout", layout.metadata.get("valid_binary_layout"))
-    print_kv("Adjacent correct", report.adjacent_correct_in_layout)
-    print_kv("Wrong adjacencies", report.wrong_adjacencies_in_layout)
+    if layout.metadata.get("hamiltonian") in {"edge_path_dag", "edge_path_cover_dag"}:
+        print_kv("QUBO variables", layout.metadata.get("variables"))
+        if layout.metadata.get("hamiltonian") == "edge_path_dag":
+            print_kv(
+                "Selected edges",
+                f"{layout.metadata.get('selected_edge_count')} / {layout.metadata.get('target_edge_count')}",
+            )
+            print_kv("Edge count violation", layout.metadata.get("edge_count_violation"))
+        else:
+            print_kv(
+                "Selected edges",
+                f"{layout.metadata.get('selected_edge_count')} / {len(layout_reads) - 1}",
+            )
+        print_kv("In-degree violations", layout.metadata.get("in_degree_violations"))
+        print_kv("Out-degree violations", layout.metadata.get("out_degree_violations"))
+        if layout.metadata.get("in_degree_conflicts"):
+            print_kv("In-degree conflicts", layout.metadata.get("in_degree_conflicts"))
+        if layout.metadata.get("out_degree_conflicts"):
+            print_kv("Out-degree conflicts", layout.metadata.get("out_degree_conflicts"))
+        print_kv("Selected graph acyclic", layout.metadata.get("selected_graph_acyclic"))
+        print_kv("Single path layout", layout.metadata.get("single_path_layout"))
+        if layout.metadata.get("hamiltonian") == "edge_path_cover_dag":
+            print_kv("Valid path cover", layout.metadata.get("valid_path_cover"))
+            print_kv("Path count", layout.metadata.get("path_count"))
+            print_kv("Source / sink count", f"{layout.metadata.get('selected_source_count')} / {layout.metadata.get('selected_sink_count')}")
+            print_kv("Source constraint violations", layout.metadata.get("source_constraint_violations"))
+            print_kv("Sink constraint violations", layout.metadata.get("sink_constraint_violations"))
+            print_kv("Isolated nodes", layout.metadata.get("isolated_node_count"))
+        print_kv("Selected adjacent correct", selected_edge_report["adjacent_correct"])
+        print_kv("Selected jump correct", selected_edge_report["jump_correct"])
+        print_kv("Selected wrong edges", selected_edge_report["wrong"])
+    else:
+        print_kv("Read assignment violations", layout.metadata.get("read_assignment_violations"))
+        print_kv("Position assignment violations", layout.metadata.get("position_assignment_violations"))
+    order_label = "Adjacent correct" if layout.metadata.get("valid_binary_layout") else "Decoded order adjacent correct"
+    wrong_label = "Wrong adjacencies" if layout.metadata.get("valid_binary_layout") else "Decoded order wrong adjacencies"
+    print_kv(order_label, report.adjacent_correct_in_layout)
+    print_kv(wrong_label, report.wrong_adjacencies_in_layout)
     print_kv("Inversion count", report.inversion_count)
-    print_kv("Order", " -> ".join(layout.order))
+    if layout.metadata.get("hamiltonian") not in {"edge_path_dag", "edge_path_cover_dag"} or layout.metadata.get("valid_edge_path"):
+        print_kv("Order", " -> ".join(layout.order))
+    elif layout.metadata.get("valid_path_cover"):
+        components = layout.metadata.get("path_components", [])
+        formatted = " | ".join(" -> ".join(path) for path in components)
+        print_kv("Path cover", formatted)
+    else:
+        print_kv("Order", "not available (selected edges do not form one path)")
+
+
+def selected_edge_truth_counts(reads, selected_edges) -> dict[str, int]:
+    rank = {
+        read.rid: index
+        for index, read in enumerate(sorted(reads, key=lambda item: item.true_start))
+    }
+    counts = {
+        "adjacent_correct": 0,
+        "jump_correct": 0,
+        "wrong": 0,
+    }
+    for left_id, right_id in selected_edges:
+        left_rank = rank.get(left_id)
+        right_rank = rank.get(right_id)
+        if left_rank is None or right_rank is None or right_rank <= left_rank:
+            counts["wrong"] += 1
+        elif right_rank == left_rank + 1:
+            counts["adjacent_correct"] += 1
+        else:
+            counts["jump_correct"] += 1
+    return counts
 
 
 def print_qubo_config() -> None:
     print_kv("Hamiltonian", QUBO_HAMILTONIAN)
     print_kv("Score mode", QUBO_SCORE_MODE)
-    print_kv("Read once penalty", QUBO_READ_ONCE_PENALTY)
-    print_kv("Position once penalty", QUBO_POSITION_ONCE_PENALTY)
-    print_kv("Missing edge penalty", QUBO_MISSING_EDGE_PENALTY)
+    if QUBO_SCORE_MODE == "overlap_len_power":
+        print_kv("Score gamma", QUBO_SCORE_GAMMA)
+    if QUBO_HAMILTONIAN == "edge_path_dag":
+        print_kv("Edge count penalty", QUBO_EDGE_COUNT_PENALTY)
+        print_kv("Edge degree penalty", QUBO_EDGE_DEGREE_PENALTY)
+    elif QUBO_HAMILTONIAN == "edge_path_cover_dag":
+        print_kv("In/out degree penalty", QUBO_EDGE_DEGREE_PENALTY)
+        print_kv("Isolate penalty", QUBO_EDGE_ISOLATE_PENALTY)
+        print_kv("Two-path penalty", f"{QUBO_PATH_BREAK_PENALTY} (unused for center-square)")
+        print_kv("Max path count", QUBO_MAX_PATH_COUNT)
+        print_kv("Path cap coefficient", QUBO_PATH_COUNT_CAP_PENALTY)
+    else:
+        print_kv("Read once penalty", QUBO_READ_ONCE_PENALTY)
+        print_kv("Position once penalty", QUBO_POSITION_ONCE_PENALTY)
+        print_kv("Missing edge penalty", QUBO_MISSING_EDGE_PENALTY)
     print_kv("Edge reward scale", QUBO_EDGE_REWARD_SCALE)
     print_kv("Normalize rewards", QUBO_NORMALIZE_REWARDS)
-    print_kv("D-Wave reads / sweeps", f"{QUBO_DWAVE_NUM_READS} / {QUBO_DWAVE_NUM_SWEEPS}")
-    print_kv("Missing-edge effect", f"+{QUBO_MISSING_EDGE_PENALTY:.3f} per adjacent pair not in E")
+    print_kv("Annealer backend", QUBO_ANNEALER_BACKEND)
+    if QUBO_ANNEALER_BACKEND == "dwave_sa":
+        print_kv("D-Wave reads / sweeps", f"{QUBO_DWAVE_NUM_READS} / {QUBO_DWAVE_NUM_SWEEPS}")
+    elif QUBO_ANNEALER_BACKEND == "openjij_sqa":
+        print_kv("OpenJij reads / sweeps", f"{QUBO_OPENJIJ_NUM_READS} / {QUBO_OPENJIJ_NUM_SWEEPS}")
+        print_kv("OpenJij beta / trotter", f"{QUBO_OPENJIJ_BETA} / {QUBO_OPENJIJ_TROTTER}")
+    elif QUBO_ANNEALER_BACKEND == "dwave_qpu":
+        print_kv("D-Wave QPU reads", QUBO_DWAVE_QPU_NUM_READS)
+        print_kv("D-Wave QPU chain strength", QUBO_DWAVE_QPU_CHAIN_STRENGTH)
+        print_kv("D-Wave QPU annealing time", QUBO_DWAVE_QPU_ANNEALING_TIME)
+    if QUBO_HAMILTONIAN not in {"edge_path_dag", "edge_path_cover_dag"}:
+        print_kv("Missing-edge effect", f"+{QUBO_MISSING_EDGE_PENALTY:.3f} per adjacent pair not in E")
+    if QUBO_HAMILTONIAN == "edge_path_cover_dag":
+        print_kv("Path count effect", (
+            f"{QUBO_PATH_COUNT_CAP_PENALTY:.3f}*(m-1)^2"
+        ))
     print_kv("Edge reward effect", f"-{QUBO_EDGE_REWARD_SCALE:.3f} * normalized_reward per adjacent edge")
 
 
-def true_order_energy(reads, model) -> float:
-    read_index_by_id = {read_id: idx for idx, read_id in enumerate(model.read_ids)}
-    sample = [0] * model.num_variables
-    for position_index, read in enumerate(sorted(reads, key=lambda item: item.true_start)):
-        read_index = read_index_by_id[read.rid]
-        sample[model.variable_index(read_index, position_index)] = 1
-    return model.energy(sample)
+def true_order_energy(reads, model) -> float | None:
+    order = [
+        read.rid
+        for read in sorted(reads, key=lambda item: item.true_start)
+    ]
+    try:
+        return model.energy(qubo_sample_for_order(model, order))
+    except ValueError:
+        return None
+
+
+def qubo_effective_score_mode() -> str:
+    if QUBO_SCORE_MODE == "overlap_len_power":
+        return f"overlap_len_power:{QUBO_SCORE_GAMMA}"
+    return QUBO_SCORE_MODE
 
 
 def build_qubo_hamiltonian():
+    effective_score_mode = qubo_effective_score_mode()
     if QUBO_HAMILTONIAN == "missing_edge":
         return MissingEdgeQUBOHamiltonian(MissingEdgeHamiltonianConfig(
             read_once_penalty=QUBO_READ_ONCE_PENALTY,
@@ -364,10 +489,54 @@ def build_qubo_hamiltonian():
             position_once_penalty=QUBO_POSITION_ONCE_PENALTY,
             missing_edge_penalty=QUBO_MISSING_EDGE_PENALTY,
             edge_reward_scale=QUBO_EDGE_REWARD_SCALE,
-            score_mode=QUBO_SCORE_MODE,
+            score_mode=effective_score_mode,
+            normalize_rewards=QUBO_NORMALIZE_REWARDS,
+        ))
+    if QUBO_HAMILTONIAN == "edge_path_dag":
+        return EdgePathDAGQUBOHamiltonian(EdgePathDAGHamiltonianConfig(
+            edge_count_penalty=QUBO_EDGE_COUNT_PENALTY,
+            degree_penalty=QUBO_EDGE_DEGREE_PENALTY,
+            edge_reward_scale=QUBO_EDGE_REWARD_SCALE,
+            score_mode=effective_score_mode,
+            normalize_rewards=QUBO_NORMALIZE_REWARDS,
+            require_hamiltonian_path=True,
+        ))
+    if QUBO_HAMILTONIAN == "edge_path_cover_dag":
+        return EdgePathCoverDAGQUBOHamiltonian(EdgePathCoverDAGHamiltonianConfig(
+            degree_penalty=QUBO_EDGE_DEGREE_PENALTY,
+            isolate_penalty=QUBO_EDGE_ISOLATE_PENALTY,
+            path_break_penalty=QUBO_PATH_BREAK_PENALTY,
+            max_path_count=QUBO_MAX_PATH_COUNT,
+            path_count_cap_penalty=QUBO_PATH_COUNT_CAP_PENALTY,
+            edge_reward_scale=QUBO_EDGE_REWARD_SCALE,
+            score_mode=effective_score_mode,
             normalize_rewards=QUBO_NORMALIZE_REWARDS,
         ))
     raise ValueError(f"Unknown QUBO_HAMILTONIAN: {QUBO_HAMILTONIAN!r}")
+
+
+def build_qubo_annealer():
+    if QUBO_ANNEALER_BACKEND == "dwave_sa":
+        return DWaveSimulatedAnnealer(DWaveAnnealingConfig(
+            num_reads=QUBO_DWAVE_NUM_READS,
+            num_sweeps=QUBO_DWAVE_NUM_SWEEPS,
+            seed=QUBO_SEED,
+        ))
+    if QUBO_ANNEALER_BACKEND == "openjij_sqa":
+        return OpenJijSimulatedQuantumAnnealer(OpenJijSQAConfig(
+            num_reads=QUBO_OPENJIJ_NUM_READS,
+            num_sweeps=QUBO_OPENJIJ_NUM_SWEEPS,
+            seed=QUBO_SEED,
+            beta=QUBO_OPENJIJ_BETA,
+            trotter=QUBO_OPENJIJ_TROTTER,
+        ))
+    if QUBO_ANNEALER_BACKEND == "dwave_qpu":
+        return DWaveQPUAnnealer(DWaveQPUConfig(
+            num_reads=QUBO_DWAVE_QPU_NUM_READS,
+            chain_strength=QUBO_DWAVE_QPU_CHAIN_STRENGTH,
+            annealing_time=QUBO_DWAVE_QPU_ANNEALING_TIME,
+        ))
+    raise ValueError(f"Unknown QUBO_ANNEALER_BACKEND: {QUBO_ANNEALER_BACKEND!r}")
 
 
 def build_qubo_polisher():

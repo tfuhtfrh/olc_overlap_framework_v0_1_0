@@ -3,6 +3,16 @@ parasail
 [layout]
 ortools
 
+[qa]
+openjij
+dwave-system
+
+[qpu]
+dwave-system
+
 [qubo]
 dwave-samplers
 dimod
+
+[sqa]
+openjij
