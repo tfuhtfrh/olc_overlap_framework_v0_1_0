@@ -1,5 +1,6 @@
 import unittest
 
+from olc_pipeline.overlap_features import gc_fraction
 from olc_pipeline.simulator import RandomReadSimulator, SimulationConfig
 
 
@@ -68,6 +69,28 @@ class RandomReadSimulatorTests(unittest.TestCase):
 
         with self.assertRaisesRegex(ValueError, "adjacent_overlap_min"):
             RandomReadSimulator().simulate(config)
+
+    def test_fixed_layout_uses_configured_gc_fraction(self):
+        genome, reads = RandomReadSimulator().simulate(SimulationConfig(
+            genome_len=50_000,
+            read_len=2_000,
+            step=2_000,
+            mismatch_rate=0.0,
+            ins_rate=0.0,
+            del_rate=0.0,
+            gc_fraction=0.70,
+            seed=7,
+            shuffle_reads=False,
+        ))
+
+        self.assertGreater(gc_fraction(genome), 0.67)
+        self.assertLess(gc_fraction(genome), 0.73)
+        self.assertGreater(gc_fraction(reads[0].seq), 0.64)
+        self.assertLess(gc_fraction(reads[0].seq), 0.76)
+
+    def test_simulation_rejects_invalid_gc_fraction(self):
+        with self.assertRaisesRegex(ValueError, "gc_fraction"):
+            RandomReadSimulator().simulate(SimulationConfig(gc_fraction=1.1))
 
 
 if __name__ == "__main__":

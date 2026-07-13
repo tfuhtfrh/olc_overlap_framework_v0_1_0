@@ -623,6 +623,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--read-len-max", type=int, default=READ_LEN_MAX)
     parser.add_argument("--overlap-fraction-min", type=float, default=OVERLAP_FRACTION_MIN)
     parser.add_argument("--overlap-fraction-max", type=float, default=OVERLAP_FRACTION_MAX)
+    parser.add_argument("--gc-fraction", type=float, default=0.5)
     layout_group = parser.add_mutually_exclusive_group()
     layout_group.add_argument("--random-layout", dest="random_layout", action="store_true")
     layout_group.add_argument("--fixed-layout", dest="random_layout", action="store_false")
@@ -660,6 +661,7 @@ def main() -> None:
             mismatch_rate=0.0,
             ins_rate=0.0,
             del_rate=0.0,
+            gc_fraction=args.gc_fraction,
             seed=args.seed,
             shuffle_reads=True,
         )
@@ -676,6 +678,7 @@ def main() -> None:
             mismatch_rate=0.0,
             ins_rate=0.0,
             del_rate=0.0,
+            gc_fraction=args.gc_fraction,
             seed=args.seed,
             shuffle_reads=True,
         )

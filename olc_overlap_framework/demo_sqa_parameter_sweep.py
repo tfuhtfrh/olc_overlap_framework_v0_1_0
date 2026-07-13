@@ -117,6 +117,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--simulation-seed", type=int, default=None)
     parser.add_argument("--annealer-seeds", default=None)
     parser.add_argument("--score-mode", default="overlap_len")
+    parser.add_argument("--gc-fraction", type=float, default=0.5)
     parser.add_argument("--read-penalties", default="100")
     parser.add_argument("--position-penalties", default=None)
     parser.add_argument("--missing-penalties", default="50")
@@ -137,6 +138,7 @@ def build_overlap_graph(args: argparse.Namespace) -> tuple[list[Read], list[Over
         mismatch_rate=getattr(args, "mismatch_rate", 0.0),
         ins_rate=getattr(args, "ins_rate", 0.0),
         del_rate=getattr(args, "del_rate", 0.0),
+        gc_fraction=getattr(args, "gc_fraction", 0.5),
         seed=effective_simulation_seed(args),
         shuffle_reads=True,
     )

@@ -35,6 +35,7 @@ class SimulationConfig:
     mismatch_rate: float = 0.02
     ins_rate: float = 0.01
     del_rate: float = 0.01
+    gc_fraction: float = 0.5
     seed: int = 42
     shuffle_reads: bool = True
 
@@ -63,6 +64,8 @@ class SimulationConfig:
             value = getattr(self, name)
             if not 0.0 <= value <= 1.0:
                 raise ValueError(f"{name} must be in [0, 1]")
+        if not 0.0 <= self.gc_fraction <= 1.0:
+            raise ValueError("gc_fraction must be in [0, 1]")
 
         if self.uses_random_layout():
             missing = [
@@ -120,7 +123,7 @@ class RandomReadSimulator:
     def simulate(self, config: SimulationConfig) -> tuple[str, list[Read]]:
         config.validate()
         rng = random.Random(config.seed)
-        genome = self._random_dna(config.genome_len, rng)
+        genome = self._random_dna(config.genome_len, rng, config.gc_fraction)
 
         if config.uses_random_layout():
             reads = self._simulate_random_layout(genome, config, rng)
@@ -148,6 +151,7 @@ class RandomReadSimulator:
                 mismatch_rate=config.mismatch_rate,
                 ins_rate=config.ins_rate,
                 del_rate=config.del_rate,
+                gc_fraction=config.gc_fraction,
             )
             reads.append(Read(
                 rid=f"read_{idx}",
@@ -185,6 +189,7 @@ class RandomReadSimulator:
                 mismatch_rate=config.mismatch_rate,
                 ins_rate=config.ins_rate,
                 del_rate=config.del_rate,
+                gc_fraction=config.gc_fraction,
             )
             reads.append(Read(
                 rid=f"read_{idx}",
@@ -253,8 +258,36 @@ class RandomReadSimulator:
         return [r.rid for r in sorted(reads, key=lambda r: r.true_start)]
 
     @staticmethod
-    def _random_dna(length: int, rng: random.Random) -> str:
-        return "".join(rng.choice(DNA) for _ in range(length))
+    def _random_dna(length: int, rng: random.Random, gc_fraction: float = 0.5) -> str:
+        return "".join(
+            RandomReadSimulator._random_base(rng, gc_fraction)
+            for _ in range(length)
+        )
+
+    @staticmethod
+    def _random_base(rng: random.Random, gc_fraction: float = 0.5) -> str:
+        value = rng.random()
+        at_fraction = 1.0 - gc_fraction
+        if value < at_fraction / 2.0:
+            return "A"
+        if value < at_fraction:
+            return "T"
+        if value < at_fraction + gc_fraction / 2.0:
+            return "C"
+        return "G"
+
+    @staticmethod
+    def _random_base_except(
+        excluded: str,
+        rng: random.Random,
+        gc_fraction: float = 0.5,
+    ) -> str:
+        excluded = excluded.upper()
+        for _ in range(100):
+            base = RandomReadSimulator._random_base(rng, gc_fraction)
+            if base != excluded:
+                return base
+        return rng.choice([base for base in DNA if base != excluded])
 
     @staticmethod
     def _mutate_read(
@@ -264,6 +297,7 @@ class RandomReadSimulator:
         mismatch_rate: float,
         ins_rate: float,
         del_rate: float,
+        gc_fraction: float = 0.5,
     ) -> tuple[str, tuple[int, ...]]:
         """
         Apply a simple independent mismatch/insertion/deletion error model.
@@ -275,19 +309,19 @@ class RandomReadSimulator:
         ref_coords: list[int] = []
         for offset, ch in enumerate(seq):
             if rng.random() < ins_rate:
-                out.append(rng.choice(DNA))
+                out.append(RandomReadSimulator._random_base(rng, gc_fraction))
                 ref_coords.append(-1)
 
             if rng.random() < del_rate:
                 continue
 
             if rng.random() < mismatch_rate:
-                out.append(rng.choice([base for base in DNA if base != ch]))
+                out.append(RandomReadSimulator._random_base_except(ch, rng, gc_fraction))
             else:
                 out.append(ch)
             ref_coords.append(ref_start + offset)
 
         if rng.random() < ins_rate:
-            out.append(rng.choice(DNA))
+            out.append(RandomReadSimulator._random_base(rng, gc_fraction))
             ref_coords.append(-1)
         return "".join(out), tuple(ref_coords)

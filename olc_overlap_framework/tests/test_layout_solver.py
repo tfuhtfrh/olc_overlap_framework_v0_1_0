@@ -8,12 +8,18 @@ from olc_pipeline.layout_solver import (
     EdgePathDAGHamiltonianConfig,
     EdgePathDAGQUBOHamiltonian,
     EdgePathDAGQUBOModel,
+    EdgeCycleCoverDAGHamiltonianConfig,
+    EdgeCycleCoverDAGQUBOHamiltonian,
+    EdgeCycleCoverDAGQUBOModel,
     EdgePathCoverDAGHamiltonianConfig,
     EdgePathCoverDAGQUBOHamiltonian,
     EdgePathCoverDAGQUBOModel,
     MissingEdgeHamiltonianConfig,
     MissingEdgeQUBOHamiltonian,
     OverlapRewardScorer,
+    PDFAssemblyHamiltonianConfig,
+    PDFAssemblyQUBOHamiltonian,
+    PDFAssemblyQUBOModel,
     PermutationEnergyEvaluator,
     PermutationLocalSearchPolisher,
     QUBOHamiltonianBuilder,
@@ -25,17 +31,23 @@ from olc_pipeline.layout_solver import (
 )
 
 
-def make_edge(left_id: str, right_id: str, weight: float = 1.0) -> OverlapEdge:
+def make_edge(
+    left_id: str,
+    right_id: str,
+    weight: float = 1.0,
+    overlap_len: int = 10,
+    mi: float | None = None,
+) -> OverlapEdge:
     return OverlapEdge(
         left_id=left_id,
         right_id=right_id,
         left_start=0,
-        left_end=10,
+        left_end=overlap_len,
         right_start=0,
-        right_end=10,
-        overlap_len=10,
-        shift=10,
-        matches=10,
+        right_end=overlap_len,
+        overlap_len=overlap_len,
+        shift=overlap_len,
+        matches=overlap_len,
         mismatches=0,
         insertions=0,
         deletions=0,
@@ -44,6 +56,8 @@ def make_edge(left_id: str, right_id: str, weight: float = 1.0) -> OverlapEdge:
         error_rate=0.0,
         identity=1.0,
         dp_score=weight,
+        mi=mi,
+        weight_mi=mi,
         weight_dp=weight,
         accepted=True,
     )
@@ -128,6 +142,7 @@ class QUBOLayoutSolverTests(unittest.TestCase):
     def test_overlap_reward_scorer_supports_candidate_metrics(self):
         edge = make_edge("r0", "r1", weight=7.0)
         edge.weight_mi = 5.0
+        edge.mi = 1.5
         edge.nmi = 0.5
 
         scorer = OverlapRewardScorer()
@@ -138,7 +153,9 @@ class QUBOLayoutSolverTests(unittest.TestCase):
         self.assertEqual(scorer.score(edge, "overlap_len_power3"), 1000.0)
         self.assertEqual(scorer.score(edge, "dp"), 7.0)
         self.assertEqual(scorer.score(edge, "mi"), 5.0)
+        self.assertEqual(scorer.score(edge, "raw_mi"), 1.5)
         self.assertEqual(scorer.score(edge, "nmi"), 0.5)
+        self.assertEqual(scorer.score(edge, "weighted_nmi"), 5.0)
 
     def test_weighted_overlap_hamiltonian_rewards_stronger_edges(self):
         reads = [Read("r0", "A"), Read("r1", "C"), Read("r2", "G")]
@@ -386,6 +403,92 @@ class QUBOLayoutSolverTests(unittest.TestCase):
         self.assertFalse(metadata["valid_path_cover"])
         self.assertEqual(metadata["isolated_nodes"], ["r2"])
         self.assertEqual(model.energy(sample), 107.0)
+
+    def test_edge_cycle_cover_dag_uses_void_edges(self):
+        reads = [Read(f"r{index}", "A") for index in range(4)]
+        edges = [
+            make_edge("r0", "r1"),
+            make_edge("r1", "r2"),
+            make_edge("r2", "r3"),
+            make_edge("r0", "r2"),
+        ]
+        hamiltonian = EdgeCycleCoverDAGQUBOHamiltonian(EdgeCycleCoverDAGHamiltonianConfig(
+            degree_penalty=10.0,
+            edge_reward_scale=0.0,
+            score_mode="dp",
+        ))
+
+        model = hamiltonian.build(reads, edges)
+
+        self.assertIsInstance(model, EdgeCycleCoverDAGQUBOModel)
+        self.assertEqual(model.num_variables, 4 + 2 * len(reads))
+
+        valid_cycle = qubo_sample_for_order(model, ["r0", "r1", "r2", "r3"])
+        self.assertEqual(model.energy(valid_cycle), 0.0)
+
+        two_void_out_edges = valid_cycle.copy()
+        two_void_out_edges[model.source_variable_index("r2")] = 1
+        self.assertGreater(model.energy(two_void_out_edges), model.energy(valid_cycle))
+
+    def test_edge_cycle_cover_dag_decodes_single_void_cycle(self):
+        reads = [Read(f"r{index}", "A") for index in range(4)]
+        edges = [
+            make_edge("r0", "r1"),
+            make_edge("r1", "r2"),
+            make_edge("r2", "r3"),
+            make_edge("r0", "r2"),
+        ]
+        hamiltonian = EdgeCycleCoverDAGQUBOHamiltonian(EdgeCycleCoverDAGHamiltonianConfig(
+            degree_penalty=10.0,
+            edge_reward_scale=0.0,
+            score_mode="dp",
+        ))
+        model = hamiltonian.build(reads, edges)
+        sample = qubo_sample_for_order(model, ["r0", "r1", "r2", "r3"])
+
+        order, metadata = QUBOLayoutSolver._decode_edge_cycle_cover(model, sample)
+
+        self.assertEqual(order, ["r0", "r1", "r2", "r3"])
+        self.assertTrue(metadata["valid_edge_cycle"])
+        self.assertTrue(metadata["single_cycle_cover"])
+        self.assertEqual(metadata["selected_sources"], ["r0"])
+        self.assertEqual(metadata["selected_sinks"], ["r3"])
+        self.assertEqual(
+            metadata["cycle_components"],
+            [["__void__", "r0", "r1", "r2", "r3", "__void__"]],
+        )
+
+    def test_pdf_assembly_hamiltonian_uses_path_a_with_pdf_terms(self):
+        reads = [Read(f"r{index}", "AAAA") for index in range(3)]
+        edges = [
+            make_edge("r0", "r1", overlap_len=2),
+            make_edge("r1", "r2", overlap_len=2),
+            make_edge("r0", "r2", overlap_len=1),
+        ]
+        hamiltonian = PDFAssemblyQUBOHamiltonian(
+            PDFAssemblyHamiltonianConfig(
+                degree_penalty=10.0,
+                length_target=8.0,
+                length_penalty=1.0,
+            )
+        )
+        model = hamiltonian.build(reads, edges)
+
+        self.assertIsInstance(model, PDFAssemblyQUBOModel)
+        self.assertEqual(model.num_variables, len(edges))
+
+        target_path = qubo_sample_for_order(model, ["r0", "r1", "r2"])
+        _, metadata = QUBOLayoutSolver._decode_pdf_assembly(model, target_path)
+
+        self.assertTrue(metadata["valid_edge_path"])
+        self.assertEqual(metadata["selected_edge_count"], 2)
+        self.assertEqual(metadata["target_edge_count"], 2)
+        self.assertEqual(model.energy(target_path), 0.0)
+
+        conflict_sample = [0] * model.num_variables
+        conflict_sample[model.edge_variable_index("r0", "r1")] = 1
+        conflict_sample[model.edge_variable_index("r0", "r2")] = 1
+        self.assertEqual(model.energy(conflict_sample), 11.0)
 
 
 if __name__ == "__main__":

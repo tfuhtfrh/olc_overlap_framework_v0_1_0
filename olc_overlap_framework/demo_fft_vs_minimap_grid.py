@@ -257,6 +257,7 @@ def run_grid_row(
     minimap_extra_args: tuple[str, ...],
     threads: int,
     seed: int,
+    gc_fraction: float,
 ) -> GridRow:
     config = SimulationConfig(
         genome_len=genome_len,
@@ -265,6 +266,7 @@ def run_grid_row(
         mismatch_rate=mismatch_rate,
         ins_rate=0.0,
         del_rate=0.0,
+        gc_fraction=gc_fraction,
         seed=seed,
         shuffle_reads=True,
     )
@@ -520,6 +522,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--min-overlap", type=int, default=MIN_OVERLAP)
     parser.add_argument("--min-identity", type=float, default=MIN_IDENTITY)
     parser.add_argument("--max-error-rate-hint", type=float, default=MAX_ERROR_RATE_HINT)
+    parser.add_argument("--gc-fraction", type=float, default=0.5)
     parser.add_argument("--seed", type=int, default=SEED)
     parser.add_argument("--seeds", default=None)
     parser.add_argument("--threads", type=int, default=THREADS)
@@ -569,6 +572,7 @@ def main() -> None:
                         minimap_extra_args=minimap_extra_args,
                         threads=args.threads,
                         seed=seed,
+                        gc_fraction=args.gc_fraction,
                     )
                     rows.append(row)
                     print_row(row)

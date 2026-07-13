@@ -1,0 +1,7 @@
+case,status,reads_used,edge_limit,candidate_edges,qubo_variables,quadratic_terms,degree_penalty,length_target,length_penalty,gc_target_fraction,gc_penalty,mi_reward_scale,mi_score_mode,overlap_gc_method,backend,seed,energy,true_path_available,true_path_energy,energy_gap,ground_hit,valid_edge_path,single_path_layout,selected_edge_count,edge_count_violation,in_degree_violations,out_degree_violations,hard_violation,selected_adjacent_correct,selected_jump_correct,selected_wrong,anneal_sec,total_sec
+1,ok,35,all,131,131,8515,100.0,20000.0,1e-06,0.49615,0.0,0.0,mi,average,openjij-sqa,40,0.0,True,0.0,0.0,True,True,True,34,0,0,0,0,34,0,0,8.099656253000006,8.104874352000024
+2,ok,35,all,131,131,8515,100.0,20000.0,1e-06,0.49615,0.0,0.0,mi,average,openjij-sqa,41,0.0,True,0.0,0.0,True,True,True,34,0,0,0,0,34,0,0,5.5433058200000005,5.551132719999998
+3,ok,35,all,131,131,8515,300.0,20000.0,1e-06,0.49615,0.0,0.0,mi,average,openjij-sqa,40,330.25,True,0.0,330.25,False,False,False,34,0,0,1,1,27,7,0,5.513368614000001,5.521746115000013
+4,ok,35,all,131,131,8515,300.0,20000.0,1e-06,0.49615,0.0,0.0,mi,average,openjij-sqa,41,306.25,True,0.0,306.25,False,False,False,34,0,0,1,1,30,4,0,5.5157793849999734,5.523693185000013
+5,ok,35,all,131,131,8515,1000.0,20000.0,1e-06,0.49615,0.0,0.0,mi,average,openjij-sqa,40,2121.0,True,0.0,2121.0,False,False,False,34,0,1,1,2,24,10,0,5.615450143999993,5.622490145
+6,ok,35,all,131,131,8515,1000.0,20000.0,1e-06,0.49615,0.0,0.0,mi,average,openjij-sqa,41,1100.0,True,0.0,1100.0,False,False,False,34,0,1,0,1,19,15,0,5.6165894469999955,5.625092548999987

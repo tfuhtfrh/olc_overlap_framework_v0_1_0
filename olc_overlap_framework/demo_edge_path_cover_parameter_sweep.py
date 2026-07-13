@@ -124,6 +124,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--mismatch-rate", type=float, default=0.0)
     parser.add_argument("--ins-rate", type=float, default=0.0)
     parser.add_argument("--del-rate", type=float, default=0.0)
+    parser.add_argument("--gc-fraction", type=float, default=0.5)
     parser.add_argument("--describe-only", action="store_true")
     parser.add_argument("--num-reads", type=int, default=100)
     parser.add_argument("--num-sweeps", type=int, default=1000)

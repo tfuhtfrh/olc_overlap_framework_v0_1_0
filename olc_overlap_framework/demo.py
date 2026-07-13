@@ -26,12 +26,16 @@ from olc_pipeline.layout_solver import (
     DWaveSimulatedAnnealer,
     EdgePathDAGHamiltonianConfig,
     EdgePathDAGQUBOHamiltonian,
+    EdgeCycleCoverDAGHamiltonianConfig,
+    EdgeCycleCoverDAGQUBOHamiltonian,
     EdgePathCoverDAGHamiltonianConfig,
     EdgePathCoverDAGQUBOHamiltonian,
     MissingEdgeHamiltonianConfig,
     MissingEdgeQUBOHamiltonian,
     OpenJijSQAConfig,
     OpenJijSimulatedQuantumAnnealer,
+    PDFAssemblyHamiltonianConfig,
+    PDFAssemblyQUBOHamiltonian,
     PermutationLocalSearchPolisher,
     PermutationPolishConfig,
     QUBOLayoutSolver,
@@ -40,6 +44,7 @@ from olc_pipeline.layout_solver import (
     qubo_sample_for_order,
 )
 from olc_pipeline.graph_viz import write_overlap_graph_dot
+from olc_pipeline.overlap_features import gc_fraction
 
 
 USE_QUBO_LAYOUT = True
@@ -49,7 +54,7 @@ QUBO_LAYOUT_MAX_READS = None
 QUBO_READ_ONCE_PENALTY = 100.0
 QUBO_POSITION_ONCE_PENALTY = 100.0
 QUBO_MISSING_EDGE_PENALTY = 120.0
-QUBO_HAMILTONIAN = "edge_path_cover_dag"  # "missing_edge", "weighted_overlap", "edge_path_dag", or "edge_path_cover_dag"
+QUBO_HAMILTONIAN = "edge_path_cover_dag"  # "missing_edge", "weighted_overlap", "edge_path_dag", "edge_path_cover_dag", "edge_cycle_cover_dag", or "pdf_assembly"
 QUBO_SCORE_MODE = "overlap_len_power"  # "overlap_len", "overlap_len_power", "overlap_len_power2", "overlap_len_power3", "identity", "dp", "mi", "nmi", "mapq", "matches", "quality"
 QUBO_SCORE_GAMMA = 3.0
 QUBO_EDGE_REWARD_SCALE = 40.0
@@ -60,6 +65,13 @@ QUBO_EDGE_ISOLATE_PENALTY = 160.0
 QUBO_PATH_BREAK_PENALTY = 10.0
 QUBO_MAX_PATH_COUNT = 2
 QUBO_PATH_COUNT_CAP_PENALTY = 120.0
+QUBO_ASSEMBLY_LENGTH_TARGET = None  # None uses the simulated genome length when available.
+QUBO_ASSEMBLY_LENGTH_PENALTY = 0.0
+QUBO_GC_TARGET_FRACTION = None  # None uses the simulated genome GC fraction when available.
+QUBO_GC_PENALTY = 0.0
+QUBO_OVERLAP_GC_METHOD = "average"  # "average", "left", or "right"
+QUBO_MI_REWARD_SCALE = 0.0
+QUBO_MI_SCORE_MODE = "mi"
 QUBO_ANNEALER_BACKEND = "openjij_sqa"  # "dwave_sa", "openjij_sqa", or "dwave_qpu"
 QUBO_DWAVE_NUM_READS = 1000
 QUBO_DWAVE_NUM_SWEEPS = 1000
@@ -77,6 +89,17 @@ QUBO_POLISH_LAYOUT = False
 QUBO_POLISH_MAX_PASSES = 50
 QUBO_POLISH_USE_SEGMENT_MOVES = True
 QUBO_POLISH_MAX_SEGMENT_LEN = 12
+SIM_GC_FRACTION = 0.5
+
+EDGE_PATH_HAMILTONIANS = {
+    "edge_path_dag",
+    "edge_path_cover_dag",
+    "edge_cycle_cover_dag",
+    "pdf_assembly",
+}
+PATH_COVER_HAMILTONIANS = {
+    "edge_path_cover_dag",
+}
 
 
 def fmt_float(value: float | None, digits: int = 3) -> str:
@@ -115,6 +138,7 @@ def main() -> None:
         mismatch_rate=0.00,
         ins_rate=0.00,
         del_rate=0.00,
+        gc_fraction=SIM_GC_FRACTION,
         seed=42,
         shuffle_reads=True,
     )
@@ -149,6 +173,7 @@ def main() -> None:
 
     print_section("Simulation")
     print_kv("Genome length", f"{len(genome):,} bp")
+    print_kv("Genome GC", fmt_pct(gc_fraction(genome)))
     print_kv("Reads", len(reads))
     print_kv("Read length / step", f"{sim_config.read_len:,} / {sim_config.step:,} bp")
     print_kv("Single-read error", fmt_pct(single_read_error_rate(sim_config)))
@@ -192,7 +217,7 @@ def main() -> None:
         )
 
     if USE_QUBO_LAYOUT:
-        run_qubo_layout_demo(reads, result.edges)
+        run_qubo_layout_demo(reads, result.edges, genome=genome)
 
 
 def print_section(title: str) -> None:
@@ -278,7 +303,7 @@ def print_minimap_stderr_summary(stderr: str) -> None:
         print_kv("Runtime", runtime)
 
 
-def run_qubo_layout_demo(reads, edges) -> None:
+def run_qubo_layout_demo(reads, edges, genome=None) -> None:
     sorted_reads = sorted(reads, key=lambda read: read.true_start)
     if QUBO_LAYOUT_MAX_READS is None:
         layout_reads = sorted_reads
@@ -294,7 +319,7 @@ def run_qubo_layout_demo(reads, edges) -> None:
     print_section("QUBO Layout")
     print_kv("Reads used", f"{len(layout_reads)} / {len(reads)}")
     print_kv("Edges used", f"{len(layout_edges)} / {len(edges)}")
-    print_qubo_config()
+    print_qubo_config(genome)
     effective_score_mode = qubo_effective_score_mode()
     if WRITE_QUBO_GRAPH_DOT:
         dot_path = write_overlap_graph_dot(
@@ -306,7 +331,7 @@ def run_qubo_layout_demo(reads, edges) -> None:
         )
         print_kv("Graph DOT", dot_path)
 
-    hamiltonian = build_qubo_hamiltonian()
+    hamiltonian = build_qubo_hamiltonian(genome=genome)
     solver = QUBOLayoutSolver(
         hamiltonian=hamiltonian,
         annealer=build_qubo_annealer(),
@@ -348,9 +373,15 @@ def run_qubo_layout_demo(reads, edges) -> None:
     print_kv("Polish improvements", layout.metadata.get("polish_improvements"))
     print_kv("QUBO total time", fmt_seconds(layout.metadata.get("total_sec")))
     print_kv("Valid binary layout", layout.metadata.get("valid_binary_layout"))
-    if layout.metadata.get("hamiltonian") in {"edge_path_dag", "edge_path_cover_dag"}:
+    if layout.metadata.get("hamiltonian") in EDGE_PATH_HAMILTONIANS:
         print_kv("QUBO variables", layout.metadata.get("variables"))
         if layout.metadata.get("hamiltonian") == "edge_path_dag":
+            print_kv(
+                "Selected edges",
+                f"{layout.metadata.get('selected_edge_count')} / {layout.metadata.get('target_edge_count')}",
+            )
+            print_kv("Edge count violation", layout.metadata.get("edge_count_violation"))
+        elif layout.metadata.get("hamiltonian") == "pdf_assembly":
             print_kv(
                 "Selected edges",
                 f"{layout.metadata.get('selected_edge_count')} / {layout.metadata.get('target_edge_count')}",
@@ -369,13 +400,21 @@ def run_qubo_layout_demo(reads, edges) -> None:
             print_kv("Out-degree conflicts", layout.metadata.get("out_degree_conflicts"))
         print_kv("Selected graph acyclic", layout.metadata.get("selected_graph_acyclic"))
         print_kv("Single path layout", layout.metadata.get("single_path_layout"))
-        if layout.metadata.get("hamiltonian") == "edge_path_cover_dag":
+        if layout.metadata.get("hamiltonian") in PATH_COVER_HAMILTONIANS:
             print_kv("Valid path cover", layout.metadata.get("valid_path_cover"))
             print_kv("Path count", layout.metadata.get("path_count"))
             print_kv("Source / sink count", f"{layout.metadata.get('selected_source_count')} / {layout.metadata.get('selected_sink_count')}")
             print_kv("Source constraint violations", layout.metadata.get("source_constraint_violations"))
             print_kv("Sink constraint violations", layout.metadata.get("sink_constraint_violations"))
             print_kv("Isolated nodes", layout.metadata.get("isolated_node_count"))
+        if layout.metadata.get("hamiltonian") == "pdf_assembly":
+            print_kv("Length target", layout.metadata.get("length_target"))
+            print_kv("GC target", fmt_float(layout.metadata.get("gc_target_fraction"), 4))
+            print_kv("Total read len / GC", (
+                f"{fmt_float(layout.metadata.get('total_read_len'), 1)} / "
+                f"{fmt_float(layout.metadata.get('total_read_gc'), 1)}"
+            ))
+            print_kv("MI reward scale", layout.metadata.get("mi_reward_scale"))
         print_kv("Selected adjacent correct", selected_edge_report["adjacent_correct"])
         print_kv("Selected jump correct", selected_edge_report["jump_correct"])
         print_kv("Selected wrong edges", selected_edge_report["wrong"])
@@ -387,7 +426,7 @@ def run_qubo_layout_demo(reads, edges) -> None:
     print_kv(order_label, report.adjacent_correct_in_layout)
     print_kv(wrong_label, report.wrong_adjacencies_in_layout)
     print_kv("Inversion count", report.inversion_count)
-    if layout.metadata.get("hamiltonian") not in {"edge_path_dag", "edge_path_cover_dag"} or layout.metadata.get("valid_edge_path"):
+    if layout.metadata.get("hamiltonian") not in EDGE_PATH_HAMILTONIANS or layout.metadata.get("valid_edge_path"):
         print_kv("Order", " -> ".join(layout.order))
     elif layout.metadata.get("valid_path_cover"):
         components = layout.metadata.get("path_components", [])
@@ -419,7 +458,7 @@ def selected_edge_truth_counts(reads, selected_edges) -> dict[str, int]:
     return counts
 
 
-def print_qubo_config() -> None:
+def print_qubo_config(genome=None) -> None:
     print_kv("Hamiltonian", QUBO_HAMILTONIAN)
     print_kv("Score mode", QUBO_SCORE_MODE)
     if QUBO_SCORE_MODE == "overlap_len_power":
@@ -433,6 +472,20 @@ def print_qubo_config() -> None:
         print_kv("Two-path penalty", f"{QUBO_PATH_BREAK_PENALTY} (unused for center-square)")
         print_kv("Max path count", QUBO_MAX_PATH_COUNT)
         print_kv("Path cap coefficient", QUBO_PATH_COUNT_CAP_PENALTY)
+    elif QUBO_HAMILTONIAN == "edge_cycle_cover_dag":
+        print_kv("In/out degree penalty", QUBO_EDGE_DEGREE_PENALTY)
+        print_kv("Void node", "__void__")
+        print_kv("Cycle constraint", "all reads + void have exactly one input and output")
+    elif QUBO_HAMILTONIAN == "pdf_assembly":
+        print_kv("A path penalty", QUBO_EDGE_DEGREE_PENALTY)
+        print_kv("A edge count target", "N - 1")
+        print_kv("Length target", qubo_length_target(genome))
+        print_kv("B length penalty", QUBO_ASSEMBLY_LENGTH_PENALTY)
+        print_kv("GC target", fmt_float(qubo_gc_target_fraction(genome), 4))
+        print_kv("C GC penalty", QUBO_GC_PENALTY)
+        print_kv("Overlap GC method", QUBO_OVERLAP_GC_METHOD)
+        print_kv("D MI reward scale", QUBO_MI_REWARD_SCALE)
+        print_kv("MI score mode", QUBO_MI_SCORE_MODE)
     else:
         print_kv("Read once penalty", QUBO_READ_ONCE_PENALTY)
         print_kv("Position once penalty", QUBO_POSITION_ONCE_PENALTY)
@@ -449,13 +502,16 @@ def print_qubo_config() -> None:
         print_kv("D-Wave QPU reads", QUBO_DWAVE_QPU_NUM_READS)
         print_kv("D-Wave QPU chain strength", QUBO_DWAVE_QPU_CHAIN_STRENGTH)
         print_kv("D-Wave QPU annealing time", QUBO_DWAVE_QPU_ANNEALING_TIME)
-    if QUBO_HAMILTONIAN not in {"edge_path_dag", "edge_path_cover_dag"}:
+    if QUBO_HAMILTONIAN not in EDGE_PATH_HAMILTONIANS:
         print_kv("Missing-edge effect", f"+{QUBO_MISSING_EDGE_PENALTY:.3f} per adjacent pair not in E")
-    if QUBO_HAMILTONIAN == "edge_path_cover_dag":
+    if QUBO_HAMILTONIAN in PATH_COVER_HAMILTONIANS:
         print_kv("Path count effect", (
             f"{QUBO_PATH_COUNT_CAP_PENALTY:.3f}*(m-1)^2"
         ))
-    print_kv("Edge reward effect", f"-{QUBO_EDGE_REWARD_SCALE:.3f} * normalized_reward per adjacent edge")
+    if QUBO_HAMILTONIAN != "pdf_assembly":
+        print_kv("Edge reward effect", f"-{QUBO_EDGE_REWARD_SCALE:.3f} * normalized_reward per adjacent edge")
+    if QUBO_HAMILTONIAN == "pdf_assembly":
+        print_kv("MI reward effect", f"-{QUBO_MI_REWARD_SCALE:.3f} * raw_MI per selected edge")
 
 
 def true_order_energy(reads, model) -> float | None:
@@ -475,7 +531,23 @@ def qubo_effective_score_mode() -> str:
     return QUBO_SCORE_MODE
 
 
-def build_qubo_hamiltonian():
+def qubo_length_target(genome=None) -> float | None:
+    if QUBO_ASSEMBLY_LENGTH_TARGET is not None:
+        return float(QUBO_ASSEMBLY_LENGTH_TARGET)
+    if genome is not None:
+        return float(len(genome))
+    return None
+
+
+def qubo_gc_target_fraction(genome=None) -> float | None:
+    if QUBO_GC_TARGET_FRACTION is not None:
+        return float(QUBO_GC_TARGET_FRACTION)
+    if genome:
+        return gc_fraction(genome)
+    return None
+
+
+def build_qubo_hamiltonian(genome=None):
     effective_score_mode = qubo_effective_score_mode()
     if QUBO_HAMILTONIAN == "missing_edge":
         return MissingEdgeQUBOHamiltonian(MissingEdgeHamiltonianConfig(
@@ -511,6 +583,24 @@ def build_qubo_hamiltonian():
             edge_reward_scale=QUBO_EDGE_REWARD_SCALE,
             score_mode=effective_score_mode,
             normalize_rewards=QUBO_NORMALIZE_REWARDS,
+        ))
+    if QUBO_HAMILTONIAN == "edge_cycle_cover_dag":
+        return EdgeCycleCoverDAGQUBOHamiltonian(EdgeCycleCoverDAGHamiltonianConfig(
+            degree_penalty=QUBO_EDGE_DEGREE_PENALTY,
+            edge_reward_scale=QUBO_EDGE_REWARD_SCALE,
+            score_mode=effective_score_mode,
+            normalize_rewards=QUBO_NORMALIZE_REWARDS,
+        ))
+    if QUBO_HAMILTONIAN == "pdf_assembly":
+        return PDFAssemblyQUBOHamiltonian(PDFAssemblyHamiltonianConfig(
+            degree_penalty=QUBO_EDGE_DEGREE_PENALTY,
+            length_target=qubo_length_target(genome),
+            length_penalty=QUBO_ASSEMBLY_LENGTH_PENALTY,
+            gc_target_fraction=qubo_gc_target_fraction(genome),
+            gc_penalty=QUBO_GC_PENALTY,
+            overlap_gc_method=QUBO_OVERLAP_GC_METHOD,
+            mi_reward_scale=QUBO_MI_REWARD_SCALE,
+            mi_score_mode=QUBO_MI_SCORE_MODE,
         ))
     raise ValueError(f"Unknown QUBO_HAMILTONIAN: {QUBO_HAMILTONIAN!r}")
 

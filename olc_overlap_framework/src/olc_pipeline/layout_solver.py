@@ -18,6 +18,7 @@ from time import perf_counter
 from typing import Callable, Optional
 
 from .data import Read, OverlapEdge, LayoutResult
+from .overlap_features import overlap_gc_count, read_gc_count
 
 MODULE_VERSION = "0.1.0"
 SUPPORTED_OVERLAP_SCORE_MODES = (
@@ -209,6 +210,23 @@ class EdgePathCoverDAGQUBOModel(EdgePathDAGQUBOModel):
         return f"t[{self.read_ids[index - self._sink_offset]}]"
 
 
+class EdgeCycleCoverDAGQUBOModel(EdgePathCoverDAGQUBOModel):
+    """E+2N edge-cycle model with one implicit void node."""
+
+    void_id = "__void__"
+
+    def variable_label(self, index: int) -> str:
+        if index < len(self.edge_pairs):
+            return EdgePathDAGQUBOModel.variable_label(self, index)
+        if index < self._sink_offset:
+            return f"v[{self.void_id},{self.read_ids[index - self._source_offset]}]"
+        return f"v[{self.read_ids[index - self._sink_offset]},{self.void_id}]"
+
+
+class PDFAssemblyQUBOModel(EdgePathDAGQUBOModel):
+    """PDF assembly QUBO model with one variable per directed edge."""
+
+
 class QUBOHamiltonianBuilder(ABC):
     """Build a QUBO model from overlap edges. Replace this for new Hamiltonians."""
 
@@ -312,8 +330,10 @@ class OverlapRewardScorerConfig:
         - "overlap_len_power3": cubed refined overlap length
         - "identity": refined identity
         - "dp": weight_dp, then dp_score, then overlap_len * identity
-        - "mi": weight_mi, then overlap_len * nmi, then mi
+        - "raw_mi": unnormalized Shannon mutual information
         - "nmi": normalized mutual information
+        - "weighted_nmi": overlap length times normalized mutual information
+        - "mi": legacy alias for weighted_nmi
         - "mapq": minimap2 mapq
         - "matches": refined match count
         - "quality": overlap_len * identity * (1 - error_rate)
@@ -370,8 +390,14 @@ class OverlapRewardScorer:
             if edge.mi is not None:
                 return float(edge.mi)
             return 0.0
+        if mode == "raw_mi":
+            return float(edge.mi or 0.0)
         if mode == "nmi":
             return float(edge.nmi or 0.0)
+        if mode == "weighted_nmi":
+            if edge.weight_mi is not None:
+                return float(edge.weight_mi)
+            return float(edge.overlap_len * (edge.nmi or 0.0))
         if mode == "mapq":
             return float(edge.mapq)
         if mode == "matches":
@@ -871,6 +897,339 @@ class EdgePathCoverDAGQUBOHamiltonian(QUBOHamiltonianBuilder):
         for left_offset, left in enumerate(source_variables):
             for right in source_variables[left_offset + 1:]:
                 model.add_quadratic(left, right, 2.0 * over_two_penalty)
+
+
+@dataclass(frozen=True)
+class EdgeCycleCoverDAGHamiltonianConfig:
+    """
+    Coefficients for an E+2N void-cycle Hamiltonian.
+
+    Real overlap edges keep their normal reward. The extra 2N variables are
+    zero-reward edges void->read and read->void. Every real read and the void
+    node must have exactly one incoming and one outgoing selected edge.
+    """
+
+    degree_penalty: float = 100.0
+    edge_reward_scale: float = 1.0
+    score_mode: Optional[str] = None
+    normalize_rewards: bool = True
+    max_reward_score: Optional[float] = None
+    min_reward_score: float = 0.0
+
+    def validate(self) -> None:
+        if self.degree_penalty <= 0.0:
+            raise ValueError("degree_penalty must be positive")
+        if self.edge_reward_scale < 0.0:
+            raise ValueError("edge_reward_scale must be non-negative")
+
+
+class EdgeCycleCoverDAGQUBOHamiltonian(QUBOHamiltonianBuilder):
+    """
+    Select a rewarded Hamiltonian cycle through all reads plus one void node.
+
+    Candidate read-read edges are assumed to be a DAG. With the void edges this
+    enforces one linear read path whose endpoints connect to the void node,
+    while preserving the E+2N variable count.
+    """
+
+    def __init__(
+        self,
+        config: Optional[EdgeCycleCoverDAGHamiltonianConfig] = None,
+        scorer: Optional[OverlapRewardScorer] = None,
+    ):
+        self.config = config or EdgeCycleCoverDAGHamiltonianConfig()
+        self.config.validate()
+        self.scorer = scorer or OverlapRewardScorer()
+        self.last_edge_count = 0
+        self.last_reward_min: Optional[float] = None
+        self.last_reward_max: Optional[float] = None
+
+    def build(self, reads: list[Read], edges: list[OverlapEdge], weight_mode: str = "dp") -> QUBOModel:
+        read_ids = [read.rid for read in reads]
+        score_mode = self.config.score_mode or weight_mode
+        reward_by_pair = self._best_rewards_by_pair(read_ids, edges, score_mode)
+        rank = {read_id: index for index, read_id in enumerate(read_ids)}
+        edge_pairs = sorted(
+            reward_by_pair,
+            key=lambda pair: (rank[pair[0]], rank[pair[1]]),
+        )
+
+        EdgePathDAGQUBOHamiltonian._topological_order(read_ids, edge_pairs)
+        model = EdgeCycleCoverDAGQUBOModel(read_ids, edge_pairs)
+        self.last_edge_count = len(edge_pairs)
+        self.last_reward_min = min(reward_by_pair.values()) if reward_by_pair else None
+        self.last_reward_max = max(reward_by_pair.values()) if reward_by_pair else None
+
+        incoming: dict[str, list[int]] = {read_id: [] for read_id in read_ids}
+        outgoing: dict[str, list[int]] = {read_id: [] for read_id in read_ids}
+        for variable, (left_id, right_id) in enumerate(edge_pairs):
+            outgoing[left_id].append(variable)
+            incoming[right_id].append(variable)
+            model.add_linear(variable, -self.config.edge_reward_scale * reward_by_pair[(left_id, right_id)])
+
+        source_variables = [model.source_variable_index(read_id) for read_id in read_ids]
+        sink_variables = [model.sink_variable_index(read_id) for read_id in read_ids]
+
+        for read_id in read_ids:
+            EdgePathCoverDAGQUBOHamiltonian._add_exactly_one_constraint(
+                model,
+                [model.source_variable_index(read_id), *incoming[read_id]],
+                self.config.degree_penalty,
+            )
+            EdgePathCoverDAGQUBOHamiltonian._add_exactly_one_constraint(
+                model,
+                [model.sink_variable_index(read_id), *outgoing[read_id]],
+                self.config.degree_penalty,
+            )
+
+        EdgePathCoverDAGQUBOHamiltonian._add_exactly_one_constraint(
+            model,
+            source_variables,
+            self.config.degree_penalty,
+        )
+        EdgePathCoverDAGQUBOHamiltonian._add_exactly_one_constraint(
+            model,
+            sink_variables,
+            self.config.degree_penalty,
+        )
+        return model
+
+    def _best_rewards_by_pair(
+        self,
+        read_ids: list[str],
+        edges: list[OverlapEdge],
+        score_mode: str,
+    ) -> dict[tuple[str, str], float]:
+        helper = EdgePathDAGQUBOHamiltonian(EdgePathDAGHamiltonianConfig(
+            edge_reward_scale=self.config.edge_reward_scale,
+            score_mode=self.config.score_mode,
+            normalize_rewards=self.config.normalize_rewards,
+            max_reward_score=self.config.max_reward_score,
+            min_reward_score=self.config.min_reward_score,
+        ), scorer=self.scorer)
+        return helper._best_rewards_by_pair(read_ids, edges, score_mode)
+
+
+@dataclass(frozen=True)
+class PDFAssemblyHamiltonianConfig:
+    """
+    Coefficients for the PDF-inspired assembly Hamiltonian.
+
+    The original PDF A term is replaced by the existing linear path A term:
+
+        A * (sum_(a,b) z_ab - (N - 1))^2
+      + A * incoming/outgoing degree-conflict penalties
+      + B * (sum_i l_i - sum_(a,b) O_ab z_ab - L_target)^2
+      + C * ((sum_i g_i - sum_(a,b) g_ov_ab z_ab)
+             - p_GC * (sum_i l_i - sum_(a,b) O_ab z_ab))^2
+      - D * sum_(a,b) I_ab z_ab
+
+    No source/sink path-cover variables or generic edge-reward terms are added.
+    """
+
+    degree_penalty: float = 100.0
+    length_target: Optional[float] = None
+    length_penalty: float = 0.0
+    gc_target_fraction: Optional[float] = None
+    gc_penalty: float = 0.0
+    overlap_gc_method: str = "average"
+    mi_reward_scale: float = 0.0
+    mi_score_mode: str = "mi"
+
+    def validate(self) -> None:
+        if self.degree_penalty <= 0.0:
+            raise ValueError("degree_penalty must be positive")
+        if self.length_target is not None and self.length_target < 0.0:
+            raise ValueError("length_target must be non-negative")
+        if self.length_penalty < 0.0:
+            raise ValueError("length_penalty must be non-negative")
+        if self.gc_target_fraction is not None:
+            if not 0.0 <= self.gc_target_fraction <= 1.0:
+                raise ValueError("gc_target_fraction must be in [0, 1]")
+        if self.gc_penalty < 0.0:
+            raise ValueError("gc_penalty must be non-negative")
+        if self.overlap_gc_method not in {"average", "left", "right"}:
+            raise ValueError("overlap_gc_method must be 'average', 'left', or 'right'")
+        if self.mi_reward_scale < 0.0:
+            raise ValueError("mi_reward_scale must be non-negative")
+
+
+class PDFAssemblyQUBOHamiltonian(QUBOHamiltonianBuilder):
+    """QUBO builder for the PDF B/C/D terms with the existing path A term."""
+
+    def __init__(
+        self,
+        config: Optional[PDFAssemblyHamiltonianConfig] = None,
+        scorer: Optional[OverlapRewardScorer] = None,
+    ):
+        self.config = config or PDFAssemblyHamiltonianConfig()
+        self.config.validate()
+        self.scorer = scorer or OverlapRewardScorer()
+        self.last_edge_count = 0
+        self.last_mi_min: Optional[float] = None
+        self.last_mi_max: Optional[float] = None
+        self.last_total_read_len = 0.0
+        self.last_total_read_gc = 0.0
+        self.last_length_target: Optional[float] = None
+        self.last_gc_target_fraction: Optional[float] = None
+        self.last_longest_path_edges = 0
+
+    def build(self, reads: list[Read], edges: list[OverlapEdge], weight_mode: str = "dp") -> QUBOModel:
+        del weight_mode
+        read_ids = [read.rid for read in reads]
+        reads_by_id = {read.rid: read for read in reads}
+        edge_by_pair = self._edge_by_pair(read_ids, edges)
+        rank = {read_id: index for index, read_id in enumerate(read_ids)}
+        edge_pairs = sorted(edge_by_pair, key=lambda pair: (rank[pair[0]], rank[pair[1]]))
+        topological_order = EdgePathDAGQUBOHamiltonian._topological_order(read_ids, edge_pairs)
+        self.last_longest_path_edges = EdgePathDAGQUBOHamiltonian._longest_path_edge_count(
+            topological_order,
+            edge_pairs,
+        )
+        if read_ids and self.last_longest_path_edges != len(read_ids) - 1:
+            raise ValueError(
+                "Candidate overlap DAG does not contain a Hamiltonian path "
+                f"covering all {len(read_ids)} reads; longest path contains "
+                f"{self.last_longest_path_edges} edges."
+            )
+
+        model = PDFAssemblyQUBOModel(read_ids, edge_pairs)
+        self.last_edge_count = len(edge_pairs)
+
+        EdgePathDAGQUBOHamiltonian._add_edge_count_constraint(
+            model,
+            target=max(0, len(read_ids) - 1),
+            penalty=self.config.degree_penalty,
+        )
+        EdgePathDAGQUBOHamiltonian._add_degree_constraints(model, self.config.degree_penalty)
+
+        self._add_assembly_terms(model, reads, reads_by_id, edge_pairs, edge_by_pair)
+        self._add_mi_reward_terms(model, edge_pairs, edge_by_pair)
+        return model
+
+    def _edge_by_pair(
+        self,
+        read_ids: list[str],
+        edges: list[OverlapEdge],
+    ) -> dict[tuple[str, str], OverlapEdge]:
+        read_id_set = set(read_ids)
+        edge_by_pair: dict[tuple[str, str], OverlapEdge] = {}
+        for edge in edges:
+            if edge.left_id not in read_id_set or edge.right_id not in read_id_set:
+                continue
+            if edge.left_id == edge.right_id:
+                continue
+            pair = (edge.left_id, edge.right_id)
+            current = edge_by_pair.get(pair)
+            if current is None or self._edge_preprocess_key(edge) > self._edge_preprocess_key(current):
+                edge_by_pair[pair] = edge
+        return edge_by_pair
+
+    def _edge_preprocess_key(self, edge: OverlapEdge) -> tuple[float, float, float]:
+        mi = self.scorer.score(edge, self.config.mi_score_mode)
+        return (float(edge.overlap_len), mi, float(edge.dp_score))
+
+    def _add_assembly_terms(
+        self,
+        model: PDFAssemblyQUBOModel,
+        reads: list[Read],
+        reads_by_id: dict[str, Read],
+        edge_pairs: list[tuple[str, str]],
+        edge_by_pair: dict[tuple[str, str], OverlapEdge],
+    ) -> None:
+        total_read_len = float(sum(len(read.seq) for read in reads))
+        total_read_gc = float(sum(read_gc_count(read) for read in reads))
+        self.last_total_read_len = total_read_len
+        self.last_total_read_gc = total_read_gc
+        self.last_length_target = self.config.length_target
+        self.last_gc_target_fraction = self.config.gc_target_fraction
+
+        if self.config.length_target is not None and self.config.length_penalty > 0.0:
+            self._add_squared_linear_form(
+                model,
+                offset=total_read_len - self.config.length_target,
+                coefficients={
+                    model.edge_variable_index(*pair): -float(edge_by_pair[pair].overlap_len)
+                    for pair in edge_pairs
+                },
+                penalty=self.config.length_penalty,
+            )
+
+        if self.config.gc_target_fraction is not None and self.config.gc_penalty > 0.0:
+            p_gc = self.config.gc_target_fraction
+            self._add_squared_linear_form(
+                model,
+                offset=total_read_gc - p_gc * total_read_len,
+                coefficients={
+                    model.edge_variable_index(*pair): (
+                        p_gc * float(edge_by_pair[pair].overlap_len)
+                        - overlap_gc_count(
+                            edge_by_pair[pair],
+                            reads_by_id,
+                            method=self.config.overlap_gc_method,
+                        )
+                    )
+                    for pair in edge_pairs
+                },
+                penalty=self.config.gc_penalty,
+            )
+
+    def _add_mi_reward_terms(
+        self,
+        model: PDFAssemblyQUBOModel,
+        edge_pairs: list[tuple[str, str]],
+        edge_by_pair: dict[tuple[str, str], OverlapEdge],
+    ) -> None:
+        mi_by_pair = {
+            pair: self.scorer.score(edge_by_pair[pair], self.config.mi_score_mode)
+            for pair in edge_pairs
+        }
+        self.last_mi_min = min(mi_by_pair.values()) if mi_by_pair else None
+        self.last_mi_max = max(mi_by_pair.values()) if mi_by_pair else None
+        if self.config.mi_reward_scale == 0.0:
+            return
+        for pair, mi in mi_by_pair.items():
+            model.add_linear(
+                model.edge_variable_index(*pair),
+                -self.config.mi_reward_scale * mi,
+            )
+
+    @staticmethod
+    def _add_exactly_one_constraint(
+        model: QUBOModel,
+        variables: list[int],
+        penalty: float,
+    ) -> None:
+        model.add_constant(penalty)
+        for variable in variables:
+            model.add_linear(variable, -penalty)
+        for left_offset, left in enumerate(variables):
+            for right in variables[left_offset + 1:]:
+                model.add_quadratic(left, right, 2.0 * penalty)
+
+    @staticmethod
+    def _add_squared_linear_form(
+        model: QUBOModel,
+        offset: float,
+        coefficients: dict[int, float],
+        penalty: float,
+    ) -> None:
+        if penalty == 0.0:
+            return
+        model.add_constant(penalty * offset * offset)
+        items = [
+            (variable, coefficient)
+            for variable, coefficient in coefficients.items()
+            if coefficient != 0.0
+        ]
+        for variable, coefficient in items:
+            model.add_linear(
+                variable,
+                penalty * (2.0 * offset * coefficient + coefficient * coefficient),
+            )
+        for left_offset, (left, left_coeff) in enumerate(items):
+            for right, right_coeff in items[left_offset + 1:]:
+                model.add_quadratic(left, right, 2.0 * penalty * left_coeff * right_coeff)
 
 
 @dataclass(frozen=True)
@@ -1424,6 +1783,35 @@ class DWaveQPUAnnealer:
 def qubo_sample_for_order(model: QUBOModel, order: list[str]) -> list[int]:
     """Encode a complete read order for either position or edge-path QUBOs."""
     sample = [0] * model.num_variables
+    if isinstance(model, PDFAssemblyQUBOModel):
+        if len(order) != len(model.read_ids):
+            raise ValueError("PDF assembly samples require one ordered occurrence of every read.")
+        for edge_pair in zip(order, order[1:]):
+            variable = model.edge_index_by_pair.get(edge_pair)
+            if variable is None:
+                raise ValueError(
+                    f"Order uses edge {edge_pair[0]} -> {edge_pair[1]} "
+                    "that is absent from the candidate graph."
+                )
+            sample[variable] = 1
+        return sample
+
+    if isinstance(model, EdgeCycleCoverDAGQUBOModel):
+        if len(order) != len(model.read_ids):
+            raise ValueError("Void-cycle samples require one ordered occurrence of every read.")
+        for edge_pair in zip(order, order[1:]):
+            variable = model.edge_index_by_pair.get(edge_pair)
+            if variable is None:
+                raise ValueError(
+                    f"Order uses edge {edge_pair[0]} -> {edge_pair[1]} "
+                    "that is absent from the candidate DAG."
+                )
+            sample[variable] = 1
+        if order:
+            sample[model.source_variable_index(order[0])] = 1
+            sample[model.sink_variable_index(order[-1])] = 1
+        return sample
+
     if isinstance(model, EdgePathCoverDAGQUBOModel):
         for edge_pair in zip(order, order[1:]):
             variable = model.edge_index_by_pair.get(edge_pair)
@@ -1503,7 +1891,11 @@ class QUBOLayoutSolver(LayoutSolver):
         anneal_seconds = perf_counter() - anneal_start
 
         decode_start = perf_counter()
-        if isinstance(model, EdgePathCoverDAGQUBOModel):
+        if isinstance(model, PDFAssemblyQUBOModel):
+            order, decode_metadata = self._decode_pdf_assembly(model, annealing_result.sample)
+        elif isinstance(model, EdgeCycleCoverDAGQUBOModel):
+            order, decode_metadata = self._decode_edge_cycle_cover(model, annealing_result.sample)
+        elif isinstance(model, EdgePathCoverDAGQUBOModel):
             order, decode_metadata = self._decode_edge_path_cover(model, annealing_result.sample)
         elif isinstance(model, EdgePathDAGQUBOModel):
             order, decode_metadata = self._decode_edge_path(model, annealing_result.sample)
@@ -1592,6 +1984,39 @@ class QUBOLayoutSolver(LayoutSolver):
                 "candidate_dag": True,
                 "candidate_longest_path_edges": self.hamiltonian.last_longest_path_edges,
             })
+        elif isinstance(self.hamiltonian, PDFAssemblyQUBOHamiltonian):
+            metadata.update({
+                "hamiltonian": "pdf_assembly",
+                "degree_penalty": self.hamiltonian.config.degree_penalty,
+                "edge_count_penalty": self.hamiltonian.config.degree_penalty,
+                "edge_count": self.hamiltonian.last_edge_count,
+                "length_target": self.hamiltonian.last_length_target,
+                "length_penalty": self.hamiltonian.config.length_penalty,
+                "gc_target_fraction": self.hamiltonian.last_gc_target_fraction,
+                "gc_penalty": self.hamiltonian.config.gc_penalty,
+                "total_read_len": self.hamiltonian.last_total_read_len,
+                "total_read_gc": self.hamiltonian.last_total_read_gc,
+                "overlap_gc_method": self.hamiltonian.config.overlap_gc_method,
+                "mi_reward_scale": self.hamiltonian.config.mi_reward_scale,
+                "mi_score_mode": self.hamiltonian.config.mi_score_mode,
+                "mi_min": self.hamiltonian.last_mi_min,
+                "mi_max": self.hamiltonian.last_mi_max,
+                "candidate_dag": True,
+                "candidate_longest_path_edges": self.hamiltonian.last_longest_path_edges,
+            })
+        elif isinstance(self.hamiltonian, EdgeCycleCoverDAGQUBOHamiltonian):
+            metadata.update({
+                "hamiltonian": "edge_cycle_cover_dag",
+                "degree_penalty": self.hamiltonian.config.degree_penalty,
+                "edge_reward_scale": self.hamiltonian.config.edge_reward_scale,
+                "score_mode": self.hamiltonian.config.score_mode or weight_mode,
+                "normalize_rewards": self.hamiltonian.config.normalize_rewards,
+                "edge_count": self.hamiltonian.last_edge_count,
+                "reward_min": self.hamiltonian.last_reward_min,
+                "reward_max": self.hamiltonian.last_reward_max,
+                "candidate_dag": True,
+                "void_node": EdgeCycleCoverDAGQUBOModel.void_id,
+            })
         elif isinstance(self.hamiltonian, EdgePathCoverDAGQUBOHamiltonian):
             metadata.update({
                 "hamiltonian": "edge_path_cover_dag",
@@ -1653,6 +2078,140 @@ class QUBOLayoutSolver(LayoutSolver):
             "valid_binary_layout": valid_sample,
             "read_assignment_violations": read_violations,
             "position_assignment_violations": position_violations,
+        }
+
+    @staticmethod
+    def _decode_pdf_assembly(
+        model: PDFAssemblyQUBOModel,
+        sample: list[int],
+    ) -> tuple[list[str], dict[str, object]]:
+        order, metadata = QUBOLayoutSolver._decode_edge_path(model, sample)
+        metadata.update({
+            "valid_cycle_cover": False,
+            "single_cycle_cover": False,
+            "cycle_components": [],
+            "cycle_component_count": 0,
+            "cyclic_components": [],
+            "uncovered_nodes": [],
+        })
+        return order, metadata
+
+    @staticmethod
+    def _decode_edge_cycle_cover(
+        model: EdgeCycleCoverDAGQUBOModel,
+        sample: list[int],
+    ) -> tuple[list[str], dict[str, object]]:
+        rank = {read_id: index for index, read_id in enumerate(model.read_ids)}
+        selected_edges = [
+            edge_pair
+            for variable, edge_pair in enumerate(model.edge_pairs)
+            if sample[variable]
+        ]
+        selected_sources = [
+            read_id
+            for read_id in model.read_ids
+            if sample[model.source_variable_index(read_id)]
+        ]
+        selected_sinks = [
+            read_id
+            for read_id in model.read_ids
+            if sample[model.sink_variable_index(read_id)]
+        ]
+
+        incoming: dict[str, list[str]] = {read_id: [] for read_id in model.read_ids}
+        outgoing: dict[str, list[str]] = {read_id: [] for read_id in model.read_ids}
+        for left_id, right_id in selected_edges:
+            outgoing[left_id].append(right_id)
+            incoming[right_id].append(left_id)
+
+        read_in_constraint_violations = 0
+        read_out_constraint_violations = 0
+        for read_id in model.read_ids:
+            read_in_constraint_violations += abs(
+                1 - len(incoming[read_id]) - int(read_id in selected_sources)
+            )
+            read_out_constraint_violations += abs(
+                1 - len(outgoing[read_id]) - int(read_id in selected_sinks)
+            )
+
+        void_out_constraint_violation = abs(1 - len(selected_sources))
+        void_in_constraint_violation = abs(1 - len(selected_sinks))
+        in_degree_violations = sum(max(0, len(values) - 1) for values in incoming.values())
+        out_degree_violations = sum(max(0, len(values) - 1) for values in outgoing.values())
+        in_degree_conflicts = {
+            read_id: values
+            for read_id, values in incoming.items()
+            if len(values) > 1
+        }
+        out_degree_conflicts = {
+            read_id: values
+            for read_id, values in outgoing.items()
+            if len(values) > 1
+        }
+
+        cycle_path: list[str] = []
+        cycle_closed_through_void = False
+        if len(selected_sources) == 1:
+            current = selected_sources[0]
+            seen: set[str] = set()
+            while current not in seen:
+                cycle_path.append(current)
+                seen.add(current)
+                if current in selected_sinks:
+                    cycle_closed_through_void = True
+                    break
+                next_nodes = sorted(outgoing[current], key=rank.get)
+                if len(next_nodes) != 1:
+                    break
+                current = next_nodes[0]
+
+        used = set(cycle_path)
+        order = cycle_path + [
+            read_id
+            for read_id in model.read_ids
+            if read_id not in used
+        ]
+        single_cycle_cover = (
+            read_in_constraint_violations == 0
+            and read_out_constraint_violations == 0
+            and void_in_constraint_violation == 0
+            and void_out_constraint_violation == 0
+            and cycle_closed_through_void
+            and len(cycle_path) == len(model.read_ids)
+        )
+        cycle_components = []
+        if cycle_path:
+            cycle_components.append([
+                EdgeCycleCoverDAGQUBOModel.void_id,
+                *cycle_path,
+                EdgeCycleCoverDAGQUBOModel.void_id,
+            ])
+
+        return order, {
+            "valid_binary_layout": single_cycle_cover,
+            "valid_edge_cycle": single_cycle_cover,
+            "valid_cycle_cover": single_cycle_cover,
+            "single_cycle_cover": single_cycle_cover,
+            "valid_edge_path": single_cycle_cover,
+            "single_path_layout": single_cycle_cover,
+            "selected_edge_count": len(selected_edges),
+            "selected_edges": selected_edges,
+            "selected_source_count": len(selected_sources),
+            "selected_sink_count": len(selected_sinks),
+            "selected_sources": selected_sources,
+            "selected_sinks": selected_sinks,
+            "read_in_constraint_violations": read_in_constraint_violations,
+            "read_out_constraint_violations": read_out_constraint_violations,
+            "void_in_constraint_violation": void_in_constraint_violation,
+            "void_out_constraint_violation": void_out_constraint_violation,
+            "in_degree_violations": in_degree_violations,
+            "out_degree_violations": out_degree_violations,
+            "in_degree_conflicts": in_degree_conflicts,
+            "out_degree_conflicts": out_degree_conflicts,
+            "cycle_closed_through_void": cycle_closed_through_void,
+            "cycle_components": cycle_components,
+            "cycle_component_count": len(cycle_components),
+            "void_node": EdgeCycleCoverDAGQUBOModel.void_id,
         }
 
     @staticmethod

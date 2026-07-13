@@ -1,0 +1,9 @@
+case,status,model,reads_used,genome_len,candidate_edges,qubo_variables,quadratic_terms,seed,energy,true_path_available,true_path_energy,energy_gap,ground_hit,valid_edge_path,selected_edge_count,edge_count_violation,in_degree_violations,out_degree_violations,selected_adjacent_correct,selected_jump_correct,selected_wrong,adjacent_recall,old_count_penalty,old_degree_penalty,old_reward_scale,pdf_a_penalty,pdf_b_length_penalty,pdf_c_gc_penalty,pdf_d_mi_reward_scale,mi_min,mi_max,anneal_sec,total_sec
+1,ok,pdf_A_B,120,62500,476,476,113050,40,0.0,True,0.0,0.0,True,True,119,0,0,0,119,0,0,1.0,,,,120.0,2e-06,0.0,0.0,499.99999999999994,2500.0,22.956009265,23.011086969000004
+2,ok,pdf_A_B,120,62500,476,476,113050,41,0.0,True,0.0,0.0,True,True,119,0,0,0,119,0,0,1.0,,,,120.0,2e-06,0.0,0.0,499.99999999999994,2500.0,20.362509283999998,20.4604882
+3,ok,pdf_A_B,140,72500,557,557,154846,40,0.0,True,0.0,0.0,True,True,139,0,0,0,139,0,0,1.0,,,,120.0,2e-06,0.0,0.0,499.99999999999994,2500.0,24.579945605999995,24.658329908
+4,ok,pdf_A_B,140,72500,557,557,154846,41,0.0,True,0.0,0.0,True,True,139,0,0,0,139,0,0,1.0,,,,120.0,2e-06,0.0,0.0,499.99999999999994,2500.0,25.903790703999988,26.003840596999993
+5,ok,pdf_A_B,160,82500,637,637,202566,40,0.0,True,0.0,0.0,True,True,159,0,0,0,159,0,0,1.0,,,,120.0,2e-06,0.0,0.0,499.99999999999994,2500.0,32.31875982700001,32.409508423999995
+6,ok,pdf_A_B,160,82500,637,637,202566,41,0.0,True,0.0,0.0,True,True,159,0,0,0,159,0,0,1.0,,,,120.0,2e-06,0.0,0.0,499.99999999999994,2500.0,29.70066122900002,29.82730393099999
+7,ok,pdf_A_B,180,92500,717,717,256686,40,0.0,True,0.0,0.0,True,True,179,0,0,0,179,0,0,1.0,,,,120.0,2e-06,0.0,0.0,499.99999999999994,2500.0,33.38102440700001,33.510341702999995
+8,ok,pdf_A_B,180,92500,717,717,256686,41,0.0,True,0.0,0.0,True,True,179,0,0,0,179,0,0,1.0,,,,120.0,2e-06,0.0,0.0,499.99999999999994,2500.0,33.98385928699997,34.14167658599996

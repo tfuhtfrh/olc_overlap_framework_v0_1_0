@@ -285,6 +285,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--read-len", type=int, default=READ_LEN)
     parser.add_argument("--step", type=int, default=STEP)
     parser.add_argument("--mismatch-rate", type=float, default=MISMATCH_RATE)
+    parser.add_argument("--gc-fraction", type=float, default=0.5)
     parser.add_argument("--min-overlap", type=int, default=MIN_OVERLAP)
     parser.add_argument("--min-identity", type=float, default=MIN_IDENTITY)
     parser.add_argument("--max-error-rate-hint", type=float, default=MAX_ERROR_RATE_HINT)
@@ -304,6 +305,7 @@ def main() -> None:
         mismatch_rate=args.mismatch_rate,
         ins_rate=0.0,
         del_rate=0.0,
+        gc_fraction=args.gc_fraction,
         seed=args.seed,
         shuffle_reads=True,
     )
