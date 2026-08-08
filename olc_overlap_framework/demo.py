@@ -134,7 +134,7 @@ def main() -> None:
     sim_config = SimulationConfig(
         genome_len=20_000,
         read_len=3_000,
-        step=500,
+        step=400,
         mismatch_rate=0.00,
         ins_rate=0.00,
         del_rate=0.00,

@@ -1,1 +1,5 @@
 /minimap2
+
+# Local-only Codex context and private environment notes.
+AGENTS.local.md
+.codex_local/
