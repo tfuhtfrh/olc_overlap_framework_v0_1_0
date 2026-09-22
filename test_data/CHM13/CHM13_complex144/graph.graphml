@@ -1,0 +1,3617 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d17" for="edge" attr.name="paf_line" attr.type="long"/>
+<key id="d16" for="edge" attr.name="overlap_span" attr.type="long"/>
+<key id="d15" for="edge" attr.name="block" attr.type="long"/>
+<key id="d14" for="edge" attr.name="identity" attr.type="double"/>
+<key id="d13" for="edge" attr.name="errors" attr.type="long"/>
+<key id="d12" for="edge" attr.name="matching_bases" attr.type="long"/>
+<key id="d11" for="edge" attr.name="weight_divisor" attr.type="long"/>
+<key id="d10" for="edge" attr.name="raw_quality_margin" attr.type="long"/>
+<key id="d9" for="edge" attr.name="weight" attr.type="long"/>
+<key id="d8" for="node" attr.name="length" attr.type="long"/>
+<key id="d7" for="node" attr.name="orientation" attr.type="string"/>
+<key id="d6" for="node" attr.name="read_id" attr.type="string"/>
+<key id="d5" for="graph" attr.name="weight_reference_used" attr.type="boolean"/>
+<key id="d4" for="graph" attr.name="weight_identity_threshold" attr.type="double"/>
+<key id="d3" for="graph" attr.name="weight_scale_divisor" attr.type="long"/>
+<key id="d2" for="graph" attr.name="weight_source_formula" attr.type="string"/>
+<key id="d1" for="graph" attr.name="weight_formula" attr.type="string"/>
+<key id="d0" for="graph" attr.name="weight_scheme" attr.type="string"/>
+<graph edgedefault="directed"><data key="d0">quality_margin_gcd_normalized_v2</data>
+<data key="d1">1*M - 49*d</data>
+<data key="d2">1000*M - 980*B</data>
+<data key="d3">20</data>
+<data key="d4">0.98</data>
+<data key="d5">False</data>
+<node id="m64062_190803_042216/36898953/ccs-">
+  <data key="d6">m64062_190803_042216/36898953/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">22004</data>
+</node>
+<node id="m64062_190803_042216/41419626/ccs-">
+  <data key="d6">m64062_190803_042216/41419626/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">21296</data>
+</node>
+<node id="m64062_190803_042216/35522216/ccs-">
+  <data key="d6">m64062_190803_042216/35522216/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">21624</data>
+</node>
+<node id="m64062_190803_042216/64226171/ccs+">
+  <data key="d6">m64062_190803_042216/64226171/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">22822</data>
+</node>
+<node id="m64062_190803_042216/157811529/ccs+">
+  <data key="d6">m64062_190803_042216/157811529/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">25351</data>
+</node>
+<node id="m64062_190806_063919/90900269/ccs+">
+  <data key="d6">m64062_190806_063919/90900269/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">23446</data>
+</node>
+<node id="m64062_190807_194840/169609489/ccs+">
+  <data key="d6">m64062_190807_194840/169609489/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">17172</data>
+</node>
+<node id="m64062_190806_063919/42600005/ccs+">
+  <data key="d6">m64062_190806_063919/42600005/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">19235</data>
+</node>
+<node id="m64062_190806_063919/100140798/ccs-">
+  <data key="d6">m64062_190806_063919/100140798/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">24914</data>
+</node>
+<node id="m64062_190803_042216/44499289/ccs+">
+  <data key="d6">m64062_190803_042216/44499289/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">22595</data>
+</node>
+<node id="m64062_190803_042216/44173964/ccs-">
+  <data key="d6">m64062_190803_042216/44173964/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">18361</data>
+</node>
+<node id="m64062_190803_042216/155582878/ccs-">
+  <data key="d6">m64062_190803_042216/155582878/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">24648</data>
+</node>
+<node id="m64062_190803_042216/91948018/ccs-">
+  <data key="d6">m64062_190803_042216/91948018/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">25097</data>
+</node>
+<node id="m64062_190804_172951/129435048/ccs+">
+  <data key="d6">m64062_190804_172951/129435048/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">16221</data>
+</node>
+<node id="m64062_190803_042216/18941553/ccs-">
+  <data key="d6">m64062_190803_042216/18941553/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">27787</data>
+</node>
+<node id="m64062_190806_063919/124979683/ccs+">
+  <data key="d6">m64062_190806_063919/124979683/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">24758</data>
+</node>
+<node id="m64062_190806_063919/117901287/ccs-">
+  <data key="d6">m64062_190806_063919/117901287/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">26741</data>
+</node>
+<node id="m64062_190806_063919/151062315/ccs+">
+  <data key="d6">m64062_190806_063919/151062315/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">23688</data>
+</node>
+<node id="m64062_190806_063919/77725913/ccs-">
+  <data key="d6">m64062_190806_063919/77725913/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">20673</data>
+</node>
+<node id="m64062_190803_042216/147260971/ccs-">
+  <data key="d6">m64062_190803_042216/147260971/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">24300</data>
+</node>
+<node id="m64062_190806_063919/118882990/ccs-">
+  <data key="d6">m64062_190806_063919/118882990/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">26333</data>
+</node>
+<node id="m64062_190803_042216/115607081/ccs-">
+  <data key="d6">m64062_190803_042216/115607081/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">27134</data>
+</node>
+<node id="m64062_190803_042216/168888464/ccs-">
+  <data key="d6">m64062_190803_042216/168888464/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">24149</data>
+</node>
+<node id="m64062_190803_042216/85459505/ccs+">
+  <data key="d6">m64062_190803_042216/85459505/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">26969</data>
+</node>
+<node id="m64062_190806_063919/70518252/ccs-">
+  <data key="d6">m64062_190806_063919/70518252/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">22922</data>
+</node>
+<node id="m64062_190806_063919/135725370/ccs+">
+  <data key="d6">m64062_190806_063919/135725370/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">25858</data>
+</node>
+<node id="m64062_190806_063919/173146610/ccs+">
+  <data key="d6">m64062_190806_063919/173146610/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">21110</data>
+</node>
+<node id="m64062_190806_063919/106365251/ccs-">
+  <data key="d6">m64062_190806_063919/106365251/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">25759</data>
+</node>
+<node id="m64062_190803_042216/74908890/ccs+">
+  <data key="d6">m64062_190803_042216/74908890/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">22837</data>
+</node>
+<node id="m64062_190803_042216/166528477/ccs-">
+  <data key="d6">m64062_190803_042216/166528477/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">20041</data>
+</node>
+<node id="m64062_190803_042216/119800317/ccs+">
+  <data key="d6">m64062_190803_042216/119800317/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">18902</data>
+</node>
+<node id="m64062_190806_063919/89655134/ccs-">
+  <data key="d6">m64062_190806_063919/89655134/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">22955</data>
+</node>
+<node id="m64062_190806_063919/106236189/ccs-">
+  <data key="d6">m64062_190806_063919/106236189/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">19461</data>
+</node>
+<node id="m64062_190803_042216/28903706/ccs-">
+  <data key="d6">m64062_190803_042216/28903706/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">24115</data>
+</node>
+<node id="m64062_190803_042216/3277534/ccs+">
+  <data key="d6">m64062_190803_042216/3277534/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">22199</data>
+</node>
+<node id="m64062_190803_042216/177799801/ccs-">
+  <data key="d6">m64062_190803_042216/177799801/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">27313</data>
+</node>
+<node id="m64062_190806_063919/120390470/ccs+">
+  <data key="d6">m64062_190806_063919/120390470/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">27797</data>
+</node>
+<node id="m64062_190806_063919/53283334/ccs+">
+  <data key="d6">m64062_190806_063919/53283334/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">21448</data>
+</node>
+<node id="m64062_190806_063919/37357632/ccs-">
+  <data key="d6">m64062_190806_063919/37357632/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">23504</data>
+</node>
+<node id="m64062_190803_042216/104202824/ccs-">
+  <data key="d6">m64062_190803_042216/104202824/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">18690</data>
+</node>
+<node id="m64062_190806_063919/83624383/ccs-">
+  <data key="d6">m64062_190806_063919/83624383/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">19439</data>
+</node>
+<node id="m64062_190803_042216/107416213/ccs+">
+  <data key="d6">m64062_190803_042216/107416213/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">20836</data>
+</node>
+<node id="m64062_190803_042216/135594902/ccs-">
+  <data key="d6">m64062_190803_042216/135594902/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">23516</data>
+</node>
+<node id="m64062_190803_042216/52758518/ccs-">
+  <data key="d6">m64062_190803_042216/52758518/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">18365</data>
+</node>
+<node id="m64062_190806_063919/71763664/ccs-">
+  <data key="d6">m64062_190806_063919/71763664/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">23754</data>
+</node>
+<node id="m64062_190806_063919/84148411/ccs+">
+  <data key="d6">m64062_190806_063919/84148411/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">26156</data>
+</node>
+<node id="m64062_190803_042216/56033843/ccs+">
+  <data key="d6">m64062_190803_042216/56033843/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">25593</data>
+</node>
+<node id="m64062_190807_194840/108134550/ccs-">
+  <data key="d6">m64062_190807_194840/108134550/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">15361</data>
+</node>
+<node id="m64062_190806_063919/99682083/ccs+">
+  <data key="d6">m64062_190806_063919/99682083/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">20103</data>
+</node>
+<node id="m64062_190803_042216/29493110/ccs+">
+  <data key="d6">m64062_190803_042216/29493110/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">20458</data>
+</node>
+<node id="m64062_190803_042216/16451763/ccs-">
+  <data key="d6">m64062_190803_042216/16451763/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">19995</data>
+</node>
+<node id="m64062_190803_042216/145098390/ccs-">
+  <data key="d6">m64062_190803_042216/145098390/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">27967</data>
+</node>
+<node id="m64062_190803_042216/21236247/ccs-">
+  <data key="d6">m64062_190803_042216/21236247/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">22485</data>
+</node>
+<node id="m64062_190803_042216/138739829/ccs-">
+  <data key="d6">m64062_190803_042216/138739829/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">19679</data>
+</node>
+<node id="m64062_190806_063919/34736402/ccs+">
+  <data key="d6">m64062_190806_063919/34736402/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">23327</data>
+</node>
+<node id="m64062_190804_172951/80480160/ccs+">
+  <data key="d6">m64062_190804_172951/80480160/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">17394</data>
+</node>
+<node id="m64062_190806_063919/140838845/ccs-">
+  <data key="d6">m64062_190806_063919/140838845/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">31859</data>
+</node>
+<node id="m64062_190803_042216/49546951/ccs-">
+  <data key="d6">m64062_190803_042216/49546951/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">19607</data>
+</node>
+<node id="m64062_190803_042216/2557337/ccs+">
+  <data key="d6">m64062_190803_042216/2557337/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">24807</data>
+</node>
+<node id="m64062_190803_042216/36309233/ccs+">
+  <data key="d6">m64062_190803_042216/36309233/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">22294</data>
+</node>
+<node id="m64062_190806_063919/164824450/ccs-">
+  <data key="d6">m64062_190806_063919/164824450/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">23185</data>
+</node>
+<node id="m64062_190803_042216/148833519/ccs+">
+  <data key="d6">m64062_190803_042216/148833519/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">21588</data>
+</node>
+<node id="m64062_190803_042216/48106032/ccs-">
+  <data key="d6">m64062_190803_042216/48106032/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">18556</data>
+</node>
+<node id="m64062_190806_063919/136906798/ccs-">
+  <data key="d6">m64062_190806_063919/136906798/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">26498</data>
+</node>
+<node id="m64062_190803_042216/139922172/ccs-">
+  <data key="d6">m64062_190803_042216/139922172/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">21843</data>
+</node>
+<node id="m64062_190806_063919/153092420/ccs-">
+  <data key="d6">m64062_190806_063919/153092420/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">26140</data>
+</node>
+<node id="m64062_190803_042216/49611632/ccs+">
+  <data key="d6">m64062_190803_042216/49611632/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">23107</data>
+</node>
+<node id="m64062_190803_042216/73139865/ccs-">
+  <data key="d6">m64062_190803_042216/73139865/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">27379</data>
+</node>
+<node id="m64062_190803_042216/53740738/ccs+">
+  <data key="d6">m64062_190803_042216/53740738/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">26420</data>
+</node>
+<node id="m64062_190803_042216/80871694/ccs+">
+  <data key="d6">m64062_190803_042216/80871694/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">21326</data>
+</node>
+<node id="m64062_190803_042216/121765970/ccs+">
+  <data key="d6">m64062_190803_042216/121765970/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">24567</data>
+</node>
+<node id="m64062_190806_063919/144377136/ccs-">
+  <data key="d6">m64062_190806_063919/144377136/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">25324</data>
+</node>
+<node id="m64062_190806_063919/36701650/ccs-">
+  <data key="d6">m64062_190806_063919/36701650/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">22334</data>
+</node>
+<node id="m64062_190806_063919/176620373/ccs+">
+  <data key="d6">m64062_190806_063919/176620373/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">19044</data>
+</node>
+<node id="m64062_190803_042216/139527823/ccs-">
+  <data key="d6">m64062_190803_042216/139527823/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">21541</data>
+</node>
+<node id="m64062_190803_042216/88410241/ccs+">
+  <data key="d6">m64062_190803_042216/88410241/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">22757</data>
+</node>
+<node id="m64062_190803_042216/142149314/ccs+">
+  <data key="d6">m64062_190803_042216/142149314/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">27588</data>
+</node>
+<node id="m64062_190806_063919/64096710/ccs+">
+  <data key="d6">m64062_190806_063919/64096710/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">19624</data>
+</node>
+<node id="m64062_190804_172951/20775541/ccs-">
+  <data key="d6">m64062_190804_172951/20775541/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">16264</data>
+</node>
+<node id="m64062_190806_063919/108986702/ccs-">
+  <data key="d6">m64062_190806_063919/108986702/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">19939</data>
+</node>
+<node id="m64062_190803_042216/13763593/ccs-">
+  <data key="d6">m64062_190803_042216/13763593/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">23008</data>
+</node>
+<node id="m64062_190806_063919/97714662/ccs+">
+  <data key="d6">m64062_190806_063919/97714662/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">28401</data>
+</node>
+<node id="m64062_190803_042216/129174017/ccs-">
+  <data key="d6">m64062_190803_042216/129174017/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">20113</data>
+</node>
+<node id="m64062_190806_063919/112592516/ccs+">
+  <data key="d6">m64062_190806_063919/112592516/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">20826</data>
+</node>
+<node id="m64062_190803_042216/131137839/ccs-">
+  <data key="d6">m64062_190803_042216/131137839/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">22550</data>
+</node>
+<node id="m64062_190803_042216/53739553/ccs-">
+  <data key="d6">m64062_190803_042216/53739553/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">23173</data>
+</node>
+<node id="m64062_190803_042216/180355373/ccs+">
+  <data key="d6">m64062_190803_042216/180355373/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">23768</data>
+</node>
+<node id="m64062_190803_042216/71633248/ccs+">
+  <data key="d6">m64062_190803_042216/71633248/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">23140</data>
+</node>
+<node id="m64062_190806_063919/121309663/ccs-">
+  <data key="d6">m64062_190806_063919/121309663/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">19079</data>
+</node>
+<node id="m64062_190806_063919/149817135/ccs-">
+  <data key="d6">m64062_190806_063919/149817135/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">20973</data>
+</node>
+<node id="m64062_190803_042216/178783212/ccs-">
+  <data key="d6">m64062_190803_042216/178783212/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">21520</data>
+</node>
+<node id="m64062_190806_063919/155911360/ccs-">
+  <data key="d6">m64062_190806_063919/155911360/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">21236</data>
+</node>
+<node id="m64062_190803_042216/119408928/ccs-">
+  <data key="d6">m64062_190803_042216/119408928/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">24687</data>
+</node>
+<node id="m64062_190803_042216/86376721/ccs-">
+  <data key="d6">m64062_190803_042216/86376721/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">19567</data>
+</node>
+<node id="m64062_190806_063919/133103689/ccs+">
+  <data key="d6">m64062_190806_063919/133103689/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">22834</data>
+</node>
+<node id="m64062_190806_063919/46990555/ccs-">
+  <data key="d6">m64062_190806_063919/46990555/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">23143</data>
+</node>
+<node id="m64062_190806_063919/40044698/ccs+">
+  <data key="d6">m64062_190806_063919/40044698/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">22137</data>
+</node>
+<node id="m64062_190806_063919/55968709/ccs+">
+  <data key="d6">m64062_190806_063919/55968709/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">28723</data>
+</node>
+<node id="m64062_190806_063919/10617565/ccs-">
+  <data key="d6">m64062_190806_063919/10617565/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">23110</data>
+</node>
+<node id="m64062_190806_063919/50136055/ccs+">
+  <data key="d6">m64062_190806_063919/50136055/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">22985</data>
+</node>
+<node id="m64062_190806_063919/57868618/ccs-">
+  <data key="d6">m64062_190806_063919/57868618/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">20192</data>
+</node>
+<node id="m64062_190803_042216/26479381/ccs-">
+  <data key="d6">m64062_190803_042216/26479381/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">22380</data>
+</node>
+<node id="m64062_190806_063919/72419950/ccs-">
+  <data key="d6">m64062_190806_063919/72419950/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">20336</data>
+</node>
+<node id="m64062_190803_042216/15533448/ccs+">
+  <data key="d6">m64062_190803_042216/15533448/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">18452</data>
+</node>
+<node id="m64062_190803_042216/162529556/ccs-">
+  <data key="d6">m64062_190803_042216/162529556/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">28464</data>
+</node>
+<node id="m64062_190806_063919/121242687/ccs+">
+  <data key="d6">m64062_190806_063919/121242687/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">20266</data>
+</node>
+<node id="m64062_190803_042216/172819372/ccs+">
+  <data key="d6">m64062_190803_042216/172819372/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">18529</data>
+</node>
+<node id="m64062_190806_063919/105188101/ccs-">
+  <data key="d6">m64062_190806_063919/105188101/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">26334</data>
+</node>
+<node id="m64062_190803_042216/136119835/ccs+">
+  <data key="d6">m64062_190803_042216/136119835/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">24260</data>
+</node>
+<node id="m64062_190803_042216/47645698/ccs-">
+  <data key="d6">m64062_190803_042216/47645698/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">25241</data>
+</node>
+<node id="m64062_190806_063919/53937123/ccs-">
+  <data key="d6">m64062_190806_063919/53937123/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">21297</data>
+</node>
+<node id="m64062_190803_042216/111806121/ccs-">
+  <data key="d6">m64062_190803_042216/111806121/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">20080</data>
+</node>
+<node id="m64062_190806_063919/24971205/ccs+">
+  <data key="d6">m64062_190806_063919/24971205/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">21138</data>
+</node>
+<node id="m64062_190806_063919/53346526/ccs+">
+  <data key="d6">m64062_190806_063919/53346526/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">24167</data>
+</node>
+<node id="m64062_190806_063919/93652138/ccs+">
+  <data key="d6">m64062_190806_063919/93652138/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">21016</data>
+</node>
+<node id="m64062_190806_063919/39651930/ccs+">
+  <data key="d6">m64062_190806_063919/39651930/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">26648</data>
+</node>
+<node id="m64062_190807_194840/163580356/ccs+">
+  <data key="d6">m64062_190807_194840/163580356/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">17203</data>
+</node>
+<node id="m64062_190806_063919/41617533/ccs+">
+  <data key="d6">m64062_190806_063919/41617533/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">19749</data>
+</node>
+<node id="m64062_190803_042216/110757013/ccs+">
+  <data key="d6">m64062_190803_042216/110757013/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">21257</data>
+</node>
+<node id="m64062_190806_063919/21169754/ccs-">
+  <data key="d6">m64062_190806_063919/21169754/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">21143</data>
+</node>
+<node id="m64062_190806_063919/145164152/ccs-">
+  <data key="d6">m64062_190806_063919/145164152/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">22663</data>
+</node>
+<node id="m64062_190807_194840/51185706/ccs-">
+  <data key="d6">m64062_190807_194840/51185706/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">16743</data>
+</node>
+<node id="m64062_190806_063919/51120393/ccs+">
+  <data key="d6">m64062_190806_063919/51120393/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">25801</data>
+</node>
+<node id="m64062_190806_063919/129893236/ccs+">
+  <data key="d6">m64062_190806_063919/129893236/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">30224</data>
+</node>
+<node id="m64062_190806_063919/128845544/ccs+">
+  <data key="d6">m64062_190806_063919/128845544/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">24179</data>
+</node>
+<node id="m64062_190803_042216/125305484/ccs+">
+  <data key="d6">m64062_190803_042216/125305484/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">26670</data>
+</node>
+<node id="m64062_190803_042216/133825423/ccs+">
+  <data key="d6">m64062_190803_042216/133825423/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">21127</data>
+</node>
+<node id="m64062_190803_042216/136709217/ccs-">
+  <data key="d6">m64062_190803_042216/136709217/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">25391</data>
+</node>
+<node id="m64062_190807_194840/69665132/ccs-">
+  <data key="d6">m64062_190807_194840/69665132/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">19251</data>
+</node>
+<node id="m64062_190803_042216/72614749/ccs+">
+  <data key="d6">m64062_190803_042216/72614749/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">25829</data>
+</node>
+<node id="m64062_190806_063919/53870657/ccs+">
+  <data key="d6">m64062_190806_063919/53870657/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">21312</data>
+</node>
+<node id="m64062_190803_042216/25428422/ccs-">
+  <data key="d6">m64062_190803_042216/25428422/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">24640</data>
+</node>
+<node id="m64062_190803_042216/33622791/ccs+">
+  <data key="d6">m64062_190803_042216/33622791/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">20686</data>
+</node>
+<node id="m64062_190803_042216/151191564/ccs+">
+  <data key="d6">m64062_190803_042216/151191564/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">28071</data>
+</node>
+<node id="m64062_190803_042216/146276363/ccs-">
+  <data key="d6">m64062_190803_042216/146276363/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">23790</data>
+</node>
+<node id="m64062_190806_063919/20317928/ccs+">
+  <data key="d6">m64062_190806_063919/20317928/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">28065</data>
+</node>
+<node id="m64062_190803_042216/11405042/ccs+">
+  <data key="d6">m64062_190803_042216/11405042/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">28301</data>
+</node>
+<node id="m64062_190803_042216/31394282/ccs-">
+  <data key="d6">m64062_190803_042216/31394282/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">24227</data>
+</node>
+<node id="m64062_190806_063919/46334670/ccs+">
+  <data key="d6">m64062_190806_063919/46334670/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">21042</data>
+</node>
+<node id="m64062_190806_063919/113051251/ccs-">
+  <data key="d6">m64062_190806_063919/113051251/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">23168</data>
+</node>
+<node id="m64062_190803_042216/96799380/ccs+">
+  <data key="d6">m64062_190803_042216/96799380/ccs</data>
+  <data key="d7">+</data>
+  <data key="d8">29426</data>
+</node>
+<node id="m64062_190806_063919/55509938/ccs-">
+  <data key="d6">m64062_190806_063919/55509938/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">27596</data>
+</node>
+<node id="m64062_190806_063919/153224330/ccs-">
+  <data key="d6">m64062_190806_063919/153224330/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">26571</data>
+</node>
+<node id="m64062_190806_063919/1181955/ccs-">
+  <data key="d6">m64062_190806_063919/1181955/ccs</data>
+  <data key="d7">-</data>
+  <data key="d8">24842</data>
+</node>
+<edge source="m64062_190803_042216/36898953/ccs-" target="m64062_190803_042216/35522216/ccs-">
+  <data key="d9">3540</data>
+  <data key="d10">70800</data>
+  <data key="d11">20</data>
+  <data key="d12">4765</data>
+  <data key="d13">25</data>
+  <data key="d14">0.9947807933194155</data>
+  <data key="d15">4790</data>
+  <data key="d16">4779</data>
+  <data key="d17">16307</data>
+</edge>
+<edge source="m64062_190803_042216/36898953/ccs-" target="m64062_190803_042216/41419626/ccs-">
+  <data key="d9">9998</data>
+  <data key="d10">199960</data>
+  <data key="d11">20</data>
+  <data key="d12">11174</data>
+  <data key="d13">24</data>
+  <data key="d14">0.9978567601357385</data>
+  <data key="d15">11198</data>
+  <data key="d16">11177</data>
+  <data key="d17">30258</data>
+</edge>
+<edge source="m64062_190803_042216/41419626/ccs-" target="m64062_190803_042216/64226171/ccs+">
+  <data key="d9">4211</data>
+  <data key="d10">84220</data>
+  <data key="d11">20</data>
+  <data key="d12">6122</data>
+  <data key="d13">39</data>
+  <data key="d14">0.9936698587891576</data>
+  <data key="d15">6161</data>
+  <data key="d16">6135</data>
+  <data key="d17">16284</data>
+</edge>
+<edge source="m64062_190803_042216/41419626/ccs-" target="m64062_190803_042216/35522216/ccs-">
+  <data key="d9">11855</data>
+  <data key="d10">237100</data>
+  <data key="d11">20</data>
+  <data key="d12">14844</data>
+  <data key="d13">61</data>
+  <data key="d14">0.9959074136195908</data>
+  <data key="d15">14905</data>
+  <data key="d16">14873</data>
+  <data key="d17">16302</data>
+</edge>
+<edge source="m64062_190803_042216/35522216/ccs-" target="m64062_190803_042216/64226171/ccs+">
+  <data key="d9">9083</data>
+  <data key="d10">181660</data>
+  <data key="d11">20</data>
+  <data key="d12">12856</data>
+  <data key="d13">77</data>
+  <data key="d14">0.994046238305111</data>
+  <data key="d15">12933</data>
+  <data key="d16">12881</data>
+  <data key="d17">16304</data>
+</edge>
+<edge source="m64062_190803_042216/64226171/ccs+" target="m64062_190803_042216/157811529/ccs+">
+  <data key="d9">1821</data>
+  <data key="d10">36420</data>
+  <data key="d11">20</data>
+  <data key="d12">3095</data>
+  <data key="d13">26</data>
+  <data key="d14">0.9916693367510413</data>
+  <data key="d15">3121</data>
+  <data key="d16">3100</data>
+  <data key="d17">30311</data>
+</edge>
+<edge source="m64062_190803_042216/157811529/ccs+" target="m64062_190806_063919/90900269/ccs+">
+  <data key="d9">6388</data>
+  <data key="d10">127760</data>
+  <data key="d11">20</data>
+  <data key="d12">9965</data>
+  <data key="d13">73</data>
+  <data key="d14">0.9927276349870492</data>
+  <data key="d15">10038</data>
+  <data key="d16">9998</data>
+  <data key="d17">30309</data>
+</edge>
+<edge source="m64062_190806_063919/90900269/ccs+" target="m64062_190807_194840/169609489/ccs+">
+  <data key="d9">8610</data>
+  <data key="d10">172200</data>
+  <data key="d11">20</data>
+  <data key="d12">10668</data>
+  <data key="d13">42</data>
+  <data key="d14">0.996078431372549</data>
+  <data key="d15">10710</data>
+  <data key="d16">10690</data>
+  <data key="d17">24375</data>
+</edge>
+<edge source="m64062_190806_063919/90900269/ccs+" target="m64062_190806_063919/42600005/ccs+">
+  <data key="d9">3917</data>
+  <data key="d10">78340</data>
+  <data key="d11">20</data>
+  <data key="d12">5093</data>
+  <data key="d13">24</data>
+  <data key="d14">0.9953097518076999</data>
+  <data key="d15">5117</data>
+  <data key="d16">5104</data>
+  <data key="d17">32063</data>
+</edge>
+<edge source="m64062_190807_194840/169609489/ccs+" target="m64062_190806_063919/100140798/ccs-">
+  <data key="d9">4185</data>
+  <data key="d10">83700</data>
+  <data key="d11">20</data>
+  <data key="d12">4871</data>
+  <data key="d13">14</data>
+  <data key="d14">0.9971340839303992</data>
+  <data key="d15">4885</data>
+  <data key="d16">4877</data>
+  <data key="d17">17022</data>
+</edge>
+<edge source="m64062_190807_194840/169609489/ccs+" target="m64062_190806_063919/42600005/ccs+">
+  <data key="d9">10645</data>
+  <data key="d10">212900</data>
+  <data key="d11">20</data>
+  <data key="d12">11576</data>
+  <data key="d13">19</data>
+  <data key="d14">0.9983613626563174</data>
+  <data key="d15">11595</data>
+  <data key="d16">11586</data>
+  <data key="d17">32061</data>
+</edge>
+<edge source="m64062_190806_063919/42600005/ccs+" target="m64062_190806_063919/100140798/ccs-">
+  <data key="d9">10947</data>
+  <data key="d10">218940</data>
+  <data key="d11">20</data>
+  <data key="d12">12515</data>
+  <data key="d13">32</data>
+  <data key="d14">0.9974495895433171</data>
+  <data key="d15">12547</data>
+  <data key="d16">12529</data>
+  <data key="d17">17021</data>
+</edge>
+<edge source="m64062_190806_063919/100140798/ccs-" target="m64062_190803_042216/44499289/ccs+">
+  <data key="d9">9176</data>
+  <data key="d10">183520</data>
+  <data key="d11">20</data>
+  <data key="d12">10597</data>
+  <data key="d13">29</data>
+  <data key="d14">0.9972708450969321</data>
+  <data key="d15">10626</data>
+  <data key="d16">10609</data>
+  <data key="d17">3138</data>
+</edge>
+<edge source="m64062_190803_042216/44499289/ccs+" target="m64062_190803_042216/44173964/ccs-">
+  <data key="d9">10826</data>
+  <data key="d10">216520</data>
+  <data key="d11">20</data>
+  <data key="d12">12002</data>
+  <data key="d13">24</data>
+  <data key="d14">0.998004323964743</data>
+  <data key="d15">12026</data>
+  <data key="d16">12012</data>
+  <data key="d17">13866</data>
+</edge>
+<edge source="m64062_190803_042216/44499289/ccs+" target="m64062_190803_042216/155582878/ccs-">
+  <data key="d9">4128</data>
+  <data key="d10">82560</data>
+  <data key="d11">20</data>
+  <data key="d12">5990</data>
+  <data key="d13">38</data>
+  <data key="d14">0.9936960849369608</data>
+  <data key="d15">6028</data>
+  <data key="d16">6009</data>
+  <data key="d17">24744</data>
+</edge>
+<edge source="m64062_190803_042216/44173964/ccs-" target="m64062_190803_042216/91948018/ccs-">
+  <data key="d9">3356</data>
+  <data key="d10">67120</data>
+  <data key="d11">20</data>
+  <data key="d12">3748</data>
+  <data key="d13">8</data>
+  <data key="d14">0.9978700745473909</data>
+  <data key="d15">3756</data>
+  <data key="d16">3750</data>
+  <data key="d17">13870</data>
+</edge>
+<edge source="m64062_190803_042216/44173964/ccs-" target="m64062_190803_042216/155582878/ccs-">
+  <data key="d9">8898</data>
+  <data key="d10">177960</data>
+  <data key="d11">20</data>
+  <data key="d12">12328</data>
+  <data key="d13">70</data>
+  <data key="d14">0.9943539280529118</data>
+  <data key="d15">12398</data>
+  <data key="d16">12365</data>
+  <data key="d17">24740</data>
+</edge>
+<edge source="m64062_190803_042216/155582878/ccs-" target="m64062_190803_042216/91948018/ccs-">
+  <data key="d9">11578</data>
+  <data key="d10">231560</data>
+  <data key="d11">20</data>
+  <data key="d12">15988</data>
+  <data key="d13">90</data>
+  <data key="d14">0.9944022888418957</data>
+  <data key="d15">16078</data>
+  <data key="d16">16019</data>
+  <data key="d17">24739</data>
+</edge>
+<edge source="m64062_190803_042216/155582878/ccs-" target="m64062_190806_063919/53937123/ccs-">
+  <data key="d9">1008</data>
+  <data key="d10">20160</data>
+  <data key="d11">20</data>
+  <data key="d12">5369</data>
+  <data key="d13">89</data>
+  <data key="d14">0.9836936606815684</data>
+  <data key="d15">5458</data>
+  <data key="d16">5440</data>
+  <data key="d17">24745</data>
+</edge>
+<edge source="m64062_190803_042216/91948018/ccs-" target="m64062_190803_042216/111806121/ccs-">
+  <data key="d9">2395</data>
+  <data key="d10">47900</data>
+  <data key="d11">20</data>
+  <data key="d12">4159</data>
+  <data key="d13">36</data>
+  <data key="d14">0.9914183551847437</data>
+  <data key="d15">4195</data>
+  <data key="d16">4177</data>
+  <data key="d17">9372</data>
+</edge>
+<edge source="m64062_190803_042216/91948018/ccs-" target="m64062_190806_063919/53937123/ccs-">
+  <data key="d9">6520</data>
+  <data key="d10">130400</data>
+  <data key="d11">20</data>
+  <data key="d12">14360</data>
+  <data key="d13">160</data>
+  <data key="d14">0.9889807162534435</data>
+  <data key="d15">14520</data>
+  <data key="d16">14471</data>
+  <data key="d17">24686</data>
+</edge>
+<edge source="m64062_190803_042216/91948018/ccs-" target="m64062_190804_172951/129435048/ccs+">
+  <data key="d9">5837</data>
+  <data key="d10">116740</data>
+  <data key="d11">20</data>
+  <data key="d12">7944</data>
+  <data key="d13">43</data>
+  <data key="d14">0.9946162514085388</data>
+  <data key="d15">7987</data>
+  <data key="d16">7962</data>
+  <data key="d17">24690</data>
+</edge>
+<edge source="m64062_190803_042216/91948018/ccs-" target="m64062_190803_042216/18941553/ccs-">
+  <data key="d9">2775</data>
+  <data key="d10">55500</data>
+  <data key="d11">20</data>
+  <data key="d12">4686</data>
+  <data key="d13">39</data>
+  <data key="d14">0.9917460317460317</data>
+  <data key="d15">4725</data>
+  <data key="d16">4705</data>
+  <data key="d17">28617</data>
+</edge>
+<edge source="m64062_190804_172951/129435048/ccs+" target="m64062_190803_042216/18941553/ccs-">
+  <data key="d9">10863</data>
+  <data key="d10">217260</data>
+  <data key="d11">20</data>
+  <data key="d12">12872</data>
+  <data key="d13">41</data>
+  <data key="d14">0.9968249051343607</data>
+  <data key="d15">12913</data>
+  <data key="d16">12887</data>
+  <data key="d17">28281</data>
+</edge>
+<edge source="m64062_190803_042216/18941553/ccs-" target="m64062_190806_063919/124979683/ccs+">
+  <data key="d9">10601</data>
+  <data key="d10">212020</data>
+  <data key="d11">20</data>
+  <data key="d12">11140</data>
+  <data key="d13">11</data>
+  <data key="d14">0.9990135413864227</data>
+  <data key="d15">11151</data>
+  <data key="d16">11142</data>
+  <data key="d17">28282</data>
+</edge>
+<edge source="m64062_190803_042216/18941553/ccs-" target="m64062_190806_063919/117901287/ccs-">
+  <data key="d9">625</data>
+  <data key="d10">12500</data>
+  <data key="d11">20</data>
+  <data key="d12">723</data>
+  <data key="d13">2</data>
+  <data key="d14">0.9972413793103448</data>
+  <data key="d15">725</data>
+  <data key="d16">724</data>
+  <data key="d17">29408</data>
+</edge>
+<edge source="m64062_190806_063919/124979683/ccs+" target="m64062_190806_063919/117901287/ccs-">
+  <data key="d9">11853</data>
+  <data key="d10">237060</data>
+  <data key="d11">20</data>
+  <data key="d12">14303</data>
+  <data key="d13">50</data>
+  <data key="d14">0.9965164077196405</data>
+  <data key="d15">14353</data>
+  <data key="d16">14326</data>
+  <data key="d17">5012</data>
+</edge>
+<edge source="m64062_190806_063919/124979683/ccs+" target="m64062_190806_063919/151062315/ccs+">
+  <data key="d9">1355</data>
+  <data key="d10">27100</data>
+  <data key="d11">20</data>
+  <data key="d12">1600</data>
+  <data key="d13">5</data>
+  <data key="d14">0.9968847352024922</data>
+  <data key="d15">1605</data>
+  <data key="d16">1602</data>
+  <data key="d17">30965</data>
+</edge>
+<edge source="m64062_190806_063919/117901287/ccs-" target="m64062_190806_063919/151062315/ccs+">
+  <data key="d9">9609</data>
+  <data key="d10">192180</data>
+  <data key="d11">20</data>
+  <data key="d12">13970</data>
+  <data key="d13">89</data>
+  <data key="d14">0.9936695355288427</data>
+  <data key="d15">14059</data>
+  <data key="d16">14015</data>
+  <data key="d17">5013</data>
+</edge>
+<edge source="m64062_190806_063919/151062315/ccs+" target="m64062_190806_063919/77725913/ccs-">
+  <data key="d9">4037</data>
+  <data key="d10">80740</data>
+  <data key="d11">20</data>
+  <data key="d12">5801</data>
+  <data key="d13">36</data>
+  <data key="d14">0.9938324481754326</data>
+  <data key="d15">5837</data>
+  <data key="d16">5813</data>
+  <data key="d17">12772</data>
+</edge>
+<edge source="m64062_190806_063919/77725913/ccs-" target="m64062_190803_042216/147260971/ccs-">
+  <data key="d9">4286</data>
+  <data key="d10">85720</data>
+  <data key="d11">20</data>
+  <data key="d12">5021</data>
+  <data key="d13">15</data>
+  <data key="d14">0.9970214455917394</data>
+  <data key="d15">5036</data>
+  <data key="d16">5023</data>
+  <data key="d17">10059</data>
+</edge>
+<edge source="m64062_190806_063919/77725913/ccs-" target="m64062_190806_063919/129893236/ccs+">
+  <data key="d9">1055</data>
+  <data key="d10">21100</data>
+  <data key="d11">20</data>
+  <data key="d12">2868</data>
+  <data key="d13">37</data>
+  <data key="d14">0.987263339070568</data>
+  <data key="d15">2905</data>
+  <data key="d16">2884</data>
+  <data key="d17">20456</data>
+</edge>
+<edge source="m64062_190803_042216/147260971/ccs-" target="m64062_190806_063919/129893236/ccs+">
+  <data key="d9">7283</data>
+  <data key="d10">145660</data>
+  <data key="d11">20</data>
+  <data key="d12">21934</data>
+  <data key="d13">299</data>
+  <data key="d14">0.9865515225115818</data>
+  <data key="d15">22233</data>
+  <data key="d16">22086</data>
+  <data key="d17">10052</data>
+</edge>
+<edge source="m64062_190803_042216/147260971/ccs-" target="m64062_190806_063919/118882990/ccs-">
+  <data key="d9">9200</data>
+  <data key="d10">184000</data>
+  <data key="d11">20</data>
+  <data key="d12">11895</data>
+  <data key="d13">55</data>
+  <data key="d14">0.9953974895397489</data>
+  <data key="d15">11950</data>
+  <data key="d16">11909</data>
+  <data key="d17">10056</data>
+</edge>
+<edge source="m64062_190803_042216/147260971/ccs-" target="m64062_190806_063919/128845544/ccs+">
+  <data key="d9">2701</data>
+  <data key="d10">54020</data>
+  <data key="d11">20</data>
+  <data key="d12">6425</data>
+  <data key="d13">76</data>
+  <data key="d14">0.9883094908475619</data>
+  <data key="d15">6501</data>
+  <data key="d16">6465</data>
+  <data key="d17">10058</data>
+</edge>
+<edge source="m64062_190806_063919/118882990/ccs-" target="m64062_190803_042216/115607081/ccs-">
+  <data key="d9">5333</data>
+  <data key="d10">106660</data>
+  <data key="d11">20</data>
+  <data key="d12">11997</data>
+  <data key="d13">136</data>
+  <data key="d14">0.9887909008489244</data>
+  <data key="d15">12133</data>
+  <data key="d16">12057</data>
+  <data key="d17">6847</data>
+</edge>
+<edge source="m64062_190803_042216/115607081/ccs-" target="m64062_190803_042216/168888464/ccs-">
+  <data key="d9">10236</data>
+  <data key="d10">204720</data>
+  <data key="d11">20</data>
+  <data key="d12">11510</data>
+  <data key="d13">26</data>
+  <data key="d14">0.9977461858529819</data>
+  <data key="d15">11536</data>
+  <data key="d16">11517</data>
+  <data key="d17">6846</data>
+</edge>
+<edge source="m64062_190803_042216/168888464/ccs-" target="m64062_190803_042216/85459505/ccs+">
+  <data key="d9">9162</data>
+  <data key="d10">183240</data>
+  <data key="d11">20</data>
+  <data key="d12">10485</data>
+  <data key="d13">27</data>
+  <data key="d14">0.997431506849315</data>
+  <data key="d15">10512</data>
+  <data key="d16">10498</data>
+  <data key="d17">30125</data>
+</edge>
+<edge source="m64062_190803_042216/85459505/ccs+" target="m64062_190806_063919/70518252/ccs-">
+  <data key="d9">8915</data>
+  <data key="d10">178300</data>
+  <data key="d11">20</data>
+  <data key="d12">10532</data>
+  <data key="d13">33</data>
+  <data key="d14">0.9968764789398958</data>
+  <data key="d15">10565</data>
+  <data key="d16">10548</data>
+  <data key="d17">16645</data>
+</edge>
+<edge source="m64062_190806_063919/70518252/ccs-" target="m64062_190806_063919/135725370/ccs+">
+  <data key="d9">7020</data>
+  <data key="d10">140400</data>
+  <data key="d11">20</data>
+  <data key="d12">10499</data>
+  <data key="d13">71</data>
+  <data key="d14">0.993282876064333</data>
+  <data key="d15">10570</data>
+  <data key="d16">10527</data>
+  <data key="d17">2</data>
+</edge>
+<edge source="m64062_190806_063919/135725370/ccs+" target="m64062_190806_063919/173146610/ccs+">
+  <data key="d9">7015</data>
+  <data key="d10">140300</data>
+  <data key="d11">20</data>
+  <data key="d12">10641</data>
+  <data key="d13">74</data>
+  <data key="d14">0.9930937937470835</data>
+  <data key="d15">10715</data>
+  <data key="d16">10680</data>
+  <data key="d17">1</data>
+</edge>
+<edge source="m64062_190806_063919/173146610/ccs+" target="m64062_190806_063919/106365251/ccs-">
+  <data key="d9">2146</data>
+  <data key="d10">42920</data>
+  <data key="d11">20</data>
+  <data key="d12">2587</data>
+  <data key="d13">9</data>
+  <data key="d14">0.9965331278890601</data>
+  <data key="d15">2596</data>
+  <data key="d16">2591</data>
+  <data key="d17">24659</data>
+</edge>
+<edge source="m64062_190806_063919/106365251/ccs-" target="m64062_190803_042216/74908890/ccs+">
+  <data key="d9">9506</data>
+  <data key="d10">190120</data>
+  <data key="d11">20</data>
+  <data key="d12">11172</data>
+  <data key="d13">34</data>
+  <data key="d14">0.9969659111190434</data>
+  <data key="d15">11206</data>
+  <data key="d16">11186</data>
+  <data key="d17">24418</data>
+</edge>
+<edge source="m64062_190803_042216/74908890/ccs+" target="m64062_190803_042216/166528477/ccs-">
+  <data key="d9">4332</data>
+  <data key="d10">86640</data>
+  <data key="d11">20</data>
+  <data key="d12">5802</data>
+  <data key="d13">30</data>
+  <data key="d14">0.9948559670781894</data>
+  <data key="d15">5832</data>
+  <data key="d16">5816</data>
+  <data key="d17">14766</data>
+</edge>
+<edge source="m64062_190803_042216/166528477/ccs-" target="m64062_190803_042216/119800317/ccs+">
+  <data key="d9">9382</data>
+  <data key="d10">187640</data>
+  <data key="d11">20</data>
+  <data key="d12">11440</data>
+  <data key="d13">42</data>
+  <data key="d14">0.9963421006793242</data>
+  <data key="d15">11482</data>
+  <data key="d16">11456</data>
+  <data key="d17">146</data>
+</edge>
+<edge source="m64062_190803_042216/166528477/ccs-" target="m64062_190803_042216/28903706/ccs-">
+  <data key="d9">1713</data>
+  <data key="d10">34260</data>
+  <data key="d11">20</data>
+  <data key="d12">8965</data>
+  <data key="d13">148</data>
+  <data key="d14">0.983759464501262</data>
+  <data key="d15">9113</data>
+  <data key="d16">9071</data>
+  <data key="d17">14591</data>
+</edge>
+<edge source="m64062_190803_042216/166528477/ccs-" target="m64062_190806_063919/89655134/ccs-">
+  <data key="d9">2477</data>
+  <data key="d10">49540</data>
+  <data key="d11">20</data>
+  <data key="d12">2967</data>
+  <data key="d13">10</data>
+  <data key="d14">0.9966409136714813</data>
+  <data key="d15">2977</data>
+  <data key="d16">2972</data>
+  <data key="d17">15215</data>
+</edge>
+<edge source="m64062_190803_042216/119800317/ccs+" target="m64062_190803_042216/28903706/ccs-">
+  <data key="d9">8752</data>
+  <data key="d10">175040</data>
+  <data key="d11">20</data>
+  <data key="d12">16396</data>
+  <data key="d13">156</data>
+  <data key="d14">0.9905751570807153</data>
+  <data key="d15">16552</data>
+  <data key="d16">16502</data>
+  <data key="d17">120</data>
+</edge>
+<edge source="m64062_190803_042216/119800317/ccs+" target="m64062_190806_063919/89655134/ccs-">
+  <data key="d9">9467</data>
+  <data key="d10">189340</data>
+  <data key="d11">20</data>
+  <data key="d12">10398</data>
+  <data key="d13">19</data>
+  <data key="d14">0.9981760583661323</data>
+  <data key="d15">10417</data>
+  <data key="d16">10404</data>
+  <data key="d17">168</data>
+</edge>
+<edge source="m64062_190803_042216/119800317/ccs+" target="m64062_190806_063919/120390470/ccs+">
+  <data key="d9">5100</data>
+  <data key="d10">102000</data>
+  <data key="d11">20</data>
+  <data key="d12">5884</data>
+  <data key="d13">16</data>
+  <data key="d14">0.9972881355932204</data>
+  <data key="d15">5900</data>
+  <data key="d16">5891</data>
+  <data key="d17">726</data>
+</edge>
+<edge source="m64062_190803_042216/119800317/ccs+" target="m64062_190803_042216/3277534/ccs+">
+  <data key="d9">2064</data>
+  <data key="d10">41280</data>
+  <data key="d11">20</data>
+  <data key="d12">2554</data>
+  <data key="d13">10</data>
+  <data key="d14">0.9960998439937597</data>
+  <data key="d15">2564</data>
+  <data key="d16">2559</data>
+  <data key="d17">1537</data>
+</edge>
+<edge source="m64062_190806_063919/89655134/ccs-" target="m64062_190806_063919/106236189/ccs-">
+  <data key="d9">9187</data>
+  <data key="d10">183740</data>
+  <data key="d11">20</data>
+  <data key="d12">10265</data>
+  <data key="d13">22</data>
+  <data key="d14">0.9978613784388063</data>
+  <data key="d15">10287</data>
+  <data key="d16">10274</data>
+  <data key="d17">10087</data>
+</edge>
+<edge source="m64062_190806_063919/89655134/ccs-" target="m64062_190803_042216/3277534/ccs+">
+  <data key="d9">13277</data>
+  <data key="d10">265540</data>
+  <data key="d11">20</data>
+  <data key="d12">15090</data>
+  <data key="d13">37</data>
+  <data key="d14">0.997554042440669</data>
+  <data key="d15">15127</data>
+  <data key="d16">15109</data>
+  <data key="d17">17717</data>
+</edge>
+<edge source="m64062_190806_063919/89655134/ccs-" target="m64062_190803_042216/177799801/ccs-">
+  <data key="d9">5871</data>
+  <data key="d10">117420</data>
+  <data key="d11">20</data>
+  <data key="d12">7488</data>
+  <data key="d13">33</data>
+  <data key="d14">0.9956122856003191</data>
+  <data key="d15">7521</data>
+  <data key="d16">7504</data>
+  <data key="d17">21535</data>
+</edge>
+<edge source="m64062_190806_063919/89655134/ccs-" target="m64062_190803_042216/28903706/ccs-">
+  <data key="d9">5120</data>
+  <data key="d10">102400</data>
+  <data key="d11">20</data>
+  <data key="d12">5610</data>
+  <data key="d13">10</data>
+  <data key="d14">0.998220640569395</data>
+  <data key="d15">5620</data>
+  <data key="d16">5613</data>
+  <data key="d17">25575</data>
+</edge>
+<edge source="m64062_190806_063919/106236189/ccs-" target="m64062_190806_063919/89655134/ccs-">
+  <data key="d9">6863</data>
+  <data key="d10">137260</data>
+  <data key="d11">20</data>
+  <data key="d12">8676</data>
+  <data key="d13">37</data>
+  <data key="d14">0.9957534718237117</data>
+  <data key="d15">8713</data>
+  <data key="d16">8693</data>
+  <data key="d17">10155</data>
+</edge>
+<edge source="m64062_190806_063919/106236189/ccs-" target="m64062_190806_063919/120390470/ccs+">
+  <data key="d9">3293</data>
+  <data key="d10">65860</data>
+  <data key="d11">20</data>
+  <data key="d12">4175</data>
+  <data key="d13">18</data>
+  <data key="d14">0.9957071309325065</data>
+  <data key="d15">4193</data>
+  <data key="d16">4183</data>
+  <data key="d17">10605</data>
+</edge>
+<edge source="m64062_190806_063919/106236189/ccs-" target="m64062_190803_042216/3277534/ccs+">
+  <data key="d9">557</data>
+  <data key="d10">11140</data>
+  <data key="d11">20</data>
+  <data key="d12">851</data>
+  <data key="d13">6</data>
+  <data key="d14">0.9929988331388565</data>
+  <data key="d15">857</data>
+  <data key="d16">853</data>
+  <data key="d17">19130</data>
+</edge>
+<edge source="m64062_190806_063919/106236189/ccs-" target="m64062_190803_042216/28903706/ccs-">
+  <data key="d9">12371</data>
+  <data key="d10">247420</data>
+  <data key="d11">20</data>
+  <data key="d12">14772</data>
+  <data key="d13">49</data>
+  <data key="d14">0.9966938803049726</data>
+  <data key="d15">14821</data>
+  <data key="d16">14797</data>
+  <data key="d17">24856</data>
+</edge>
+<edge source="m64062_190803_042216/28903706/ccs-" target="m64062_190803_042216/177799801/ccs-">
+  <data key="d9">2073</data>
+  <data key="d10">41460</data>
+  <data key="d11">20</data>
+  <data key="d12">2563</data>
+  <data key="d13">10</data>
+  <data key="d14">0.996113486202876</data>
+  <data key="d15">2573</data>
+  <data key="d16">2568</data>
+  <data key="d17">22800</data>
+</edge>
+<edge source="m64062_190803_042216/28903706/ccs-" target="m64062_190806_063919/89655134/ccs-">
+  <data key="d9">16826</data>
+  <data key="d10">336520</data>
+  <data key="d11">20</data>
+  <data key="d12">18002</data>
+  <data key="d13">24</data>
+  <data key="d14">0.9986685898147121</data>
+  <data key="d15">18026</data>
+  <data key="d16">18015</data>
+  <data key="d17">24846</data>
+</edge>
+<edge source="m64062_190803_042216/28903706/ccs-" target="m64062_190803_042216/3277534/ccs+">
+  <data key="d9">9181</data>
+  <data key="d10">183620</data>
+  <data key="d11">20</data>
+  <data key="d12">10161</data>
+  <data key="d13">20</data>
+  <data key="d14">0.9980355564286416</data>
+  <data key="d15">10181</data>
+  <data key="d16">10171</data>
+  <data key="d17">24957</data>
+</edge>
+<edge source="m64062_190803_042216/28903706/ccs-" target="m64062_190806_063919/106236189/ccs-">
+  <data key="d9">4841</data>
+  <data key="d10">96820</data>
+  <data key="d11">20</data>
+  <data key="d12">5331</data>
+  <data key="d13">10</data>
+  <data key="d14">0.9981276914435498</data>
+  <data key="d15">5341</data>
+  <data key="d16">5336</data>
+  <data key="d17">25632</data>
+</edge>
+<edge source="m64062_190803_042216/3277534/ccs+" target="m64062_190806_063919/89655134/ccs-">
+  <data key="d9">2771</data>
+  <data key="d10">55420</data>
+  <data key="d11">20</data>
+  <data key="d12">3114</data>
+  <data key="d13">7</data>
+  <data key="d14">0.9977571291252804</data>
+  <data key="d15">3121</data>
+  <data key="d16">3116</data>
+  <data key="d17">18667</data>
+</edge>
+<edge source="m64062_190803_042216/3277534/ccs+" target="m64062_190803_042216/177799801/ccs-">
+  <data key="d9">11174</data>
+  <data key="d10">223480</data>
+  <data key="d11">20</data>
+  <data key="d12">14555</data>
+  <data key="d13">69</data>
+  <data key="d14">0.9952817286652079</data>
+  <data key="d15">14624</data>
+  <data key="d16">14587</data>
+  <data key="d17">21054</data>
+</edge>
+<edge source="m64062_190803_042216/177799801/ccs-" target="m64062_190806_063919/120390470/ccs+">
+  <data key="d9">9400</data>
+  <data key="d10">188000</data>
+  <data key="d11">20</data>
+  <data key="d12">11311</data>
+  <data key="d13">39</data>
+  <data key="d14">0.9965638766519824</data>
+  <data key="d15">11350</data>
+  <data key="d16">11330</data>
+  <data key="d17">21116</data>
+</edge>
+<edge source="m64062_190806_063919/120390470/ccs+" target="m64062_190806_063919/53283334/ccs+">
+  <data key="d9">10856</data>
+  <data key="d10">217120</data>
+  <data key="d11">20</data>
+  <data key="d12">13306</data>
+  <data key="d13">50</data>
+  <data key="d14">0.9962563641808925</data>
+  <data key="d15">13356</data>
+  <data key="d16">13318</data>
+  <data key="d17">7833</data>
+</edge>
+<edge source="m64062_190806_063919/120390470/ccs+" target="m64062_190806_063919/37357632/ccs-">
+  <data key="d9">2106</data>
+  <data key="d10">42120</data>
+  <data key="d11">20</data>
+  <data key="d12">3478</data>
+  <data key="d13">28</data>
+  <data key="d14">0.9920136908157444</data>
+  <data key="d15">3506</data>
+  <data key="d16">3492</data>
+  <data key="d17">7925</data>
+</edge>
+<edge source="m64062_190806_063919/53283334/ccs+" target="m64062_190806_063919/37357632/ccs-">
+  <data key="d9">7334</data>
+  <data key="d10">146680</data>
+  <data key="d11">20</data>
+  <data key="d12">11597</data>
+  <data key="d13">87</data>
+  <data key="d14">0.9925539198904485</data>
+  <data key="d15">11684</data>
+  <data key="d16">11624</data>
+  <data key="d17">16784</data>
+</edge>
+<edge source="m64062_190806_063919/37357632/ccs-" target="m64062_190803_042216/104202824/ccs-">
+  <data key="d9">7505</data>
+  <data key="d10">150100</data>
+  <data key="d11">20</data>
+  <data key="d12">10298</data>
+  <data key="d13">57</data>
+  <data key="d14">0.9944954128440368</data>
+  <data key="d15">10355</data>
+  <data key="d16">10324</data>
+  <data key="d17">12352</data>
+</edge>
+<edge source="m64062_190806_063919/37357632/ccs-" target="m64062_190806_063919/83624383/ccs-">
+  <data key="d9">3021</data>
+  <data key="d10">60420</data>
+  <data key="d11">20</data>
+  <data key="d12">4687</data>
+  <data key="d13">34</data>
+  <data key="d14">0.9927981359881382</data>
+  <data key="d15">4721</data>
+  <data key="d16">4704</data>
+  <data key="d17">16786</data>
+</edge>
+<edge source="m64062_190803_042216/104202824/ccs-" target="m64062_190806_063919/83624383/ccs-">
+  <data key="d9">8711</data>
+  <data key="d10">174220</data>
+  <data key="d11">20</data>
+  <data key="d12">13023</data>
+  <data key="d13">88</data>
+  <data key="d14">0.9932880787125314</data>
+  <data key="d15">13111</data>
+  <data key="d16">13066</data>
+  <data key="d17">12351</data>
+</edge>
+<edge source="m64062_190803_042216/104202824/ccs-" target="m64062_190803_042216/107416213/ccs+">
+  <data key="d9">3619</data>
+  <data key="d10">72380</data>
+  <data key="d11">20</data>
+  <data key="d12">4011</data>
+  <data key="d13">8</data>
+  <data key="d14">0.9980094550883304</data>
+  <data key="d15">4019</data>
+  <data key="d16">4013</data>
+  <data key="d17">12357</data>
+</edge>
+<edge source="m64062_190806_063919/83624383/ccs-" target="m64062_190803_042216/107416213/ccs+">
+  <data key="d9">8451</data>
+  <data key="d10">169020</data>
+  <data key="d11">20</data>
+  <data key="d12">10362</data>
+  <data key="d13">39</data>
+  <data key="d14">0.9962503605422556</data>
+  <data key="d15">10401</data>
+  <data key="d16">10379</data>
+  <data key="d17">24379</data>
+</edge>
+<edge source="m64062_190803_042216/107416213/ccs+" target="m64062_190803_042216/135594902/ccs-">
+  <data key="d9">9545</data>
+  <data key="d10">190900</data>
+  <data key="d11">20</data>
+  <data key="d12">10231</data>
+  <data key="d13">14</data>
+  <data key="d14">0.9986334797462176</data>
+  <data key="d15">10245</data>
+  <data key="d16">10237</data>
+  <data key="d17">24378</data>
+</edge>
+<edge source="m64062_190803_042216/135594902/ccs-" target="m64062_190803_042216/52758518/ccs-">
+  <data key="d9">9434</data>
+  <data key="d10">188680</data>
+  <data key="d11">20</data>
+  <data key="d12">10071</data>
+  <data key="d13">13</data>
+  <data key="d14">0.9987108290360968</data>
+  <data key="d15">10084</data>
+  <data key="d16">10077</data>
+  <data key="d17">32354</data>
+</edge>
+<edge source="m64062_190803_042216/135594902/ccs-" target="m64062_190806_063919/71763664/ccs-">
+  <data key="d9">4171</data>
+  <data key="d10">83420</data>
+  <data key="d11">20</data>
+  <data key="d12">4612</data>
+  <data key="d13">9</data>
+  <data key="d14">0.998052369616966</data>
+  <data key="d15">4621</data>
+  <data key="d16">4616</data>
+  <data key="d17">32359</data>
+</edge>
+<edge source="m64062_190803_042216/52758518/ccs-" target="m64062_190806_063919/71763664/ccs-">
+  <data key="d9">11911</data>
+  <data key="d10">238220</data>
+  <data key="d11">20</data>
+  <data key="d12">12891</data>
+  <data key="d13">20</data>
+  <data key="d14">0.9984509333126791</data>
+  <data key="d15">12911</data>
+  <data key="d16">12898</data>
+  <data key="d17">24629</data>
+</edge>
+<edge source="m64062_190803_042216/52758518/ccs-" target="m64062_190806_063919/84148411/ccs+">
+  <data key="d9">2637</data>
+  <data key="d10">52740</data>
+  <data key="d11">20</data>
+  <data key="d12">2882</data>
+  <data key="d13">5</data>
+  <data key="d14">0.9982680983720125</data>
+  <data key="d15">2887</data>
+  <data key="d16">2884</data>
+  <data key="d17">24632</data>
+</edge>
+<edge source="m64062_190806_063919/71763664/ccs-" target="m64062_190806_063919/84148411/ccs+">
+  <data key="d9">11520</data>
+  <data key="d10">230400</data>
+  <data key="d11">20</data>
+  <data key="d12">13725</data>
+  <data key="d13">45</data>
+  <data key="d14">0.9967320261437909</data>
+  <data key="d15">13770</data>
+  <data key="d16">13741</data>
+  <data key="d17">17639</data>
+</edge>
+<edge source="m64062_190806_063919/84148411/ccs+" target="m64062_190803_042216/56033843/ccs+">
+  <data key="d9">6883</data>
+  <data key="d10">137660</data>
+  <data key="d11">20</data>
+  <data key="d12">10607</data>
+  <data key="d13">76</data>
+  <data key="d14">0.9928858934756155</data>
+  <data key="d15">10683</data>
+  <data key="d16">10630</data>
+  <data key="d17">12365</data>
+</edge>
+<edge source="m64062_190803_042216/56033843/ccs+" target="m64062_190807_194840/108134550/ccs-">
+  <data key="d9">3536</data>
+  <data key="d10">70720</data>
+  <data key="d11">20</data>
+  <data key="d12">4026</data>
+  <data key="d13">10</data>
+  <data key="d14">0.9975222993062438</data>
+  <data key="d15">4036</data>
+  <data key="d16">4029</data>
+  <data key="d17">12366</data>
+</edge>
+<edge source="m64062_190807_194840/108134550/ccs-" target="m64062_190806_063919/99682083/ccs+">
+  <data key="d9">1372</data>
+  <data key="d10">27440</data>
+  <data key="d11">20</data>
+  <data key="d12">1862</data>
+  <data key="d13">10</data>
+  <data key="d14">0.9946581196581197</data>
+  <data key="d15">1872</data>
+  <data key="d16">1865</data>
+  <data key="d17">33974</data>
+</edge>
+<edge source="m64062_190806_063919/99682083/ccs+" target="m64062_190803_042216/29493110/ccs+">
+  <data key="d9">9673</data>
+  <data key="d10">193460</data>
+  <data key="d11">20</data>
+  <data key="d12">10653</data>
+  <data key="d13">20</data>
+  <data key="d14">0.9981261126206314</data>
+  <data key="d15">10673</data>
+  <data key="d16">10663</data>
+  <data key="d17">5007</data>
+</edge>
+<edge source="m64062_190806_063919/99682083/ccs+" target="m64062_190803_042216/16451763/ccs-">
+  <data key="d9">766</data>
+  <data key="d10">15320</data>
+  <data key="d11">20</data>
+  <data key="d12">864</data>
+  <data key="d13">2</data>
+  <data key="d14">0.9976905311778291</data>
+  <data key="d15">866</data>
+  <data key="d16">864</data>
+  <data key="d17">30098</data>
+</edge>
+<edge source="m64062_190803_042216/29493110/ccs+" target="m64062_190803_042216/145098390/ccs-">
+  <data key="d9">3013</data>
+  <data key="d10">60260</data>
+  <data key="d11">20</data>
+  <data key="d12">3454</data>
+  <data key="d13">9</data>
+  <data key="d14">0.9974010973144672</data>
+  <data key="d15">3463</data>
+  <data key="d16">3457</data>
+  <data key="d17">20569</data>
+</edge>
+<edge source="m64062_190803_042216/29493110/ccs+" target="m64062_190803_042216/16451763/ccs-">
+  <data key="d9">9126</data>
+  <data key="d10">182520</data>
+  <data key="d11">20</data>
+  <data key="d12">10645</data>
+  <data key="d13">31</data>
+  <data key="d14">0.9970962907455976</data>
+  <data key="d15">10676</data>
+  <data key="d16">10660</data>
+  <data key="d17">30096</data>
+</edge>
+<edge source="m64062_190803_042216/16451763/ccs-" target="m64062_190803_042216/145098390/ccs-">
+  <data key="d9">11354</data>
+  <data key="d10">227080</data>
+  <data key="d11">20</data>
+  <data key="d12">12775</data>
+  <data key="d13">29</data>
+  <data key="d14">0.9977350827866291</data>
+  <data key="d15">12804</data>
+  <data key="d16">12786</data>
+  <data key="d17">20567</data>
+</edge>
+<edge source="m64062_190803_042216/145098390/ccs-" target="m64062_190803_042216/21236247/ccs-">
+  <data key="d9">9669</data>
+  <data key="d10">193380</data>
+  <data key="d11">20</data>
+  <data key="d12">10698</data>
+  <data key="d13">21</data>
+  <data key="d14">0.9980408620207109</data>
+  <data key="d15">10719</data>
+  <data key="d16">10707</data>
+  <data key="d17">20568</data>
+</edge>
+<edge source="m64062_190803_042216/145098390/ccs-" target="m64062_190803_042216/138739829/ccs-">
+  <data key="d9">2031</data>
+  <data key="d10">40620</data>
+  <data key="d11">20</data>
+  <data key="d12">2325</data>
+  <data key="d13">6</data>
+  <data key="d14">0.9974259974259975</data>
+  <data key="d15">2331</data>
+  <data key="d16">2326</data>
+  <data key="d17">33952</data>
+</edge>
+<edge source="m64062_190803_042216/21236247/ccs-" target="m64062_190806_063919/34736402/ccs+">
+  <data key="d9">4063</data>
+  <data key="d10">81260</data>
+  <data key="d11">20</data>
+  <data key="d12">4504</data>
+  <data key="d13">9</data>
+  <data key="d14">0.9980057611345003</data>
+  <data key="d15">4513</data>
+  <data key="d16">4507</data>
+  <data key="d17">14146</data>
+</edge>
+<edge source="m64062_190803_042216/21236247/ccs-" target="m64062_190803_042216/138739829/ccs-">
+  <data key="d9">13162</data>
+  <data key="d10">263240</data>
+  <data key="d11">20</data>
+  <data key="d12">14093</data>
+  <data key="d13">19</data>
+  <data key="d14">0.9986536281179138</data>
+  <data key="d15">14112</data>
+  <data key="d16">14104</data>
+  <data key="d17">33950</data>
+</edge>
+<edge source="m64062_190803_042216/138739829/ccs-" target="m64062_190806_063919/34736402/ccs+">
+  <data key="d9">8691</data>
+  <data key="d10">173820</data>
+  <data key="d11">20</data>
+  <data key="d12">10063</data>
+  <data key="d13">28</data>
+  <data key="d14">0.9972252502229709</data>
+  <data key="d15">10091</data>
+  <data key="d16">10072</data>
+  <data key="d17">33951</data>
+</edge>
+<edge source="m64062_190806_063919/34736402/ccs+" target="m64062_190804_172951/80480160/ccs+">
+  <data key="d9">8190</data>
+  <data key="d10">163800</data>
+  <data key="d11">20</data>
+  <data key="d12">10983</data>
+  <data key="d13">57</data>
+  <data key="d14">0.9948369565217391</data>
+  <data key="d15">11040</data>
+  <data key="d16">11002</data>
+  <data key="d17">12361</data>
+</edge>
+<edge source="m64062_190806_063919/34736402/ccs+" target="m64062_190806_063919/140838845/ccs-">
+  <data key="d9">3608</data>
+  <data key="d10">72160</data>
+  <data key="d11">20</data>
+  <data key="d12">7234</data>
+  <data key="d13">74</data>
+  <data key="d14">0.9898741105637657</data>
+  <data key="d15">7308</data>
+  <data key="d16">7274</data>
+  <data key="d17">33977</data>
+</edge>
+<edge source="m64062_190804_172951/80480160/ccs+" target="m64062_190806_063919/140838845/ccs-">
+  <data key="d9">9630</data>
+  <data key="d10">192600</data>
+  <data key="d11">20</data>
+  <data key="d12">13599</data>
+  <data key="d13">81</data>
+  <data key="d14">0.9940789473684211</data>
+  <data key="d15">13680</data>
+  <data key="d16">13634</data>
+  <data key="d17">12360</data>
+</edge>
+<edge source="m64062_190806_063919/140838845/ccs-" target="m64062_190803_042216/2557337/ccs+">
+  <data key="d9">1602</data>
+  <data key="d10">32040</data>
+  <data key="d11">20</data>
+  <data key="d12">1847</data>
+  <data key="d13">5</data>
+  <data key="d14">0.9973002159827213</data>
+  <data key="d15">1852</data>
+  <data key="d16">1849</data>
+  <data key="d17">7773</data>
+</edge>
+<edge source="m64062_190806_063919/140838845/ccs-" target="m64062_190803_042216/49546951/ccs-">
+  <data key="d9">8875</data>
+  <data key="d10">177500</data>
+  <data key="d11">20</data>
+  <data key="d12">10394</data>
+  <data key="d13">31</data>
+  <data key="d14">0.9970263788968825</data>
+  <data key="d15">10425</data>
+  <data key="d16">10404</data>
+  <data key="d17">7785</data>
+</edge>
+<edge source="m64062_190803_042216/49546951/ccs-" target="m64062_190803_042216/2557337/ccs+">
+  <data key="d9">10495</data>
+  <data key="d10">209900</data>
+  <data key="d11">20</data>
+  <data key="d12">11034</data>
+  <data key="d13">11</data>
+  <data key="d14">0.9990040742417383</data>
+  <data key="d15">11045</data>
+  <data key="d16">11040</data>
+  <data key="d17">7771</data>
+</edge>
+<edge source="m64062_190803_042216/49546951/ccs-" target="m64062_190803_042216/36309233/ccs+">
+  <data key="d9">1223</data>
+  <data key="d10">24460</data>
+  <data key="d11">20</data>
+  <data key="d12">1321</data>
+  <data key="d13">2</data>
+  <data key="d14">0.99848828420257</data>
+  <data key="d15">1323</data>
+  <data key="d16">1322</data>
+  <data key="d17">32406</data>
+</edge>
+<edge source="m64062_190803_042216/2557337/ccs+" target="m64062_190803_042216/36309233/ccs+">
+  <data key="d9">13204</data>
+  <data key="d10">264080</data>
+  <data key="d11">20</data>
+  <data key="d12">15066</data>
+  <data key="d13">38</data>
+  <data key="d14">0.9974841101694916</data>
+  <data key="d15">15104</data>
+  <data key="d16">15083</data>
+  <data key="d17">7770</data>
+</edge>
+<edge source="m64062_190803_042216/2557337/ccs+" target="m64062_190806_063919/164824450/ccs-">
+  <data key="d9">3085</data>
+  <data key="d10">61700</data>
+  <data key="d11">20</data>
+  <data key="d12">4212</data>
+  <data key="d13">23</data>
+  <data key="d14">0.99456906729634</data>
+  <data key="d15">4235</data>
+  <data key="d16">4221</data>
+  <data key="d17">7772</data>
+</edge>
+<edge source="m64062_190803_042216/36309233/ccs+" target="m64062_190806_063919/164824450/ccs-">
+  <data key="d9">8308</data>
+  <data key="d10">166160</data>
+  <data key="d11">20</data>
+  <data key="d12">11395</data>
+  <data key="d13">63</data>
+  <data key="d14">0.9945016582300577</data>
+  <data key="d15">11458</data>
+  <data key="d16">11431</data>
+  <data key="d17">32405</data>
+</edge>
+<edge source="m64062_190806_063919/164824450/ccs-" target="m64062_190803_042216/148833519/ccs+">
+  <data key="d9">7083</data>
+  <data key="d10">141660</data>
+  <data key="d11">20</data>
+  <data key="d12">10464</data>
+  <data key="d13">69</data>
+  <data key="d14">0.9934491597835374</data>
+  <data key="d15">10533</data>
+  <data key="d16">10498</data>
+  <data key="d17">32312</data>
+</edge>
+<edge source="m64062_190803_042216/148833519/ccs+" target="m64062_190803_042216/48106032/ccs-">
+  <data key="d9">8154</data>
+  <data key="d10">163080</data>
+  <data key="d11">20</data>
+  <data key="d12">10604</data>
+  <data key="d13">50</data>
+  <data key="d14">0.9953069269757837</data>
+  <data key="d15">10654</data>
+  <data key="d16">10629</data>
+  <data key="d17">32311</data>
+</edge>
+<edge source="m64062_190803_042216/148833519/ccs+" target="m64062_190806_063919/136906798/ccs-">
+  <data key="d9">2986</data>
+  <data key="d10">59720</data>
+  <data key="d11">20</data>
+  <data key="d12">4407</data>
+  <data key="d13">29</data>
+  <data key="d14">0.9934625788999099</data>
+  <data key="d15">4436</data>
+  <data key="d16">4420</data>
+  <data key="d17">32315</data>
+</edge>
+<edge source="m64062_190803_042216/48106032/ccs-" target="m64062_190806_063919/136906798/ccs-">
+  <data key="d9">10562</data>
+  <data key="d10">211240</data>
+  <data key="d11">20</data>
+  <data key="d12">12326</data>
+  <data key="d13">36</data>
+  <data key="d14">0.9970878498624818</data>
+  <data key="d15">12362</data>
+  <data key="d16">12339</data>
+  <data key="d17">24225</data>
+</edge>
+<edge source="m64062_190806_063919/136906798/ccs-" target="m64062_190803_042216/139922172/ccs-">
+  <data key="d9">10066</data>
+  <data key="d10">201320</data>
+  <data key="d11">20</data>
+  <data key="d12">13300</data>
+  <data key="d13">66</data>
+  <data key="d14">0.9950620978602424</data>
+  <data key="d15">13366</data>
+  <data key="d16">13327</data>
+  <data key="d17">14052</data>
+</edge>
+<edge source="m64062_190806_063919/136906798/ccs-" target="m64062_190806_063919/153092420/ccs-">
+  <data key="d9">829</data>
+  <data key="d10">16580</data>
+  <data key="d11">20</data>
+  <data key="d12">1564</data>
+  <data key="d13">15</data>
+  <data key="d14">0.9905003166561115</data>
+  <data key="d15">1579</data>
+  <data key="d16">1572</data>
+  <data key="d17">33942</data>
+</edge>
+<edge source="m64062_190803_042216/139922172/ccs-" target="m64062_190806_063919/153092420/ccs-">
+  <data key="d9">8739</data>
+  <data key="d10">174780</data>
+  <data key="d11">20</data>
+  <data key="d12">10062</data>
+  <data key="d13">27</data>
+  <data key="d14">0.9973238180196253</data>
+  <data key="d15">10089</data>
+  <data key="d16">10070</data>
+  <data key="d17">14053</data>
+</edge>
+<edge source="m64062_190806_063919/153092420/ccs-" target="m64062_190803_042216/49611632/ccs+">
+  <data key="d9">10026</data>
+  <data key="d10">200520</data>
+  <data key="d11">20</data>
+  <data key="d12">10614</data>
+  <data key="d13">12</data>
+  <data key="d14">0.9988706945228685</data>
+  <data key="d15">10626</data>
+  <data key="d16">10620</data>
+  <data key="d17">17527</data>
+</edge>
+<edge source="m64062_190803_042216/49611632/ccs+" target="m64062_190803_042216/73139865/ccs-">
+  <data key="d9">10268</data>
+  <data key="d10">205360</data>
+  <data key="d11">20</data>
+  <data key="d12">11591</data>
+  <data key="d13">27</data>
+  <data key="d14">0.9976760199690136</data>
+  <data key="d15">11618</data>
+  <data key="d16">11601</data>
+  <data key="d17">17526</data>
+</edge>
+<edge source="m64062_190803_042216/49611632/ccs+" target="m64062_190803_042216/53740738/ccs+">
+  <data key="d9">444</data>
+  <data key="d10">8880</data>
+  <data key="d11">20</data>
+  <data key="d12">444</data>
+  <data key="d13">0</data>
+  <data key="d14">1.0</data>
+  <data key="d15">444</data>
+  <data key="d16">444</data>
+  <data key="d17">17591</data>
+</edge>
+<edge source="m64062_190803_042216/73139865/ccs-" target="m64062_190803_042216/80871694/ccs+">
+  <data key="d9">2540</data>
+  <data key="d10">50800</data>
+  <data key="d11">20</data>
+  <data key="d12">2883</data>
+  <data key="d13">7</data>
+  <data key="d14">0.9975778546712802</data>
+  <data key="d15">2890</data>
+  <data key="d16">2884</data>
+  <data key="d17">17654</data>
+</edge>
+<edge source="m64062_190803_042216/73139865/ccs-" target="m64062_190803_042216/53740738/ccs+">
+  <data key="d9">11564</data>
+  <data key="d10">231280</data>
+  <data key="d11">20</data>
+  <data key="d12">16170</data>
+  <data key="d13">94</data>
+  <data key="d14">0.9942203639940974</data>
+  <data key="d15">16264</data>
+  <data key="d16">16216</data>
+  <data key="d17">24229</data>
+</edge>
+<edge source="m64062_190803_042216/53740738/ccs+" target="m64062_190803_042216/121765970/ccs+">
+  <data key="d9">2595</data>
+  <data key="d10">51900</data>
+  <data key="d11">20</data>
+  <data key="d12">3183</data>
+  <data key="d13">12</data>
+  <data key="d14">0.996244131455399</data>
+  <data key="d15">3195</data>
+  <data key="d16">3188</data>
+  <data key="d17">14538</data>
+</edge>
+<edge source="m64062_190803_042216/53740738/ccs+" target="m64062_190803_042216/80871694/ccs+">
+  <data key="d9">12141</data>
+  <data key="d10">242820</data>
+  <data key="d11">20</data>
+  <data key="d12">13072</data>
+  <data key="d13">19</data>
+  <data key="d14">0.9985486211901307</data>
+  <data key="d15">13091</data>
+  <data key="d16">13081</data>
+  <data key="d17">24232</data>
+</edge>
+<edge source="m64062_190803_042216/80871694/ccs+" target="m64062_190803_042216/121765970/ccs+">
+  <data key="d9">8959</data>
+  <data key="d10">179180</data>
+  <data key="d11">20</data>
+  <data key="d12">11409</data>
+  <data key="d13">50</data>
+  <data key="d14">0.9956366175058906</data>
+  <data key="d15">11459</data>
+  <data key="d16">11432</data>
+  <data key="d17">14536</data>
+</edge>
+<edge source="m64062_190803_042216/121765970/ccs+" target="m64062_190806_063919/144377136/ccs-">
+  <data key="d9">9087</data>
+  <data key="d10">181740</data>
+  <data key="d11">20</data>
+  <data key="d12">11586</data>
+  <data key="d13">51</data>
+  <data key="d14">0.9956174271719516</data>
+  <data key="d15">11637</data>
+  <data key="d16">11610</data>
+  <data key="d17">14535</data>
+</edge>
+<edge source="m64062_190806_063919/144377136/ccs-" target="m64062_190806_063919/36701650/ccs-">
+  <data key="d9">9847</data>
+  <data key="d10">196940</data>
+  <data key="d11">20</data>
+  <data key="d12">12591</data>
+  <data key="d13">56</data>
+  <data key="d14">0.9955720724282439</data>
+  <data key="d15">12647</data>
+  <data key="d16">12600</data>
+  <data key="d17">24717</data>
+</edge>
+<edge source="m64062_190806_063919/144377136/ccs-" target="m64062_190806_063919/176620373/ccs+">
+  <data key="d9">3158</data>
+  <data key="d10">63160</data>
+  <data key="d11">20</data>
+  <data key="d12">3550</data>
+  <data key="d13">8</data>
+  <data key="d14">0.9977515458122541</data>
+  <data key="d15">3558</data>
+  <data key="d16">3553</data>
+  <data key="d17">24718</data>
+</edge>
+<edge source="m64062_190806_063919/36701650/ccs-" target="m64062_190803_042216/139527823/ccs-">
+  <data key="d9">5300</data>
+  <data key="d10">106000</data>
+  <data key="d11">20</data>
+  <data key="d12">8093</data>
+  <data key="d13">57</data>
+  <data key="d14">0.9930061349693251</data>
+  <data key="d15">8150</data>
+  <data key="d16">8105</data>
+  <data key="d17">17445</data>
+</edge>
+<edge source="m64062_190806_063919/36701650/ccs-" target="m64062_190806_063919/176620373/ccs+">
+  <data key="d9">8976</data>
+  <data key="d10">179520</data>
+  <data key="d11">20</data>
+  <data key="d12">13239</data>
+  <data key="d13">87</data>
+  <data key="d14">0.9934714092751014</data>
+  <data key="d15">13326</data>
+  <data key="d16">13275</data>
+  <data key="d17">32335</data>
+</edge>
+<edge source="m64062_190806_063919/176620373/ccs+" target="m64062_190803_042216/139527823/ccs-">
+  <data key="d9">11252</data>
+  <data key="d10">225040</data>
+  <data key="d11">20</data>
+  <data key="d12">13849</data>
+  <data key="d13">53</data>
+  <data key="d14">0.9961875989066321</data>
+  <data key="d15">13902</data>
+  <data key="d16">13863</data>
+  <data key="d17">17443</data>
+</edge>
+<edge source="m64062_190806_063919/176620373/ccs+" target="m64062_190803_042216/88410241/ccs+">
+  <data key="d9">2487</data>
+  <data key="d10">49740</data>
+  <data key="d11">20</data>
+  <data key="d12">2683</data>
+  <data key="d13">4</data>
+  <data key="d14">0.9985113509490138</data>
+  <data key="d15">2687</data>
+  <data key="d16">2684</data>
+  <data key="d17">27492</data>
+</edge>
+<edge source="m64062_190803_042216/139527823/ccs-" target="m64062_190803_042216/88410241/ccs+">
+  <data key="d9">9350</data>
+  <data key="d10">187000</data>
+  <data key="d11">20</data>
+  <data key="d12">10330</data>
+  <data key="d13">20</data>
+  <data key="d14">0.9980676328502416</data>
+  <data key="d15">10350</data>
+  <data key="d16">10338</data>
+  <data key="d17">17444</data>
+</edge>
+<edge source="m64062_190803_042216/88410241/ccs+" target="m64062_190803_042216/142149314/ccs+">
+  <data key="d9">10122</data>
+  <data key="d10">202440</data>
+  <data key="d11">20</data>
+  <data key="d12">12376</data>
+  <data key="d13">46</data>
+  <data key="d14">0.9962968926098856</data>
+  <data key="d15">12422</data>
+  <data key="d16">12393</data>
+  <data key="d17">24773</data>
+</edge>
+<edge source="m64062_190803_042216/142149314/ccs+" target="m64062_190806_063919/64096710/ccs+">
+  <data key="d9">8212</data>
+  <data key="d10">164240</data>
+  <data key="d11">20</data>
+  <data key="d12">10760</data>
+  <data key="d13">52</data>
+  <data key="d14">0.9951905290418054</data>
+  <data key="d15">10812</data>
+  <data key="d16">10787</data>
+  <data key="d17">24774</data>
+</edge>
+<edge source="m64062_190803_042216/142149314/ccs+" target="m64062_190804_172951/20775541/ccs-">
+  <data key="d9">2582</data>
+  <data key="d10">51640</data>
+  <data key="d11">20</data>
+  <data key="d12">3072</data>
+  <data key="d13">10</data>
+  <data key="d14">0.9967553536664504</data>
+  <data key="d15">3082</data>
+  <data key="d16">3077</data>
+  <data key="d17">24776</data>
+</edge>
+<edge source="m64062_190806_063919/64096710/ccs+" target="m64062_190806_063919/108986702/ccs-">
+  <data key="d9">5510</data>
+  <data key="d10">110200</data>
+  <data key="d11">20</data>
+  <data key="d12">6147</data>
+  <data key="d13">13</data>
+  <data key="d14">0.9978896103896104</data>
+  <data key="d15">6160</data>
+  <data key="d16">6152</data>
+  <data key="d17">14133</data>
+</edge>
+<edge source="m64062_190806_063919/64096710/ccs+" target="m64062_190804_172951/20775541/ccs-">
+  <data key="d9">10715</data>
+  <data key="d10">214300</data>
+  <data key="d11">20</data>
+  <data key="d12">11891</data>
+  <data key="d13">24</data>
+  <data key="d14">0.9979857322702476</data>
+  <data key="d15">11915</data>
+  <data key="d16">11903</data>
+  <data key="d17">30259</data>
+</edge>
+<edge source="m64062_190804_172951/20775541/ccs-" target="m64062_190803_042216/13763593/ccs-">
+  <data key="d9">966</data>
+  <data key="d10">19320</data>
+  <data key="d11">20</data>
+  <data key="d12">1211</data>
+  <data key="d13">5</data>
+  <data key="d14">0.9958881578947368</data>
+  <data key="d15">1216</data>
+  <data key="d16">1211</data>
+  <data key="d17">12370</data>
+</edge>
+<edge source="m64062_190804_172951/20775541/ccs-" target="m64062_190806_063919/108986702/ccs-">
+  <data key="d9">9720</data>
+  <data key="d10">194400</data>
+  <data key="d11">20</data>
+  <data key="d12">10504</data>
+  <data key="d13">16</data>
+  <data key="d14">0.9984790874524715</data>
+  <data key="d15">10520</data>
+  <data key="d16">10507</data>
+  <data key="d17">30260</data>
+</edge>
+<edge source="m64062_190806_063919/108986702/ccs-" target="m64062_190803_042216/13763593/ccs-">
+  <data key="d9">8622</data>
+  <data key="d10">172440</data>
+  <data key="d11">20</data>
+  <data key="d12">10631</data>
+  <data key="d13">41</data>
+  <data key="d14">0.9961581709145427</data>
+  <data key="d15">10672</data>
+  <data key="d16">10642</data>
+  <data key="d17">12369</data>
+</edge>
+<edge source="m64062_190803_042216/13763593/ccs-" target="m64062_190806_063919/97714662/ccs+">
+  <data key="d9">9038</data>
+  <data key="d10">180760</data>
+  <data key="d11">20</data>
+  <data key="d12">11047</data>
+  <data key="d13">41</data>
+  <data key="d14">0.9963023088023089</data>
+  <data key="d15">11088</data>
+  <data key="d16">11060</data>
+  <data key="d17">12368</data>
+</edge>
+<edge source="m64062_190806_063919/97714662/ccs+" target="m64062_190803_042216/129174017/ccs-">
+  <data key="d9">6896</data>
+  <data key="d10">137920</data>
+  <data key="d11">20</data>
+  <data key="d12">10179</data>
+  <data key="d13">67</data>
+  <data key="d14">0.9934608627757173</data>
+  <data key="d15">10246</data>
+  <data key="d16">10207</data>
+  <data key="d17">16263</data>
+</edge>
+<edge source="m64062_190806_063919/97714662/ccs+" target="m64062_190806_063919/112592516/ccs+">
+  <data key="d9">1324</data>
+  <data key="d10">26480</data>
+  <data key="d11">20</data>
+  <data key="d12">1471</data>
+  <data key="d13">3</data>
+  <data key="d14">0.9979647218453188</data>
+  <data key="d15">1474</data>
+  <data key="d16">1472</data>
+  <data key="d17">17427</data>
+</edge>
+<edge source="m64062_190803_042216/129174017/ccs-" target="m64062_190806_063919/112592516/ccs+">
+  <data key="d9">9995</data>
+  <data key="d10">199900</data>
+  <data key="d11">20</data>
+  <data key="d12">11367</data>
+  <data key="d13">28</data>
+  <data key="d14">0.9975427819218956</data>
+  <data key="d15">11395</data>
+  <data key="d16">11376</data>
+  <data key="d17">16262</data>
+</edge>
+<edge source="m64062_190803_042216/129174017/ccs-" target="m64062_190803_042216/131137839/ccs-">
+  <data key="d9">1497</data>
+  <data key="d10">29940</data>
+  <data key="d11">20</data>
+  <data key="d12">1644</data>
+  <data key="d13">3</data>
+  <data key="d14">0.9981785063752276</data>
+  <data key="d15">1647</data>
+  <data key="d16">1645</data>
+  <data key="d17">16264</data>
+</edge>
+<edge source="m64062_190806_063919/112592516/ccs+" target="m64062_190803_042216/131137839/ccs-">
+  <data key="d9">10739</data>
+  <data key="d10">214780</data>
+  <data key="d11">20</data>
+  <data key="d12">11082</data>
+  <data key="d13">7</data>
+  <data key="d14">0.9993687438001623</data>
+  <data key="d15">11089</data>
+  <data key="d16">11084</data>
+  <data key="d17">14492</data>
+</edge>
+<edge source="m64062_190803_042216/131137839/ccs-" target="m64062_190803_042216/53739553/ccs-">
+  <data key="d9">9015</data>
+  <data key="d10">180300</data>
+  <data key="d11">20</data>
+  <data key="d12">10142</data>
+  <data key="d13">23</data>
+  <data key="d14">0.9977373339891785</data>
+  <data key="d15">10165</data>
+  <data key="d16">10154</data>
+  <data key="d17">14493</data>
+</edge>
+<edge source="m64062_190803_042216/131137839/ccs-" target="m64062_190803_042216/180355373/ccs+">
+  <data key="d9">2770</data>
+  <data key="d10">55400</data>
+  <data key="d11">20</data>
+  <data key="d12">3162</data>
+  <data key="d13">8</data>
+  <data key="d14">0.9974763406940063</data>
+  <data key="d15">3170</data>
+  <data key="d16">3165</data>
+  <data key="d17">14494</data>
+</edge>
+<edge source="m64062_190803_042216/53739553/ccs-" target="m64062_190803_042216/180355373/ccs+">
+  <data key="d9">11715</data>
+  <data key="d10">234300</data>
+  <data key="d11">20</data>
+  <data key="d12">16125</data>
+  <data key="d13">90</data>
+  <data key="d14">0.9944495837187789</data>
+  <data key="d15">16215</data>
+  <data key="d16">16157</data>
+  <data key="d17">8985</data>
+</edge>
+<edge source="m64062_190803_042216/53739553/ccs-" target="m64062_190803_042216/71633248/ccs+">
+  <data key="d9">2167</data>
+  <data key="d10">43340</data>
+  <data key="d11">20</data>
+  <data key="d12">3490</data>
+  <data key="d13">27</data>
+  <data key="d14">0.9923230025589992</data>
+  <data key="d15">3517</data>
+  <data key="d16">3500</data>
+  <data key="d17">12656</data>
+</edge>
+<edge source="m64062_190803_042216/180355373/ccs+" target="m64062_190803_042216/71633248/ccs+">
+  <data key="d9">7783</data>
+  <data key="d10">155660</data>
+  <data key="d11">20</data>
+  <data key="d12">11066</data>
+  <data key="d13">67</data>
+  <data key="d14">0.993981855744184</data>
+  <data key="d15">11133</data>
+  <data key="d16">11101</data>
+  <data key="d17">8986</data>
+</edge>
+<edge source="m64062_190803_042216/71633248/ccs+" target="m64062_190806_063919/121309663/ccs-">
+  <data key="d9">7840</data>
+  <data key="d10">156800</data>
+  <data key="d11">20</data>
+  <data key="d12">11270</data>
+  <data key="d13">70</data>
+  <data key="d14">0.9938271604938271</data>
+  <data key="d15">11340</data>
+  <data key="d16">11299</data>
+  <data key="d17">13255</data>
+</edge>
+<edge source="m64062_190803_042216/71633248/ccs+" target="m64062_190806_063919/149817135/ccs-">
+  <data key="d9">6016</data>
+  <data key="d10">120320</data>
+  <data key="d11">20</data>
+  <data key="d12">6898</data>
+  <data key="d13">18</data>
+  <data key="d14">0.9973973395026027</data>
+  <data key="d15">6916</data>
+  <data key="d16">6904</data>
+  <data key="d17">13256</data>
+</edge>
+<edge source="m64062_190806_063919/121309663/ccs-" target="m64062_190806_063919/149817135/ccs-">
+  <data key="d9">10132</data>
+  <data key="d10">202640</data>
+  <data key="d11">20</data>
+  <data key="d12">14640</data>
+  <data key="d13">92</data>
+  <data key="d14">0.9937550909584578</data>
+  <data key="d15">14732</data>
+  <data key="d16">14689</data>
+  <data key="d17">7823</data>
+</edge>
+<edge source="m64062_190806_063919/121309663/ccs-" target="m64062_190803_042216/178783212/ccs-">
+  <data key="d9">2878</data>
+  <data key="d10">57560</data>
+  <data key="d11">20</data>
+  <data key="d12">5622</data>
+  <data key="d13">56</data>
+  <data key="d14">0.9901373723141952</data>
+  <data key="d15">5678</data>
+  <data key="d16">5643</data>
+  <data key="d17">32182</data>
+</edge>
+<edge source="m64062_190806_063919/149817135/ccs-" target="m64062_190803_042216/178783212/ccs-">
+  <data key="d9">7591</data>
+  <data key="d10">151820</data>
+  <data key="d11">20</data>
+  <data key="d12">11903</data>
+  <data key="d13">88</data>
+  <data key="d14">0.9926611625385706</data>
+  <data key="d15">11991</data>
+  <data key="d16">11930</data>
+  <data key="d17">32181</data>
+</edge>
+<edge source="m64062_190806_063919/149817135/ccs-" target="m64062_190806_063919/155911360/ccs-">
+  <data key="d9">2525</data>
+  <data key="d10">50500</data>
+  <data key="d11">20</data>
+  <data key="d12">3015</data>
+  <data key="d13">10</data>
+  <data key="d14">0.996694214876033</data>
+  <data key="d15">3025</data>
+  <data key="d16">3021</data>
+  <data key="d17">32344</data>
+</edge>
+<edge source="m64062_190803_042216/178783212/ccs-" target="m64062_190803_042216/119408928/ccs-">
+  <data key="d9">4696</data>
+  <data key="d10">93920</data>
+  <data key="d11">20</data>
+  <data key="d12">5480</data>
+  <data key="d13">16</data>
+  <data key="d14">0.9970887918486172</data>
+  <data key="d15">5496</data>
+  <data key="d16">5487</data>
+  <data key="d17">16314</data>
+</edge>
+<edge source="m64062_190803_042216/178783212/ccs-" target="m64062_190806_063919/155911360/ccs-">
+  <data key="d9">8898</data>
+  <data key="d10">177960</data>
+  <data key="d11">20</data>
+  <data key="d12">12524</data>
+  <data key="d13">74</data>
+  <data key="d14">0.9941260517542467</data>
+  <data key="d15">12598</data>
+  <data key="d16">12547</data>
+  <data key="d17">32180</data>
+</edge>
+<edge source="m64062_190806_063919/155911360/ccs-" target="m64062_190803_042216/119408928/ccs-">
+  <data key="d9">11789</data>
+  <data key="d10">235780</data>
+  <data key="d11">20</data>
+  <data key="d12">14141</data>
+  <data key="d13">48</data>
+  <data key="d14">0.9966170977517795</data>
+  <data key="d15">14189</data>
+  <data key="d16">14163</data>
+  <data key="d17">16312</data>
+</edge>
+<edge source="m64062_190806_063919/155911360/ccs-" target="m64062_190803_042216/86376721/ccs-">
+  <data key="d9">748</data>
+  <data key="d10">14960</data>
+  <data key="d11">20</data>
+  <data key="d12">1042</data>
+  <data key="d13">6</data>
+  <data key="d14">0.9942748091603053</data>
+  <data key="d15">1048</data>
+  <data key="d16">1044</data>
+  <data key="d17">32081</data>
+</edge>
+<edge source="m64062_190803_042216/119408928/ccs-" target="m64062_190803_042216/86376721/ccs-">
+  <data key="d9">10280</data>
+  <data key="d10">205600</data>
+  <data key="d11">20</data>
+  <data key="d12">11554</data>
+  <data key="d13">26</data>
+  <data key="d14">0.9977547495682211</data>
+  <data key="d15">11580</data>
+  <data key="d16">11567</data>
+  <data key="d17">16313</data>
+</edge>
+<edge source="m64062_190803_042216/119408928/ccs-" target="m64062_190806_063919/133103689/ccs+">
+  <data key="d9">3668</data>
+  <data key="d10">73360</data>
+  <data key="d11">20</data>
+  <data key="d12">4158</data>
+  <data key="d13">10</data>
+  <data key="d14">0.9976007677543186</data>
+  <data key="d15">4168</data>
+  <data key="d16">4164</data>
+  <data key="d17">16315</data>
+</edge>
+<edge source="m64062_190803_042216/86376721/ccs-" target="m64062_190806_063919/133103689/ccs+">
+  <data key="d9">9347</data>
+  <data key="d10">186940</data>
+  <data key="d11">20</data>
+  <data key="d12">12140</data>
+  <data key="d13">57</data>
+  <data key="d14">0.9953267196851685</data>
+  <data key="d15">12197</data>
+  <data key="d16">12165</data>
+  <data key="d17">32071</data>
+</edge>
+<edge source="m64062_190806_063919/133103689/ccs+" target="m64062_190806_063919/46990555/ccs-">
+  <data key="d9">9512</data>
+  <data key="d10">190240</data>
+  <data key="d11">20</data>
+  <data key="d12">10786</data>
+  <data key="d13">26</data>
+  <data key="d14">0.9975952645209027</data>
+  <data key="d15">10812</data>
+  <data key="d16">10799</data>
+  <data key="d17">24595</data>
+</edge>
+<edge source="m64062_190806_063919/46990555/ccs-" target="m64062_190806_063919/40044698/ccs+">
+  <data key="d9">8770</data>
+  <data key="d10">175400</data>
+  <data key="d11">20</data>
+  <data key="d12">10142</data>
+  <data key="d13">28</data>
+  <data key="d14">0.9972468043264503</data>
+  <data key="d15">10170</data>
+  <data key="d16">10150</data>
+  <data key="d17">12670</data>
+</edge>
+<edge source="m64062_190806_063919/40044698/ccs+" target="m64062_190806_063919/55968709/ccs+">
+  <data key="d9">8764</data>
+  <data key="d10">175280</data>
+  <data key="d11">20</data>
+  <data key="d12">10283</data>
+  <data key="d13">31</data>
+  <data key="d14">0.9969943765755284</data>
+  <data key="d15">10314</data>
+  <data key="d16">10297</data>
+  <data key="d17">12669</data>
+</edge>
+<edge source="m64062_190806_063919/55968709/ccs+" target="m64062_190806_063919/10617565/ccs-">
+  <data key="d9">8456</data>
+  <data key="d10">169120</data>
+  <data key="d11">20</data>
+  <data key="d12">11249</data>
+  <data key="d13">57</data>
+  <data key="d14">0.9949584291526623</data>
+  <data key="d15">11306</data>
+  <data key="d16">11273</data>
+  <data key="d17">16600</data>
+</edge>
+<edge source="m64062_190806_063919/55968709/ccs+" target="m64062_190806_063919/50136055/ccs+">
+  <data key="d9">719</data>
+  <data key="d10">14380</data>
+  <data key="d11">20</data>
+  <data key="d12">866</data>
+  <data key="d13">3</data>
+  <data key="d14">0.996547756041427</data>
+  <data key="d15">869</data>
+  <data key="d16">866</data>
+  <data key="d17">19831</data>
+</edge>
+<edge source="m64062_190806_063919/10617565/ccs-" target="m64062_190806_063919/50136055/ccs+">
+  <data key="d9">10773</data>
+  <data key="d10">215460</data>
+  <data key="d11">20</data>
+  <data key="d12">12684</data>
+  <data key="d13">39</data>
+  <data key="d14">0.996934685215751</data>
+  <data key="d15">12723</data>
+  <data key="d16">12701</data>
+  <data key="d17">16599</data>
+</edge>
+<edge source="m64062_190806_063919/10617565/ccs-" target="m64062_190806_063919/57868618/ccs-">
+  <data key="d9">1123</data>
+  <data key="d10">22460</data>
+  <data key="d11">20</data>
+  <data key="d12">1319</data>
+  <data key="d13">4</data>
+  <data key="d14">0.9969765684051398</data>
+  <data key="d15">1323</data>
+  <data key="d16">1321</data>
+  <data key="d17">16606</data>
+</edge>
+<edge source="m64062_190806_063919/50136055/ccs+" target="m64062_190806_063919/57868618/ccs-">
+  <data key="d9">10159</data>
+  <data key="d10">203180</data>
+  <data key="d11">20</data>
+  <data key="d12">11580</data>
+  <data key="d13">29</data>
+  <data key="d14">0.9975019381514343</data>
+  <data key="d15">11609</data>
+  <data key="d16">11592</data>
+  <data key="d17">19825</data>
+</edge>
+<edge source="m64062_190806_063919/50136055/ccs+" target="m64062_190803_042216/26479381/ccs-">
+  <data key="d9">1388</data>
+  <data key="d10">27760</data>
+  <data key="d11">20</data>
+  <data key="d12">1535</data>
+  <data key="d13">3</data>
+  <data key="d14">0.9980494148244473</data>
+  <data key="d15">1538</data>
+  <data key="d16">1536</data>
+  <data key="d17">24829</data>
+</edge>
+<edge source="m64062_190806_063919/57868618/ccs-" target="m64062_190803_042216/26479381/ccs-">
+  <data key="d9">9042</data>
+  <data key="d10">180840</data>
+  <data key="d11">20</data>
+  <data key="d12">10120</data>
+  <data key="d13">22</data>
+  <data key="d14">0.9978308026030369</data>
+  <data key="d15">10142</data>
+  <data key="d16">10124</data>
+  <data key="d17">24823</data>
+</edge>
+<edge source="m64062_190803_042216/26479381/ccs-" target="m64062_190806_063919/72419950/ccs-">
+  <data key="d9">8728</data>
+  <data key="d10">174560</data>
+  <data key="d11">20</data>
+  <data key="d12">10100</data>
+  <data key="d13">28</data>
+  <data key="d14">0.9972353870458136</data>
+  <data key="d15">10128</data>
+  <data key="d16">10112</data>
+  <data key="d17">24824</data>
+</edge>
+<edge source="m64062_190806_063919/72419950/ccs-" target="m64062_190803_042216/15533448/ccs+">
+  <data key="d9">9910</data>
+  <data key="d10">198200</data>
+  <data key="d11">20</data>
+  <data key="d12">10351</data>
+  <data key="d13">9</data>
+  <data key="d14">0.9991312741312741</data>
+  <data key="d15">10360</data>
+  <data key="d16">10353</data>
+  <data key="d17">13273</data>
+</edge>
+<edge source="m64062_190806_063919/72419950/ccs-" target="m64062_190803_042216/162529556/ccs-">
+  <data key="d9">1726</data>
+  <data key="d10">34520</data>
+  <data key="d11">20</data>
+  <data key="d12">2167</data>
+  <data key="d13">9</data>
+  <data key="d14">0.9958639705882353</data>
+  <data key="d15">2176</data>
+  <data key="d16">2171</data>
+  <data key="d17">17484</data>
+</edge>
+<edge source="m64062_190803_042216/15533448/ccs+" target="m64062_190803_042216/162529556/ccs-">
+  <data key="d9">7987</data>
+  <data key="d10">159740</data>
+  <data key="d11">20</data>
+  <data key="d12">10241</data>
+  <data key="d13">46</data>
+  <data key="d14">0.9955283367356859</data>
+  <data key="d15">10287</data>
+  <data key="d16">10264</data>
+  <data key="d17">13274</data>
+</edge>
+<edge source="m64062_190803_042216/162529556/ccs-" target="m64062_190806_063919/121242687/ccs+">
+  <data key="d9">10505</data>
+  <data key="d10">210100</data>
+  <data key="d11">20</data>
+  <data key="d12">13984</data>
+  <data key="d13">71</data>
+  <data key="d14">0.9949484169334756</data>
+  <data key="d15">14055</data>
+  <data key="d16">14017</data>
+  <data key="d17">17467</data>
+</edge>
+<edge source="m64062_190803_042216/162529556/ccs-" target="m64062_190803_042216/172819372/ccs+">
+  <data key="d9">2815</data>
+  <data key="d10">56300</data>
+  <data key="d11">20</data>
+  <data key="d12">4334</data>
+  <data key="d13">31</data>
+  <data key="d14">0.9928980526918672</data>
+  <data key="d15">4365</data>
+  <data key="d16">4350</data>
+  <data key="d17">17468</data>
+</edge>
+<edge source="m64062_190806_063919/121242687/ccs+" target="m64062_190806_063919/105188101/ccs-">
+  <data key="d9">3437</data>
+  <data key="d10">68740</data>
+  <data key="d11">20</data>
+  <data key="d12">3927</data>
+  <data key="d13">10</data>
+  <data key="d14">0.9974599949199898</data>
+  <data key="d15">3937</data>
+  <data key="d16">3930</data>
+  <data key="d17">14039</data>
+</edge>
+<edge source="m64062_190806_063919/121242687/ccs+" target="m64062_190803_042216/172819372/ccs+">
+  <data key="d9">9899</data>
+  <data key="d10">197980</data>
+  <data key="d11">20</data>
+  <data key="d12">10585</data>
+  <data key="d13">14</data>
+  <data key="d14">0.9986791206717615</data>
+  <data key="d15">10599</data>
+  <data key="d16">10591</data>
+  <data key="d17">32101</data>
+</edge>
+<edge source="m64062_190803_042216/172819372/ccs+" target="m64062_190806_063919/105188101/ccs-">
+  <data key="d9">7865</data>
+  <data key="d10">157300</data>
+  <data key="d11">20</data>
+  <data key="d12">11834</data>
+  <data key="d13">81</data>
+  <data key="d14">0.9932018464120856</data>
+  <data key="d15">11915</data>
+  <data key="d16">11871</data>
+  <data key="d17">32100</data>
+</edge>
+<edge source="m64062_190806_063919/105188101/ccs-" target="m64062_190803_042216/47645698/ccs-">
+  <data key="d9">1864</data>
+  <data key="d10">37280</data>
+  <data key="d11">20</data>
+  <data key="d12">2991</data>
+  <data key="d13">23</data>
+  <data key="d14">0.9923689449236894</data>
+  <data key="d15">3014</data>
+  <data key="d16">3000</data>
+  <data key="d17">12743</data>
+</edge>
+<edge source="m64062_190806_063919/105188101/ccs-" target="m64062_190803_042216/91948018/ccs-">
+  <data key="d9">43</data>
+  <data key="d10">860</data>
+  <data key="d11">20</data>
+  <data key="d12">778</data>
+  <data key="d13">15</data>
+  <data key="d14">0.9810844892812106</data>
+  <data key="d15">793</data>
+  <data key="d16">787</data>
+  <data key="d17">24694</data>
+</edge>
+<edge source="m64062_190806_063919/105188101/ccs-" target="m64062_190803_042216/136119835/ccs+">
+  <data key="d9">8436</data>
+  <data key="d10">168720</data>
+  <data key="d11">20</data>
+  <data key="d12">10690</data>
+  <data key="d13">46</data>
+  <data key="d14">0.995715350223547</data>
+  <data key="d15">10736</data>
+  <data key="d16">10702</data>
+  <data key="d17">32148</data>
+</edge>
+<edge source="m64062_190803_042216/136119835/ccs+" target="m64062_190803_042216/47645698/ccs-">
+  <data key="d9">12845</data>
+  <data key="d10">256900</data>
+  <data key="d11">20</data>
+  <data key="d12">16520</data>
+  <data key="d13">75</data>
+  <data key="d14">0.9954805664356734</data>
+  <data key="d15">16595</data>
+  <data key="d16">16558</data>
+  <data key="d17">32142</data>
+</edge>
+<edge source="m64062_190803_042216/136119835/ccs+" target="m64062_190806_063919/53937123/ccs-">
+  <data key="d9">3259</data>
+  <data key="d10">65180</data>
+  <data key="d11">20</data>
+  <data key="d12">3749</data>
+  <data key="d13">10</data>
+  <data key="d14">0.9973397180101091</data>
+  <data key="d15">3759</data>
+  <data key="d16">3752</data>
+  <data key="d17">32152</data>
+</edge>
+<edge source="m64062_190803_042216/47645698/ccs-" target="m64062_190803_042216/111806121/ccs-">
+  <data key="d9">1893</data>
+  <data key="d10">37860</data>
+  <data key="d11">20</data>
+  <data key="d12">2138</data>
+  <data key="d13">5</data>
+  <data key="d14">0.9976668222118525</data>
+  <data key="d15">2143</data>
+  <data key="d16">2140</data>
+  <data key="d17">9390</data>
+</edge>
+<edge source="m64062_190803_042216/47645698/ccs-" target="m64062_190806_063919/53937123/ccs-">
+  <data key="d9">10604</data>
+  <data key="d10">212080</data>
+  <data key="d11">20</data>
+  <data key="d12">12417</data>
+  <data key="d13">37</data>
+  <data key="d14">0.9970290669664365</data>
+  <data key="d15">12454</data>
+  <data key="d16">12434</data>
+  <data key="d17">12739</data>
+</edge>
+<edge source="m64062_190803_042216/47645698/ccs-" target="m64062_190804_172951/129435048/ccs+">
+  <data key="d9">4782</data>
+  <data key="d10">95640</data>
+  <data key="d11">20</data>
+  <data key="d12">5909</data>
+  <data key="d13">23</data>
+  <data key="d14">0.9961227242076871</data>
+  <data key="d15">5932</data>
+  <data key="d16">5921</data>
+  <data key="d17">12741</data>
+</edge>
+<edge source="m64062_190803_042216/47645698/ccs-" target="m64062_190803_042216/18941553/ccs-">
+  <data key="d9">1772</data>
+  <data key="d10">35440</data>
+  <data key="d11">20</data>
+  <data key="d12">2654</data>
+  <data key="d13">18</data>
+  <data key="d14">0.9932634730538922</data>
+  <data key="d15">2672</data>
+  <data key="d16">2664</data>
+  <data key="d17">28927</data>
+</edge>
+<edge source="m64062_190806_063919/53937123/ccs-" target="m64062_190803_042216/111806121/ccs-">
+  <data key="d9">10013</data>
+  <data key="d10">200260</data>
+  <data key="d11">20</data>
+  <data key="d12">10993</data>
+  <data key="d13">20</data>
+  <data key="d14">0.9981839644057023</data>
+  <data key="d15">11013</data>
+  <data key="d16">11003</data>
+  <data key="d17">9353</data>
+</edge>
+<edge source="m64062_190806_063919/53937123/ccs-" target="m64062_190803_042216/18941553/ccs-">
+  <data key="d9">3305</data>
+  <data key="d10">66100</data>
+  <data key="d11">20</data>
+  <data key="d12">11390</data>
+  <data key="d13">165</data>
+  <data key="d14">0.98572046733016</data>
+  <data key="d15">11555</data>
+  <data key="d16">11501</data>
+  <data key="d17">28283</data>
+</edge>
+<edge source="m64062_190806_063919/53937123/ccs-" target="m64062_190804_172951/129435048/ccs+">
+  <data key="d9">6867</data>
+  <data key="d10">137340</data>
+  <data key="d11">20</data>
+  <data key="d12">14658</data>
+  <data key="d13">159</data>
+  <data key="d14">0.9892690828102855</data>
+  <data key="d15">14817</data>
+  <data key="d16">14768</data>
+  <data key="d17">30103</data>
+</edge>
+<edge source="m64062_190806_063919/53937123/ccs-" target="m64062_190806_063919/24971205/ccs+">
+  <data key="d9">867</data>
+  <data key="d10">17340</data>
+  <data key="d11">20</data>
+  <data key="d12">1259</data>
+  <data key="d13">8</data>
+  <data key="d14">0.9936858721389108</data>
+  <data key="d15">1267</data>
+  <data key="d16">1260</data>
+  <data key="d17">33593</data>
+</edge>
+<edge source="m64062_190803_042216/111806121/ccs-" target="m64062_190806_063919/24971205/ccs+">
+  <data key="d9">8742</data>
+  <data key="d10">174840</data>
+  <data key="d11">20</data>
+  <data key="d12">10310</data>
+  <data key="d13">32</data>
+  <data key="d14">0.996905820924386</data>
+  <data key="d15">10342</data>
+  <data key="d16">10318</data>
+  <data key="d17">9354</data>
+</edge>
+<edge source="m64062_190803_042216/111806121/ccs-" target="m64062_190806_063919/53346526/ccs+">
+  <data key="d9">1231</data>
+  <data key="d10">24620</data>
+  <data key="d11">20</data>
+  <data key="d12">1672</data>
+  <data key="d13">9</data>
+  <data key="d14">0.9946460440214159</data>
+  <data key="d15">1681</data>
+  <data key="d16">1674</data>
+  <data key="d17">9394</data>
+</edge>
+<edge source="m64062_190803_042216/111806121/ccs-" target="m64062_190806_063919/39651930/ccs+">
+  <data key="d9">662</data>
+  <data key="d10">13240</data>
+  <data key="d11">20</data>
+  <data key="d12">1201</data>
+  <data key="d13">11</data>
+  <data key="d14">0.990924092409241</data>
+  <data key="d15">1212</data>
+  <data key="d16">1206</data>
+  <data key="d17">9434</data>
+</edge>
+<edge source="m64062_190806_063919/24971205/ccs+" target="m64062_190806_063919/53346526/ccs+">
+  <data key="d9">8786</data>
+  <data key="d10">175720</data>
+  <data key="d11">20</data>
+  <data key="d12">12461</data>
+  <data key="d13">75</data>
+  <data key="d14">0.9940172303765157</data>
+  <data key="d15">12536</data>
+  <data key="d16">12492</data>
+  <data key="d17">33524</data>
+</edge>
+<edge source="m64062_190806_063919/24971205/ccs+" target="m64062_190806_063919/39651930/ccs+">
+  <data key="d9">1368</data>
+  <data key="d10">27360</data>
+  <data key="d11">20</data>
+  <data key="d12">4945</data>
+  <data key="d13">73</data>
+  <data key="d14">0.9854523714627341</data>
+  <data key="d15">5018</data>
+  <data key="d16">4964</data>
+  <data key="d17">33548</data>
+</edge>
+<edge source="m64062_190806_063919/53346526/ccs+" target="m64062_190806_063919/93652138/ccs+">
+  <data key="d9">7218</data>
+  <data key="d10">144360</data>
+  <data key="d11">20</data>
+  <data key="d12">14323</data>
+  <data key="d13">145</data>
+  <data key="d14">0.9899778822228366</data>
+  <data key="d15">14468</data>
+  <data key="d16">14404</data>
+  <data key="d17">14153</data>
+</edge>
+<edge source="m64062_190806_063919/53346526/ccs+" target="m64062_190807_194840/163580356/ccs+">
+  <data key="d9">599</data>
+  <data key="d10">11980</data>
+  <data key="d11">20</data>
+  <data key="d12">648</data>
+  <data key="d13">1</data>
+  <data key="d14">0.9984591679506933</data>
+  <data key="d15">649</data>
+  <data key="d16">648</data>
+  <data key="d17">14257</data>
+</edge>
+<edge source="m64062_190806_063919/53346526/ccs+" target="m64062_190806_063919/39651930/ccs+">
+  <data key="d9">5192</data>
+  <data key="d10">103840</data>
+  <data key="d11">20</data>
+  <data key="d12">9700</data>
+  <data key="d13">92</data>
+  <data key="d14">0.9906045751633987</data>
+  <data key="d15">9792</data>
+  <data key="d16">9741</data>
+  <data key="d17">19855</data>
+</edge>
+<edge source="m64062_190806_063919/93652138/ccs+" target="m64062_190806_063919/53346526/ccs+">
+  <data key="d9">1772</data>
+  <data key="d10">35440</data>
+  <data key="d11">20</data>
+  <data key="d12">3193</data>
+  <data key="d13">29</data>
+  <data key="d14">0.9909993792675357</data>
+  <data key="d15">3222</data>
+  <data key="d16">3204</data>
+  <data key="d17">14181</data>
+</edge>
+<edge source="m64062_190806_063919/93652138/ccs+" target="m64062_190806_063919/39651930/ccs+">
+  <data key="d9">11031</data>
+  <data key="d10">220620</data>
+  <data key="d11">20</data>
+  <data key="d12">16323</data>
+  <data key="d13">108</data>
+  <data key="d14">0.9934270586087274</data>
+  <data key="d15">16431</data>
+  <data key="d16">16371</data>
+  <data key="d17">19843</data>
+</edge>
+<edge source="m64062_190806_063919/93652138/ccs+" target="m64062_190807_194840/163580356/ccs+">
+  <data key="d9">312</data>
+  <data key="d10">6240</data>
+  <data key="d11">20</data>
+  <data key="d12">508</data>
+  <data key="d13">4</data>
+  <data key="d14">0.9921875</data>
+  <data key="d15">512</data>
+  <data key="d16">508</data>
+  <data key="d17">20517</data>
+</edge>
+<edge source="m64062_190806_063919/39651930/ccs+" target="m64062_190807_194840/163580356/ccs+">
+  <data key="d9">8667</data>
+  <data key="d10">173340</data>
+  <data key="d11">20</data>
+  <data key="d12">10774</data>
+  <data key="d13">43</data>
+  <data key="d14">0.9960247758158455</data>
+  <data key="d15">10817</data>
+  <data key="d16">10788</data>
+  <data key="d17">19850</data>
+</edge>
+<edge source="m64062_190806_063919/39651930/ccs+" target="m64062_190806_063919/41617533/ccs+">
+  <data key="d9">5631</data>
+  <data key="d10">112620</data>
+  <data key="d11">20</data>
+  <data key="d12">6954</data>
+  <data key="d13">27</data>
+  <data key="d14">0.9961323592608509</data>
+  <data key="d15">6981</data>
+  <data key="d16">6963</data>
+  <data key="d17">19862</data>
+</edge>
+<edge source="m64062_190806_063919/39651930/ccs+" target="m64062_190806_063919/53346526/ccs+">
+  <data key="d9">137</data>
+  <data key="d10">2740</data>
+  <data key="d11">20</data>
+  <data key="d12">921</data>
+  <data key="d13">16</data>
+  <data key="d14">0.9829242262540021</data>
+  <data key="d15">937</data>
+  <data key="d16">933</data>
+  <data key="d17">20065</data>
+</edge>
+<edge source="m64062_190807_194840/163580356/ccs+" target="m64062_190806_063919/41617533/ccs+">
+  <data key="d9">12975</data>
+  <data key="d10">259500</data>
+  <data key="d11">20</data>
+  <data key="d12">13367</data>
+  <data key="d13">8</data>
+  <data key="d14">0.9994018691588785</data>
+  <data key="d15">13375</data>
+  <data key="d16">13370</data>
+  <data key="d17">2743</data>
+</edge>
+<edge source="m64062_190807_194840/163580356/ccs+" target="m64062_190803_042216/110757013/ccs+">
+  <data key="d9">4920</data>
+  <data key="d10">98400</data>
+  <data key="d11">20</data>
+  <data key="d12">5263</data>
+  <data key="d13">7</data>
+  <data key="d14">0.9986717267552182</data>
+  <data key="d15">5270</data>
+  <data key="d16">5265</data>
+  <data key="d17">3188</data>
+</edge>
+<edge source="m64062_190806_063919/41617533/ccs+" target="m64062_190803_042216/110757013/ccs+">
+  <data key="d9">10858</data>
+  <data key="d10">217160</data>
+  <data key="d11">20</data>
+  <data key="d12">11642</data>
+  <data key="d13">16</data>
+  <data key="d14">0.998627551895694</data>
+  <data key="d15">11658</data>
+  <data key="d16">11642</data>
+  <data key="d17">3163</data>
+</edge>
+<edge source="m64062_190806_063919/41617533/ccs+" target="m64062_190806_063919/21169754/ccs-">
+  <data key="d9">3443</data>
+  <data key="d10">68860</data>
+  <data key="d11">20</data>
+  <data key="d12">4031</data>
+  <data key="d13">12</data>
+  <data key="d14">0.9970319069997526</data>
+  <data key="d15">4043</data>
+  <data key="d16">4034</data>
+  <data key="d17">16432</data>
+</edge>
+<edge source="m64062_190803_042216/110757013/ccs+" target="m64062_190806_063919/21169754/ccs-">
+  <data key="d9">10512</data>
+  <data key="d10">210240</data>
+  <data key="d11">20</data>
+  <data key="d12">13599</data>
+  <data key="d13">63</data>
+  <data key="d14">0.9953886693017128</data>
+  <data key="d15">13662</data>
+  <data key="d16">13617</data>
+  <data key="d17">3162</data>
+</edge>
+<edge source="m64062_190803_042216/110757013/ccs+" target="m64062_190806_063919/77725913/ccs-">
+  <data key="d9">1796</data>
+  <data key="d10">35920</data>
+  <data key="d11">20</data>
+  <data key="d12">4246</data>
+  <data key="d13">50</data>
+  <data key="d14">0.9883612662942272</data>
+  <data key="d15">4296</data>
+  <data key="d16">4283</data>
+  <data key="d17">3199</data>
+</edge>
+<edge source="m64062_190803_042216/110757013/ccs+" target="m64062_190806_063919/145164152/ccs-">
+  <data key="d9">2913</data>
+  <data key="d10">58260</data>
+  <data key="d11">20</data>
+  <data key="d12">3501</data>
+  <data key="d13">12</data>
+  <data key="d14">0.9965841161400513</data>
+  <data key="d15">3513</data>
+  <data key="d16">3503</data>
+  <data key="d17">3210</data>
+</edge>
+<edge source="m64062_190806_063919/21169754/ccs-" target="m64062_190806_063919/145164152/ccs-">
+  <data key="d9">8994</data>
+  <data key="d10">179880</data>
+  <data key="d11">20</data>
+  <data key="d12">11003</data>
+  <data key="d13">41</data>
+  <data key="d14">0.9962875769648678</data>
+  <data key="d15">11044</data>
+  <data key="d16">11021</data>
+  <data key="d17">30267</data>
+</edge>
+<edge source="m64062_190806_063919/145164152/ccs-" target="m64062_190807_194840/51185706/ccs-">
+  <data key="d9">7214</data>
+  <data key="d10">144280</data>
+  <data key="d11">20</data>
+  <data key="d12">10399</data>
+  <data key="d13">65</data>
+  <data key="d14">0.9937882262996942</data>
+  <data key="d15">10464</data>
+  <data key="d16">10425</data>
+  <data key="d17">30269</data>
+</edge>
+<edge source="m64062_190806_063919/145164152/ccs-" target="m64062_190806_063919/51120393/ccs+">
+  <data key="d9">5087</data>
+  <data key="d10">101740</data>
+  <data key="d11">20</data>
+  <data key="d12">7733</data>
+  <data key="d13">54</data>
+  <data key="d14">0.9930653653525106</data>
+  <data key="d15">7787</data>
+  <data key="d16">7755</data>
+  <data key="d17">30272</data>
+</edge>
+<edge source="m64062_190807_194840/51185706/ccs-" target="m64062_190806_063919/129893236/ccs+">
+  <data key="d9">4498</data>
+  <data key="d10">89960</data>
+  <data key="d11">20</data>
+  <data key="d12">6262</data>
+  <data key="d13">36</data>
+  <data key="d14">0.9942838996506828</data>
+  <data key="d15">6298</data>
+  <data key="d16">6278</data>
+  <data key="d17">20455</data>
+</edge>
+<edge source="m64062_190807_194840/51185706/ccs-" target="m64062_190806_063919/51120393/ccs+">
+  <data key="d9">11376</data>
+  <data key="d10">227520</data>
+  <data key="d11">20</data>
+  <data key="d12">14022</data>
+  <data key="d13">54</data>
+  <data key="d14">0.9961636828644501</data>
+  <data key="d15">14076</data>
+  <data key="d16">14050</data>
+  <data key="d17">32124</data>
+</edge>
+<edge source="m64062_190806_063919/51120393/ccs+" target="m64062_190806_063919/128845544/ccs+">
+  <data key="d9">2222</data>
+  <data key="d10">44440</data>
+  <data key="d11">20</data>
+  <data key="d12">2369</data>
+  <data key="d13">3</data>
+  <data key="d14">0.9987352445193929</data>
+  <data key="d15">2372</data>
+  <data key="d16">2370</data>
+  <data key="d17">16295</data>
+</edge>
+<edge source="m64062_190806_063919/51120393/ccs+" target="m64062_190806_063919/129893236/ccs+">
+  <data key="d9">12520</data>
+  <data key="d10">250400</data>
+  <data key="d11">20</data>
+  <data key="d12">17959</data>
+  <data key="d13">111</data>
+  <data key="d14">0.9938572219147759</data>
+  <data key="d15">18070</data>
+  <data key="d16">17997</data>
+  <data key="d17">20453</data>
+</edge>
+<edge source="m64062_190806_063919/51120393/ccs+" target="m64062_190806_063919/118882990/ccs-">
+  <data key="d9">2491</data>
+  <data key="d10">49820</data>
+  <data key="d11">20</data>
+  <data key="d12">7734</data>
+  <data key="d13">107</data>
+  <data key="d14">0.986353781405433</data>
+  <data key="d15">7841</data>
+  <data key="d16">7780</data>
+  <data key="d17">24586</data>
+</edge>
+<edge source="m64062_190806_063919/129893236/ccs+" target="m64062_190803_042216/115607081/ccs-">
+  <data key="d9">1509</data>
+  <data key="d10">30180</data>
+  <data key="d11">20</data>
+  <data key="d12">5772</data>
+  <data key="d13">87</data>
+  <data key="d14">0.9851510496671787</data>
+  <data key="d15">5859</data>
+  <data key="d16">5803</data>
+  <data key="d17">6854</data>
+</edge>
+<edge source="m64062_190806_063919/129893236/ccs+" target="m64062_190803_042216/125305484/ccs+">
+  <data key="d9">6490</data>
+  <data key="d10">129800</data>
+  <data key="d11">20</data>
+  <data key="d12">8401</data>
+  <data key="d13">39</data>
+  <data key="d14">0.9953791469194313</data>
+  <data key="d15">8440</data>
+  <data key="d16">8413</data>
+  <data key="d17">13195</data>
+</edge>
+<edge source="m64062_190806_063919/129893236/ccs+" target="m64062_190806_063919/128845544/ccs+">
+  <data key="d9">11139</data>
+  <data key="d10">222780</data>
+  <data key="d11">20</data>
+  <data key="d12">14569</data>
+  <data key="d13">70</data>
+  <data key="d14">0.9952182526128834</data>
+  <data key="d15">14639</data>
+  <data key="d16">14596</data>
+  <data key="d17">16290</data>
+</edge>
+<edge source="m64062_190806_063919/129893236/ccs+" target="m64062_190806_063919/118882990/ccs-">
+  <data key="d9">5949</data>
+  <data key="d10">118980</data>
+  <data key="d11">20</data>
+  <data key="d12">19865</data>
+  <data key="d13">284</data>
+  <data key="d14">0.9859050076926895</data>
+  <data key="d15">20149</data>
+  <data key="d16">19994</data>
+  <data key="d17">24584</data>
+</edge>
+<edge source="m64062_190806_063919/128845544/ccs+" target="m64062_190803_042216/125305484/ccs+">
+  <data key="d9">14285</data>
+  <data key="d10">285700</data>
+  <data key="d11">20</data>
+  <data key="d12">17960</data>
+  <data key="d13">75</data>
+  <data key="d14">0.9958414194621569</data>
+  <data key="d15">18035</data>
+  <data key="d16">17988</data>
+  <data key="d17">13191</data>
+</edge>
+<edge source="m64062_190806_063919/128845544/ccs+" target="m64062_190803_042216/133825423/ccs+">
+  <data key="d9">1976</data>
+  <data key="d10">39520</data>
+  <data key="d11">20</data>
+  <data key="d12">2270</data>
+  <data key="d13">6</data>
+  <data key="d14">0.9973637961335676</data>
+  <data key="d15">2276</data>
+  <data key="d16">2272</data>
+  <data key="d17">20787</data>
+</edge>
+<edge source="m64062_190803_042216/125305484/ccs+" target="m64062_190803_042216/133825423/ccs+">
+  <data key="d9">8444</data>
+  <data key="d10">168880</data>
+  <data key="d11">20</data>
+  <data key="d12">10894</data>
+  <data key="d13">50</data>
+  <data key="d14">0.9954312865497076</data>
+  <data key="d15">10944</data>
+  <data key="d16">10907</data>
+  <data key="d17">13193</data>
+</edge>
+<edge source="m64062_190803_042216/125305484/ccs+" target="m64062_190803_042216/136709217/ccs-">
+  <data key="d9">3812</data>
+  <data key="d10">76240</data>
+  <data key="d11">20</data>
+  <data key="d12">4841</data>
+  <data key="d13">21</data>
+  <data key="d14">0.9956807897984369</data>
+  <data key="d15">4862</data>
+  <data key="d16">4849</data>
+  <data key="d17">13199</data>
+</edge>
+<edge source="m64062_190803_042216/133825423/ccs+" target="m64062_190803_042216/136709217/ccs-">
+  <data key="d9">13784</data>
+  <data key="d10">275680</data>
+  <data key="d11">20</data>
+  <data key="d12">15058</data>
+  <data key="d13">26</data>
+  <data key="d14">0.9982763192787059</data>
+  <data key="d15">15084</data>
+  <data key="d16">15066</data>
+  <data key="d17">20769</data>
+</edge>
+<edge source="m64062_190803_042216/136709217/ccs-" target="m64062_190807_194840/69665132/ccs-">
+  <data key="d9">9988</data>
+  <data key="d10">199760</data>
+  <data key="d11">20</data>
+  <data key="d12">10233</data>
+  <data key="d13">5</data>
+  <data key="d14">0.9995116233639383</data>
+  <data key="d15">10238</data>
+  <data key="d16">10235</data>
+  <data key="d17">13307</data>
+</edge>
+<edge source="m64062_190803_042216/136709217/ccs-" target="m64062_190803_042216/72614749/ccs+">
+  <data key="d9">3426</data>
+  <data key="d10">68520</data>
+  <data key="d11">20</data>
+  <data key="d12">3769</data>
+  <data key="d13">7</data>
+  <data key="d14">0.998146186440678</data>
+  <data key="d15">3776</data>
+  <data key="d16">3772</data>
+  <data key="d17">13371</data>
+</edge>
+<edge source="m64062_190803_042216/136709217/ccs-" target="m64062_190803_042216/33622791/ccs+">
+  <data key="d9">35</data>
+  <data key="d10">700</data>
+  <data key="d11">20</data>
+  <data key="d12">819</data>
+  <data key="d13">16</data>
+  <data key="d14">0.9808383233532935</data>
+  <data key="d15">835</data>
+  <data key="d16">833</data>
+  <data key="d17">13660</data>
+</edge>
+<edge source="m64062_190807_194840/69665132/ccs-" target="m64062_190803_042216/72614749/ccs+">
+  <data key="d9">12095</data>
+  <data key="d10">241900</data>
+  <data key="d11">20</data>
+  <data key="d12">12781</data>
+  <data key="d13">14</data>
+  <data key="d14">0.998905822586948</data>
+  <data key="d15">12795</data>
+  <data key="d16">12788</data>
+  <data key="d17">32892</data>
+</edge>
+<edge source="m64062_190803_042216/72614749/ccs+" target="m64062_190803_042216/25428422/ccs-">
+  <data key="d9">3975</data>
+  <data key="d10">79500</data>
+  <data key="d11">20</data>
+  <data key="d12">5494</data>
+  <data key="d13">31</data>
+  <data key="d14">0.9943891402714932</data>
+  <data key="d15">5525</data>
+  <data key="d16">5501</data>
+  <data key="d17">11957</data>
+</edge>
+<edge source="m64062_190803_042216/72614749/ccs+" target="m64062_190806_063919/53870657/ccs+">
+  <data key="d9">12267</data>
+  <data key="d10">245340</data>
+  <data key="d11">20</data>
+  <data key="d12">13149</data>
+  <data key="d13">18</data>
+  <data key="d14">0.9986329460013671</data>
+  <data key="d15">13167</data>
+  <data key="d16">13157</data>
+  <data key="d17">32891</data>
+</edge>
+<edge source="m64062_190806_063919/53870657/ccs+" target="m64062_190803_042216/25428422/ccs-">
+  <data key="d9">9760</data>
+  <data key="d10">195200</data>
+  <data key="d11">20</data>
+  <data key="d12">13631</data>
+  <data key="d13">79</data>
+  <data key="d14">0.9942377826404084</data>
+  <data key="d15">13710</data>
+  <data key="d16">13656</data>
+  <data key="d17">11857</data>
+</edge>
+<edge source="m64062_190803_042216/25428422/ccs-" target="m64062_190803_042216/151191564/ccs+">
+  <data key="d9">442</data>
+  <data key="d10">8840</data>
+  <data key="d11">20</data>
+  <data key="d12">491</data>
+  <data key="d13">1</data>
+  <data key="d14">0.9979674796747967</data>
+  <data key="d15">492</data>
+  <data key="d16">491</data>
+  <data key="d17">7439</data>
+</edge>
+<edge source="m64062_190803_042216/25428422/ccs-" target="m64062_190803_042216/33622791/ccs+">
+  <data key="d9">6227</data>
+  <data key="d10">124540</data>
+  <data key="d11">20</data>
+  <data key="d12">10147</data>
+  <data key="d13">80</data>
+  <data key="d14">0.9921775691796225</data>
+  <data key="d15">10227</data>
+  <data key="d16">10182</data>
+  <data key="d17">11878</data>
+</edge>
+<edge source="m64062_190803_042216/25428422/ccs-" target="m64062_190806_063919/153224330/ccs-">
+  <data key="d9">339</data>
+  <data key="d10">6780</data>
+  <data key="d11">20</data>
+  <data key="d12">1613</data>
+  <data key="d13">26</data>
+  <data key="d14">0.984136668700427</data>
+  <data key="d15">1639</data>
+  <data key="d16">1632</data>
+  <data key="d17">12100</data>
+</edge>
+<edge source="m64062_190803_042216/33622791/ccs+" target="m64062_190803_042216/151191564/ccs+">
+  <data key="d9">6531</data>
+  <data key="d10">130620</data>
+  <data key="d11">20</data>
+  <data key="d12">10941</data>
+  <data key="d13">90</data>
+  <data key="d14">0.9918411748708186</data>
+  <data key="d15">11031</data>
+  <data key="d16">10994</data>
+  <data key="d17">6874</data>
+</edge>
+<edge source="m64062_190803_042216/151191564/ccs+" target="m64062_190803_042216/146276363/ccs-">
+  <data key="d9">9272</data>
+  <data key="d10">185440</data>
+  <data key="d11">20</data>
+  <data key="d12">10203</data>
+  <data key="d13">19</data>
+  <data key="d14">0.9981412639405205</data>
+  <data key="d15">10222</data>
+  <data key="d16">10210</data>
+  <data key="d17">4224</data>
+</edge>
+<edge source="m64062_190803_042216/146276363/ccs-" target="m64062_190806_063919/20317928/ccs+">
+  <data key="d9">9761</data>
+  <data key="d10">195220</data>
+  <data key="d11">20</data>
+  <data key="d12">11721</data>
+  <data key="d13">40</data>
+  <data key="d14">0.9965989286625287</data>
+  <data key="d15">11761</data>
+  <data key="d16">11739</data>
+  <data key="d17">4215</data>
+</edge>
+<edge source="m64062_190803_042216/146276363/ccs-" target="m64062_190806_063919/46334670/ccs+">
+  <data key="d9">6187</data>
+  <data key="d10">123740</data>
+  <data key="d11">20</data>
+  <data key="d12">9862</data>
+  <data key="d13">75</data>
+  <data key="d14">0.9924524504377579</data>
+  <data key="d15">9937</data>
+  <data key="d16">9908</data>
+  <data key="d17">4226</data>
+</edge>
+<edge source="m64062_190806_063919/20317928/ccs+" target="m64062_190803_042216/31394282/ccs-">
+  <data key="d9">780</data>
+  <data key="d10">15600</data>
+  <data key="d11">20</data>
+  <data key="d12">9600</data>
+  <data key="d13">180</data>
+  <data key="d14">0.9815950920245399</data>
+  <data key="d15">9780</data>
+  <data key="d16">9667</data>
+  <data key="d17">8458</data>
+</edge>
+<edge source="m64062_190806_063919/20317928/ccs+" target="m64062_190803_042216/11405042/ccs+">
+  <data key="d9">9161</data>
+  <data key="d10">183220</data>
+  <data key="d11">20</data>
+  <data key="d12">10092</data>
+  <data key="d13">19</data>
+  <data key="d14">0.9981208584709722</data>
+  <data key="d15">10111</data>
+  <data key="d16">10098</data>
+  <data key="d17">27550</data>
+</edge>
+<edge source="m64062_190803_042216/11405042/ccs+" target="m64062_190803_042216/31394282/ccs-">
+  <data key="d9">10608</data>
+  <data key="d10">212160</data>
+  <data key="d11">20</data>
+  <data key="d12">12029</data>
+  <data key="d13">29</data>
+  <data key="d14">0.9975949577044286</data>
+  <data key="d15">12058</data>
+  <data key="d16">12041</data>
+  <data key="d17">27531</data>
+</edge>
+<edge source="m64062_190803_042216/11405042/ccs+" target="m64062_190806_063919/46334670/ccs+">
+  <data key="d9">1143</data>
+  <data key="d10">22860</data>
+  <data key="d11">20</data>
+  <data key="d12">1192</data>
+  <data key="d13">1</data>
+  <data key="d14">0.9991617770326907</data>
+  <data key="d15">1193</data>
+  <data key="d16">1192</data>
+  <data key="d17">27966</data>
+</edge>
+<edge source="m64062_190803_042216/31394282/ccs-" target="m64062_190806_063919/46334670/ccs+">
+  <data key="d9">12680</data>
+  <data key="d10">253600</data>
+  <data key="d11">20</data>
+  <data key="d12">13366</data>
+  <data key="d13">14</data>
+  <data key="d14">0.9989536621823617</data>
+  <data key="d15">13380</data>
+  <data key="d16">13371</data>
+  <data key="d17">8441</data>
+</edge>
+<edge source="m64062_190803_042216/31394282/ccs-" target="m64062_190806_063919/113051251/ccs-">
+  <data key="d9">3349</data>
+  <data key="d10">66980</data>
+  <data key="d11">20</data>
+  <data key="d12">3496</data>
+  <data key="d13">3</data>
+  <data key="d14">0.9991426121749071</data>
+  <data key="d15">3499</data>
+  <data key="d16">3496</data>
+  <data key="d17">8569</data>
+</edge>
+<edge source="m64062_190806_063919/46334670/ccs+" target="m64062_190803_042216/31394282/ccs-">
+  <data key="d9">176</data>
+  <data key="d10">3520</data>
+  <data key="d11">20</data>
+  <data key="d12">4341</data>
+  <data key="d13">85</data>
+  <data key="d14">0.9807953004970628</data>
+  <data key="d15">4426</data>
+  <data key="d16">4394</data>
+  <data key="d17">8549</data>
+</edge>
+<edge source="m64062_190806_063919/46334670/ccs+" target="m64062_190803_042216/96799380/ccs+">
+  <data key="d9">3410</data>
+  <data key="d10">68200</data>
+  <data key="d11">20</data>
+  <data key="d12">4145</data>
+  <data key="d13">15</data>
+  <data key="d14">0.9963942307692307</data>
+  <data key="d15">4160</data>
+  <data key="d16">4151</data>
+  <data key="d17">9118</data>
+</edge>
+<edge source="m64062_190806_063919/46334670/ccs+" target="m64062_190806_063919/113051251/ccs-">
+  <data key="d9">10770</data>
+  <data key="d10">215400</data>
+  <data key="d11">20</data>
+  <data key="d12">11162</data>
+  <data key="d13">8</data>
+  <data key="d14">0.9992837958818264</data>
+  <data key="d15">11170</data>
+  <data key="d16">11165</data>
+  <data key="d17">16816</data>
+</edge>
+<edge source="m64062_190806_063919/46334670/ccs+" target="m64062_190803_042216/11405042/ccs+">
+  <data key="d9">2756</data>
+  <data key="d10">55120</data>
+  <data key="d11">20</data>
+  <data key="d12">4814</data>
+  <data key="d13">42</data>
+  <data key="d14">0.9913509060955519</data>
+  <data key="d15">4856</data>
+  <data key="d16">4853</data>
+  <data key="d17">27671</data>
+</edge>
+<edge source="m64062_190806_063919/113051251/ccs-" target="m64062_190803_042216/96799380/ccs+">
+  <data key="d9">12274</data>
+  <data key="d10">245480</data>
+  <data key="d11">20</data>
+  <data key="d12">16096</data>
+  <data key="d13">78</data>
+  <data key="d14">0.9951774452825523</data>
+  <data key="d15">16174</data>
+  <data key="d16">16134</data>
+  <data key="d17">9010</data>
+</edge>
+<edge source="m64062_190803_042216/96799380/ccs+" target="m64062_190803_042216/151191564/ccs+">
+  <data key="d9">978</data>
+  <data key="d10">19560</data>
+  <data key="d11">20</data>
+  <data key="d12">2399</data>
+  <data key="d13">29</data>
+  <data key="d14">0.9880560131795717</data>
+  <data key="d15">2428</data>
+  <data key="d16">2421</data>
+  <data key="d17">7160</data>
+</edge>
+<edge source="m64062_190803_042216/96799380/ccs+" target="m64062_190806_063919/55509938/ccs-">
+  <data key="d9">8972</data>
+  <data key="d10">179440</data>
+  <data key="d11">20</data>
+  <data key="d12">11716</data>
+  <data key="d13">56</data>
+  <data key="d14">0.9952429493713897</data>
+  <data key="d15">11772</data>
+  <data key="d16">11742</data>
+  <data key="d17">9021</data>
+</edge>
+<edge source="m64062_190803_042216/96799380/ccs+" target="m64062_190806_063919/153224330/ccs-">
+  <data key="d9">48</data>
+  <data key="d10">960</data>
+  <data key="d11">20</data>
+  <data key="d12">3527</data>
+  <data key="d13">71</data>
+  <data key="d14">0.980266814897165</data>
+  <data key="d15">3598</data>
+  <data key="d16">3566</data>
+  <data key="d17">9133</data>
+</edge>
+<edge source="m64062_190803_042216/96799380/ccs+" target="m64062_190806_063919/1181955/ccs-">
+  <data key="d9">101</data>
+  <data key="d10">2020</data>
+  <data key="d11">20</data>
+  <data key="d12">395</data>
+  <data key="d13">6</data>
+  <data key="d14">0.9850374064837906</data>
+  <data key="d15">401</data>
+  <data key="d16">400</data>
+  <data key="d17">9271</data>
+</edge>
+<edge source="m64062_190806_063919/55509938/ccs-" target="m64062_190806_063919/153224330/ccs-">
+  <data key="d9">11416</data>
+  <data key="d10">228320</data>
+  <data key="d11">20</data>
+  <data key="d12">12837</data>
+  <data key="d13">29</data>
+  <data key="d14">0.9977459972019276</data>
+  <data key="d15">12866</data>
+  <data key="d16">12851</data>
+  <data key="d17">29887</data>
+</edge>
+<edge source="m64062_190806_063919/153224330/ccs-" target="m64062_190803_042216/151191564/ccs+">
+  <data key="d9">281</data>
+  <data key="d10">5620</data>
+  <data key="d11">20</data>
+  <data key="d12">379</data>
+  <data key="d13">2</data>
+  <data key="d14">0.994750656167979</data>
+  <data key="d15">381</data>
+  <data key="d16">381</data>
+  <data key="d17">7459</data>
+</edge>
+<edge source="m64062_190806_063919/153224330/ccs-" target="m64062_190806_063919/1181955/ccs-">
+  <data key="d9">10602</data>
+  <data key="d10">212040</data>
+  <data key="d11">20</data>
+  <data key="d12">11288</data>
+  <data key="d13">14</data>
+  <data key="d14">0.9987612811891701</data>
+  <data key="d15">11302</data>
+  <data key="d16">11292</data>
+  <data key="d17">20591</data>
+</edge>
+<edge source="m64062_190806_063919/1181955/ccs-" target="m64062_190803_042216/151191564/ccs+">
+  <data key="d9">357</data>
+  <data key="d10">7140</data>
+  <data key="d11">20</data>
+  <data key="d12">798</data>
+  <data key="d13">9</data>
+  <data key="d14">0.9888475836431226</data>
+  <data key="d15">807</data>
+  <data key="d16">806</data>
+  <data key="d17">7381</data>
+</edge>
+</graph></graphml>

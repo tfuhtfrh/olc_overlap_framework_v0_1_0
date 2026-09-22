@@ -1,0 +1,33 @@
+digraph oriented_overlap_graph {
+  rankdir=TB;
+  graph [overlap=false, splines=true];
+  node [shape=box, style=rounded, style=filled];
+  "SRR37543650.1041+" [label="SRR37543650.1041+", fillcolor="#d9edf7"];
+  "SRR37543650.2309-" [label="SRR37543650.2309-", fillcolor="#fde0dd"];
+  "SRR37543650.88-" [label="SRR37543650.88-", fillcolor="#fde0dd"];
+  "SRR37543650.947+" [label="SRR37543650.947+", fillcolor="#d9edf7"];
+  "SRR37543650.1945-" [label="SRR37543650.1945-", fillcolor="#fde0dd"];
+  "SRR37543650.2000+" [label="SRR37543650.2000+", fillcolor="#d9edf7"];
+  "SRR37543650.1728+" [label="SRR37543650.1728+", fillcolor="#d9edf7"];
+  "SRR37543650.78+" [label="SRR37543650.78+", fillcolor="#d9edf7"];
+  "SRR37543650.1552-" [label="SRR37543650.1552-", fillcolor="#fde0dd"];
+  "SRR37543650.1343-" [label="SRR37543650.1343-", fillcolor="#fde0dd"];
+  "SRR37543650.182-" [label="SRR37543650.182-", fillcolor="#fde0dd"];
+  "SRR37543650.1384+" [label="SRR37543650.1384+", fillcolor="#d9edf7"];
+  "SRR37543650.1343-" -> "SRR37543650.1552-" [label="", color="#777777", penwidth=5.00];
+  "SRR37543650.182-" -> "SRR37543650.1343-" [label="", color="#777777", penwidth=3.96];
+  "SRR37543650.2000+" -> "SRR37543650.1945-" [label="", color="#777777", penwidth=3.21];
+  "SRR37543650.1384+" -> "SRR37543650.182-" [label="", color="#777777", penwidth=2.87];
+  "SRR37543650.1728+" -> "SRR37543650.2000+" [label="", color="#777777", penwidth=2.41];
+  "SRR37543650.1552-" -> "SRR37543650.78+" [label="", color="#777777", penwidth=2.24];
+  "SRR37543650.78+" -> "SRR37543650.1728+" [label="", color="#777777", penwidth=2.17];
+  "SRR37543650.1552-" -> "SRR37543650.1728+" [label="", color="#777777", penwidth=1.64];
+  "SRR37543650.1945-" -> "SRR37543650.947+" [label="", color="#777777", penwidth=1.39];
+  "SRR37543650.182-" -> "SRR37543650.1552-" [label="", color="#777777", penwidth=1.37];
+  "SRR37543650.88-" -> "SRR37543650.2309-" [label="", color="#777777", penwidth=1.27];
+  "SRR37543650.78+" -> "SRR37543650.2000+" [label="", color="#777777", penwidth=1.27];
+  "SRR37543650.2309-" -> "SRR37543650.1041+" [label="", color="#777777", penwidth=1.20];
+  "SRR37543650.947+" -> "SRR37543650.88-" [label="", color="#777777", penwidth=1.18];
+  "SRR37543650.1041+" -> "SRR37543650.1384+" [label="", color="#777777", penwidth=1.16];
+  "SRR37543650.78+" -> "SRR37543650.1945-" [label="", color="#777777", penwidth=1.12];
+}

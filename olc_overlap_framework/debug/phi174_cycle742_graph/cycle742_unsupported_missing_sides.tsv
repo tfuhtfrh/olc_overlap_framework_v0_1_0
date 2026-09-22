@@ -1,0 +1,46 @@
+read_id	support_status	missing_side	selected_reference_phase	reference_start	reference_end	reference_identity	expected_neighbor_side	primary_cause	nearby_retained_ids	nearby_stage_statuses	nearby_paf_max_identities	nearby_start_distances_bp
+SRR27862880.107501_m2	no_in_or_out_support	incoming						reference_unmapped				
+SRR27862880.107501_m2	no_in_or_out_support	outgoing						reference_unmapped				
+SRR27862880.110001_m1	no_in_support	incoming	+1	2817	2968	0.98675497	previous	below_identity_0.990	SRR27862880.131501_m1|SRR27862880.196001_m1|SRR27862880.146001_m1	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.98507463|0.98449612|0.98319328	17|21|31
+SRR27862880.110001_m2	no_out_support	outgoing	+1	2576	2727	0.98675497	next	below_identity_0.990	SRR27862880.84501_m1|SRR27862880.173001_m2|SRR27862880.204001_m1	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.98561151|0.98387097|0.98347107	12|27|30
+SRR27862880.125501_m1	no_in_support	incoming	+1	4272	4422	0.97333333	previous	below_identity_0.990	SRR27862880.167501_m1|SRR27862880.501_m2|SRR27862880.170501_m1	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.97887324|0.97857143|0.97794118	8|11|15
+SRR27862880.126001_m1	no_out_support	outgoing	+1	5300	5451	0.98675497	next	below_identity_0.990	SRR27862880.184501_m1|SRR27862880.3001_m1|SRR27862880.221501_m1	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.98675497|0.98601399|0.98484848	0|8|19
+SRR27862880.159001_m1	no_out_support	outgoing	+1	4527	4678	0.98013245	next	below_identity_0.990	SRR27862880.242501_m1|SRR27862880.93501_m1|SRR27862880.65001_m2	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.97122302|0.97810219|0.97777778	12|14|16
+SRR27862880.169501_m2	no_out_support	outgoing	+1	984	1135	0.98675497	next	below_identity_0.990	SRR27862880.94501_m1|SRR27862880.239501_m2|SRR27862880.92001_m2	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.98648649|0.98591549|0.98550725	3|9|13
+SRR27862880.174501_m2	no_out_support	outgoing	+1	2755	2905	0.98000000	next	below_identity_0.990	SRR27862880.115001_m2|SRR27862880.249501_m1|SRR27862880.84501_m2	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.98630137|0.98601399|0.98591549	4|7|8
+SRR27862880.176001_m1	no_in_or_out_support	incoming	+1	2428	2518	0.98888889	previous	below_identity_0.990	SRR27862880.71001_m1|SRR27862880.193001_m1|SRR27862880.219001_m1	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.98888889|0.98888889|0.97777778	4|11|13
+SRR27862880.176001_m1	no_in_or_out_support	outgoing	+1	2428	2518	0.98888889	next	below_min_overlap	SRR27862880.4001_m2|SRR27862880.43001_m1|SRR27862880.206001_m1	below_min_overlap|below_min_overlap|no_paf_record	0.98701299|0.98461538|	13|25|53
+SRR27862880.178001_m2	no_out_support	outgoing	+1	1441	1590	0.98657718	next	below_identity_0.990	SRR27862880.2501_m2|SRR27862880.238501_m1|SRR27862880.85501_m1	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.98657718|0.98639456|0.98561151	0|2|10
+SRR27862880.196001_m2	no_out_support	outgoing	+1	2553	2704	0.98675497	next	below_identity_0.990	SRR27862880.115001_m1|SRR27862880.146001_m2|SRR27862880.110001_m2	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.98620690|0.98449612|0.98412698	6|22|23
+SRR27862880.202001_m1	no_in_or_out_support	incoming						reference_unmapped				
+SRR27862880.202001_m1	no_in_or_out_support	outgoing						reference_unmapped				
+SRR27862880.213001_m1	no_out_support	outgoing	+1	512	598	0.98837209	next	no_positive_shift_dovetail	SRR27862880.24001_m1|SRR27862880.46001_m1|SRR27862880.73501_m1	no_positive_shift_dovetail|no_positive_shift_dovetail|below_min_overlap	1.00000000|1.00000000|1.00000000	1|6|7
+SRR27862880.213501_m1	no_in_support	incoming	+1	778	929	0.98013245	previous	below_identity_0.990	SRR27862880.133001_m2|SRR27862880.39001_m2|SRR27862880.22501_m2	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.98675497|0.98630137|0.98611111	0|5|7
+SRR27862880.218501_m1	no_in_or_out_support	incoming						reference_unmapped				
+SRR27862880.218501_m1	no_in_or_out_support	outgoing						reference_unmapped				
+SRR27862880.218501_m2	no_in_or_out_support	incoming						reference_unmapped				
+SRR27862880.218501_m2	no_in_or_out_support	outgoing						reference_unmapped				
+SRR27862880.229001_m1	no_in_or_out_support	incoming	-1	1730	1878	0.93918919	next	below_identity_0.990	SRR27862880.222501_m2|SRR27862880.154001_m2|SRR27862880.28501_m2	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.94814815|0.94736842|0.94444444	12|14|21
+SRR27862880.229001_m1	no_in_or_out_support	outgoing	-1	1730	1878	0.93918919	previous	below_identity_0.990	SRR27862880.6501_m2|SRR27862880.18001_m2|SRR27862880.48001_m2	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.95488722|0.95161290|0.94957983	16|26|30
+SRR27862880.229001_m2	no_out_support	outgoing	+1	1520	1670	0.98000000	next	below_identity_0.990	SRR27862880.66001_m1|SRR27862880.88001_m1|SRR27862880.28501_m1	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.98000000|0.97931034|0.97810219	0|5|13
+SRR27862880.231501_m1	no_in_or_out_support	incoming						reference_unmapped				
+SRR27862880.231501_m1	no_in_or_out_support	outgoing						reference_unmapped				
+SRR27862880.245001_m2	no_out_support	outgoing	+1	1078	1228	0.98666667	next	below_identity_0.990	SRR27862880.243501_m1|SRR27862880.44501_m2|SRR27862880.177001_m2	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.98620690|0.98496241|0.98412698	5|17|24
+SRR27862880.27001_m1	no_out_support	outgoing	+1	888	992	1.00000000	next	no_positive_shift_dovetail	SRR27862880.70501_m1|SRR27862880.17501_m2|SRR27862880.160001_m1	no_positive_shift_dovetail|no_positive_shift_dovetail|below_min_overlap	1.00000000|1.00000000|1.00000000	6|23|28
+SRR27862880.3001_m2	no_in_support	incoming	+1	155	305	0.98666667	previous	below_identity_0.990	SRR27862880.194001_m2|SRR27862880.228501_m1|SRR27862880.77501_m2	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.98412698|0.98387097|0.98148148	25|26|43
+SRR27862880.38001_m1	no_out_support	outgoing	+1	1964	2115	0.98675497	next	below_identity_0.990	SRR27862880.74001_m2|SRR27862880.224501_m2|SRR27862880.26001_m2	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.98550725|0.98019802|0.97674419	13|50|65
+SRR27862880.40001_m1	no_in_support	incoming						reference_unmapped				
+SRR27862880.40001_m2	no_out_support	outgoing						reference_unmapped				
+SRR27862880.46501_m1	no_in_support	incoming	+1	4661	4811	0.98666667	previous	below_identity_0.990	SRR27862880.211501_m1|SRR27862880.186501_m1|SRR27862880.129001_m2	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.98620690|0.98496241|0.98437500	6|18|23
+SRR27862880.46501_m2	no_out_support	outgoing	+1	4400	4550	0.97333333	next	below_identity_0.990	SRR27862880.102001_m2|SRR27862880.148501_m2|SRR27862880.222001_m1	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.97260274|0.97241379|0.96825397	4|5|24
+SRR27862880.55001_m1	no_in_or_out_support	incoming						reference_unmapped				
+SRR27862880.55001_m1	no_in_or_out_support	outgoing						reference_unmapped				
+SRR27862880.55001_m2	no_in_or_out_support	incoming						reference_unmapped				
+SRR27862880.55001_m2	no_in_or_out_support	outgoing						reference_unmapped				
+SRR27862880.62001_m1	no_in_or_out_support	incoming						reference_unmapped				
+SRR27862880.62001_m1	no_in_or_out_support	outgoing						reference_unmapped				
+SRR27862880.62001_m2	no_in_support	incoming	+1	4392	4543	0.98013245	previous	below_identity_0.990	SRR27862880.7501_m2|SRR27862880.93001_m1|SRR27862880.163001_m2	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.97959184|0.97887324|0.97727273	3|9|17
+SRR27862880.63501_m2	no_out_support	outgoing	+1	3644	3794	0.98666667	next	below_identity_0.990	SRR27862880.20501_m1|SRR27862880.64001_m1|SRR27862880.112501_m2	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.98639456|0.98507463|0.98449612	3|16|21
+SRR27862880.66501_m1	no_in_or_out_support	incoming	-1	1234	1385	0.97350993	next	below_identity_0.990	SRR27862880.8501_m2|SRR27862880.232001_m2|SRR27862880.100501_m2	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.97297297|0.97222222|0.97163121	3|7|10
+SRR27862880.66501_m1	no_in_or_out_support	outgoing	-1	1234	1385	0.97350993	previous	below_identity_0.990	SRR27862880.239501_m1|SRR27862880.80001_m1|SRR27862880.2501_m1	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.97241379|0.97080292|0.97058824	6|14|15
+SRR27862880.66501_m2	no_in_support	incoming	+1	1021	1169	0.97972973	previous	below_identity_0.990	SRR27862880.36501_m1|SRR27862880.199501_m2|SRR27862880.14501_m2	below_identity_0.990|below_identity_0.990|below_identity_0.990	0.97972973|0.97972973|0.98581560	0|2|7

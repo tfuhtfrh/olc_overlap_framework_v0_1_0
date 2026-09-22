@@ -1,0 +1,44 @@
+== phi174 cycle742 orientation-projection A-B-C-D audit ==
+graph_input: reads only
+candidate_records: 22546
+refined_edges_before_orientation_projection: 22404
+selected_one_side_edges: 11202
+orientation_constraint_conflicts: 0
+candidate_examples_found: 18342
+selected_example_reference_span_bp: 6
+
+Selected-side relation:
+A->B: SRR27862880.208501_m2+1 -> SRR27862880.170501_m2+1 overlap=144 identity=0.99305556 error=0.00694444 selected_endpoints=(+1,+1)
+C->B: SRR27862880.71501_m1-1 -> SRR27862880.170501_m2+1 overlap=144 identity=1.00000000 error=0.00000000 selected_endpoints=(-1,+1)
+
+Pre-projection incoming relation:
+D->A (raw): SRR27862880.99501_m1+1 -> SRR27862880.208501_m2-1 overlap=144 identity=0.99305556 error=0.00694444 selected_endpoints=(-1,+1)
+reverse-complement counterpart A->D (raw): SRR27862880.208501_m2+1 -> SRR27862880.99501_m1-1 overlap=144 identity=0.99305556 error=0.00694444 selected_endpoints=(+1,-1)
+D->A (selected): NONE
+A->D (selected): SRR27862880.208501_m2+1 -> SRR27862880.99501_m1-1 overlap=144 identity=0.99305556 error=0.00694444 selected_endpoints=(+1,-1)
+
+Reference coordinates:
+SRR27862880.208501_m2: ref=4025-4175 orient=+1 aln=150 identity=0.99333333
+SRR27862880.170501_m2: ref=4031-4181 orient=+1 aln=150 identity=1.00000000
+SRR27862880.71501_m1: ref=4025-4175 orient=-1 aln=150 identity=1.00000000
+SRR27862880.99501_m1: ref=4031-4181 orient=-1 aln=150 identity=1.00000000
+
+A-C same-locus check:
+A-C candidates_after_PAF_filter: 0
+A-C refined_edges_before_projection: 0
+A-C selected_edges: 0
+A-C selected_oriented_full_length_identity: 0.99333333
+A-C selected_oriented_lengths: 150,150
+
+Selected orientation and support counts:
+SRR27862880.208501_m2: selected=+1 selected_in=0 selected_out=16 raw_in=16 raw_out=16
+SRR27862880.170501_m2: selected=+1 selected_in=15 selected_out=16 raw_in=31 raw_out=31
+SRR27862880.71501_m1: selected=-1 selected_in=14 selected_out=16 raw_in=30 raw_out=30
+SRR27862880.99501_m1: selected=-1 selected_in=15 selected_out=16 raw_in=31 raw_out=31
+
+Interpretation:
+The raw D->A edge is paired with its reverse-complement A->D edge.
+If the selected phase matches D->A, D->A is retained; if it matches the
+opposite phase, A->D is retained.  A selected-side zero-in A can therefore
+be a direction reversal of raw incoming information, not an information loss.
+report: /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/olc_overlap_framework/debug/phi174_cycle742_graph/cycle742_orientation_projection_abcd.txt

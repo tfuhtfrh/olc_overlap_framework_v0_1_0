@@ -12,6 +12,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
+from fractions import Fraction
 import math
 import random
 from time import perf_counter
@@ -33,7 +34,20 @@ SUPPORTED_OVERLAP_SCORE_MODES = (
     "mapq",
     "matches",
     "quality",
+    "quality_margin",
 )
+
+
+def quality_margin_coefficients(identity_threshold: float) -> tuple[int, int]:
+    """Return primitive integer coefficients for a quality-margin score.
+
+    If ``identity_threshold = p/q`` in lowest terms, the zero-margin boundary
+    ``M / (M + d) = p/q`` becomes ``(q-p) M - p d = 0``.
+    """
+    if not 0.0 < identity_threshold < 1.0:
+        raise ValueError("identity_threshold must be between 0 and 1")
+    threshold = Fraction(str(identity_threshold)).limit_denominator(1_000_000)
+    return threshold.denominator - threshold.numerator, threshold.numerator
 
 
 class LayoutSolver(ABC):
@@ -223,6 +237,81 @@ class EdgeCycleCoverDAGQUBOModel(EdgePathCoverDAGQUBOModel):
         return f"v[{self.read_ids[index - self._sink_offset]},{self.void_id}]"
 
 
+class EdgeOrderedPathQUBOModel(QUBOModel):
+    """Edge/order QUBO whose Hamilton path is closed through one void node."""
+
+    void_id = "__void__"
+
+    def __init__(
+        self,
+        read_ids: list[str],
+        edge_pairs: list[tuple[str, str]],
+        position_bit_count: int,
+    ):
+        if position_bit_count < 1:
+            raise ValueError("position_bit_count must be at least 1")
+        edge_count = len(edge_pairs)
+        position_count = edge_count * position_bit_count
+        super().__init__(
+            read_ids=read_ids,
+            linear=[0.0] * (edge_count + position_count + 2 * len(read_ids)),
+        )
+        self.edge_pairs = edge_pairs
+        self.edge_index_by_pair = {
+            edge_pair: index
+            for index, edge_pair in enumerate(edge_pairs)
+        }
+        self.position_bit_count = position_bit_count
+        self._position_offset = edge_count
+        self._source_offset = edge_count + position_count
+        self._sink_offset = self._source_offset + len(read_ids)
+        self._read_index_by_id = {
+            read_id: index
+            for index, read_id in enumerate(read_ids)
+        }
+
+    def edge_variable_index(self, left_id: str, right_id: str) -> int:
+        return self.edge_index_by_pair[(left_id, right_id)]
+
+    def position_variable_index(
+        self,
+        left_id: str,
+        right_id: str,
+        bit_index: int,
+    ) -> int:
+        if bit_index < 0 or bit_index >= self.position_bit_count:
+            raise IndexError("position bit index is out of range")
+        edge_index = self.edge_variable_index(left_id, right_id)
+        return self._position_offset + edge_index * self.position_bit_count + bit_index
+
+    def source_variable_index(self, read_id: str) -> int:
+        return self._source_offset + self._read_index_by_id[read_id]
+
+    def sink_variable_index(self, read_id: str) -> int:
+        return self._sink_offset + self._read_index_by_id[read_id]
+
+    def edge_position(self, left_id: str, right_id: str, sample: list[int]) -> int:
+        value = int(sample[self.edge_variable_index(left_id, right_id)])
+        for bit_index in range(self.position_bit_count):
+            variable = self.position_variable_index(left_id, right_id, bit_index)
+            value += (1 << bit_index) * int(sample[variable])
+        return value
+
+    def variable_label(self, index: int) -> str:
+        edge_count = len(self.edge_pairs)
+        if index < edge_count:
+            left_id, right_id = self.edge_pairs[index]
+            return f"x[{left_id},{right_id}]"
+        if index < self._source_offset:
+            offset = index - self._position_offset
+            edge_index, bit_index = divmod(offset, self.position_bit_count)
+            left_id, right_id = self.edge_pairs[edge_index]
+            return f"z[{left_id},{right_id},{bit_index}]"
+        if index < self._sink_offset:
+            return f"s[{self.void_id},{self.read_ids[index - self._source_offset]}]"
+        return f"t[{self.read_ids[index - self._sink_offset]},{self.void_id}]"
+
+
 class PDFAssemblyQUBOModel(EdgePathDAGQUBOModel):
     """PDF assembly QUBO model with one variable per directed edge."""
 
@@ -337,9 +426,16 @@ class OverlapRewardScorerConfig:
         - "mapq": minimap2 mapq
         - "matches": refined match count
         - "quality": overlap_len * identity * (1 - error_rate)
+        - "quality_margin": (q-p)*matches - p*errors for the configured
+          minimum identity t=p/q, using primitive integer coefficients
     """
 
     score_mode: str = "dp"
+    quality_identity_threshold: float = 0.98
+
+    def validate(self) -> None:
+        if not 0.0 < self.quality_identity_threshold < 1.0:
+            raise ValueError("quality_identity_threshold must be between 0 and 1")
 
 
 class OverlapRewardScorer:
@@ -351,6 +447,7 @@ class OverlapRewardScorer:
         custom_score: Optional[Callable[[OverlapEdge], float]] = None,
     ):
         self.config = config or OverlapRewardScorerConfig()
+        self.config.validate()
         self.custom_score = custom_score
 
     def score(self, edge: OverlapEdge, weight_mode: Optional[str] = None) -> float:
@@ -404,6 +501,14 @@ class OverlapRewardScorer:
             return float(edge.matches)
         if mode == "quality":
             return float(edge.overlap_len * edge.identity * max(0.0, 1.0 - edge.error_rate))
+        if mode == "quality_margin":
+            match_coefficient, error_coefficient = quality_margin_coefficients(
+                self.config.quality_identity_threshold
+            )
+            errors = edge.mismatches + edge.insertions + edge.deletions
+            return float(
+                match_coefficient * edge.matches - error_coefficient * errors
+            )
         raise ValueError(
             f"Unsupported overlap reward score mode: {mode!r}. "
             f"Supported modes: {', '.join(SUPPORTED_OVERLAP_SCORE_MODES)}"
@@ -911,6 +1016,7 @@ class EdgeCycleCoverDAGHamiltonianConfig:
 
     degree_penalty: float = 100.0
     edge_reward_scale: float = 1.0
+    edge_selection_penalty: float = 0.0
     score_mode: Optional[str] = None
     normalize_rewards: bool = True
     max_reward_score: Optional[float] = None
@@ -921,6 +1027,8 @@ class EdgeCycleCoverDAGHamiltonianConfig:
             raise ValueError("degree_penalty must be positive")
         if self.edge_reward_scale < 0.0:
             raise ValueError("edge_reward_scale must be non-negative")
+        if self.edge_selection_penalty < 0.0:
+            raise ValueError("edge_selection_penalty must be non-negative")
 
 
 class EdgeCycleCoverDAGQUBOHamiltonian(QUBOHamiltonianBuilder):
@@ -965,7 +1073,11 @@ class EdgeCycleCoverDAGQUBOHamiltonian(QUBOHamiltonianBuilder):
         for variable, (left_id, right_id) in enumerate(edge_pairs):
             outgoing[left_id].append(variable)
             incoming[right_id].append(variable)
-            model.add_linear(variable, -self.config.edge_reward_scale * reward_by_pair[(left_id, right_id)])
+            model.add_linear(
+                variable,
+                self.config.edge_selection_penalty
+                - self.config.edge_reward_scale * reward_by_pair[(left_id, right_id)],
+            )
 
         source_variables = [model.source_variable_index(read_id) for read_id in read_ids]
         sink_variables = [model.sink_variable_index(read_id) for read_id in read_ids]
@@ -1008,6 +1120,353 @@ class EdgeCycleCoverDAGQUBOHamiltonian(QUBOHamiltonianBuilder):
             min_reward_score=self.config.min_reward_score,
         ), scorer=self.scorer)
         return helper._best_rewards_by_pair(read_ids, edges, score_mode)
+
+
+@dataclass(frozen=True)
+class EdgeOrderedPathHamiltonianConfig:
+    """Coefficients for the edge/order Hamilton-path QUBO with one void node."""
+
+    degree_penalty: Optional[float] = None
+    order_penalty: Optional[float] = None
+    activation_penalty: Optional[float] = None
+    edge_cost_scale: float = 1.0
+    cost_mode: str = "extension"
+    score_mode: Optional[str] = None
+    quality_identity_threshold: float = 0.98
+    normalize_costs: bool = True
+    include_source_length: bool = True
+
+    def validate(self) -> None:
+        for name, value in (
+            ("degree_penalty", self.degree_penalty),
+            ("order_penalty", self.order_penalty),
+            ("activation_penalty", self.activation_penalty),
+        ):
+            if value is not None and value <= 0.0:
+                raise ValueError(f"{name} must be positive when specified")
+        if self.edge_cost_scale < 0.0:
+            raise ValueError("edge_cost_scale must be non-negative")
+        if self.cost_mode not in ("extension", "shifted_reward"):
+            raise ValueError(
+                "cost_mode must be either 'extension' or 'shifted_reward'"
+            )
+        if not 0.0 < self.quality_identity_threshold < 1.0:
+            raise ValueError("quality_identity_threshold must be between 0 and 1")
+        if self.cost_mode == "shifted_reward" and self.include_source_length:
+            raise ValueError(
+                "include_source_length must be false for cost_mode='shifted_reward'"
+            )
+
+
+class EdgeOrderedPathQUBOHamiltonian(QUBOHamiltonianBuilder):
+    """
+    Select a minimum-cost Hamilton path in a directed graph.
+
+    One source edge ``void -> read`` and one sink edge ``read -> void`` close
+    the path into an augmented cycle.  Binary edge-position variables force
+    the selected read edges to have consecutive positions, which rules out
+    read-only subtours even when the candidate graph itself is cyclic.
+    """
+
+    def __init__(
+        self,
+        config: Optional[EdgeOrderedPathHamiltonianConfig] = None,
+        scorer: Optional[OverlapRewardScorer] = None,
+    ):
+        self.config = config or EdgeOrderedPathHamiltonianConfig()
+        self.config.validate()
+        self.scorer = scorer or OverlapRewardScorer(OverlapRewardScorerConfig(
+            score_mode=self.config.score_mode or "dp",
+            quality_identity_threshold=self.config.quality_identity_threshold,
+        ))
+        self.last_edge_count = 0
+        self.last_position_bit_count = 0
+        self.last_cost_min: Optional[float] = None
+        self.last_cost_max: Optional[float] = None
+        self.last_reward_min: Optional[float] = None
+        self.last_reward_max: Optional[float] = None
+        self.last_reward_shift: Optional[float] = None
+        self.last_score_mode: Optional[str] = None
+        self.last_cost_normalizer = 1.0
+        self.last_degree_penalty = 0.0
+        self.last_order_penalty = 0.0
+        self.last_activation_penalty = 0.0
+        self.last_objective_upper_bound = 0.0
+
+    def build(
+        self,
+        reads: list[Read],
+        edges: list[OverlapEdge],
+        weight_mode: str = "dp",
+    ) -> QUBOModel:
+        read_ids = [read.rid for read in reads]
+        if len(set(read_ids)) != len(read_ids):
+            raise ValueError("read ids must be unique")
+
+        read_length = {read.rid: len(read.seq) for read in reads}
+        if self.config.cost_mode == "extension":
+            cost_by_pair = self._best_extension_costs_by_pair(
+                read_ids, read_length, edges
+            )
+            self.last_reward_min = None
+            self.last_reward_max = None
+            self.last_reward_shift = None
+            self.last_score_mode = None
+        else:
+            score_mode = self.config.score_mode or weight_mode
+            reward_by_pair = self._best_rewards_by_pair(
+                read_ids, edges, score_mode
+            )
+            reward_shift = max(reward_by_pair.values(), default=0.0)
+            cost_by_pair = {
+                pair: reward_shift - reward
+                for pair, reward in reward_by_pair.items()
+            }
+            self.last_reward_min = (
+                min(reward_by_pair.values()) if reward_by_pair else None
+            )
+            self.last_reward_max = (
+                max(reward_by_pair.values()) if reward_by_pair else None
+            )
+            self.last_reward_shift = reward_shift
+            self.last_score_mode = score_mode
+        rank = {read_id: index for index, read_id in enumerate(read_ids)}
+        edge_pairs = sorted(
+            cost_by_pair,
+            key=lambda pair: (rank[pair[0]], rank[pair[1]]),
+        )
+
+        n = len(read_ids)
+        position_bit_count = max(1, math.ceil(math.log2(max(2, n))))
+        model = EdgeOrderedPathQUBOModel(
+            read_ids,
+            edge_pairs,
+            position_bit_count,
+        )
+        self.last_edge_count = len(edge_pairs)
+        self.last_position_bit_count = position_bit_count
+
+        if self.config.normalize_costs:
+            if self.config.cost_mode == "extension":
+                normalizer = max(read_length.values(), default=1)
+            else:
+                normalizer = max(cost_by_pair.values(), default=1.0)
+        else:
+            normalizer = 1
+        normalizer = max(1, normalizer)
+        self.last_cost_normalizer = float(normalizer)
+        normalized_cost = {
+            pair: cost / normalizer
+            for pair, cost in cost_by_pair.items()
+        }
+        normalized_source_length = {
+            read_id: length / normalizer
+            for read_id, length in read_length.items()
+        }
+        self.last_cost_min = min(normalized_cost.values()) if normalized_cost else None
+        self.last_cost_max = max(normalized_cost.values()) if normalized_cost else None
+
+        max_source_cost = (
+            max(normalized_source_length.values(), default=0.0)
+            if self.config.include_source_length
+            else 0.0
+        )
+        max_edge_cost = max(normalized_cost.values(), default=0.0)
+        objective_upper_bound = self.config.edge_cost_scale * (
+            max_source_cost + max(0, n - 1) * max_edge_cost
+        )
+        auto_penalty = objective_upper_bound + 1.0
+        degree_penalty = self.config.degree_penalty or auto_penalty
+        order_penalty = self.config.order_penalty or auto_penalty
+        activation_penalty = self.config.activation_penalty or auto_penalty
+        self.last_degree_penalty = degree_penalty
+        self.last_order_penalty = order_penalty
+        self.last_activation_penalty = activation_penalty
+        self.last_objective_upper_bound = objective_upper_bound
+
+        incoming: dict[str, list[tuple[str, str]]] = {
+            read_id: [] for read_id in read_ids
+        }
+        outgoing: dict[str, list[tuple[str, str]]] = {
+            read_id: [] for read_id in read_ids
+        }
+        for left_id, right_id in edge_pairs:
+            outgoing[left_id].append((left_id, right_id))
+            incoming[right_id].append((left_id, right_id))
+            edge_variable = model.edge_variable_index(left_id, right_id)
+            model.add_linear(
+                edge_variable,
+                self.config.edge_cost_scale * normalized_cost[(left_id, right_id)],
+            )
+
+        if self.config.include_source_length:
+            for read_id in read_ids:
+                model.add_linear(
+                    model.source_variable_index(read_id),
+                    self.config.edge_cost_scale * normalized_source_length[read_id],
+                )
+
+        for read_id in read_ids:
+            in_variables = [
+                model.edge_variable_index(*edge_pair)
+                for edge_pair in incoming[read_id]
+            ]
+            out_variables = [
+                model.edge_variable_index(*edge_pair)
+                for edge_pair in outgoing[read_id]
+            ]
+            self._add_square(
+                model,
+                {
+                    model.source_variable_index(read_id): -1.0,
+                    **{variable: -1.0 for variable in in_variables},
+                },
+                constant=1.0,
+                penalty=degree_penalty,
+            )
+            self._add_square(
+                model,
+                {
+                    model.sink_variable_index(read_id): -1.0,
+                    **{variable: -1.0 for variable in out_variables},
+                },
+                constant=1.0,
+                penalty=degree_penalty,
+            )
+
+        for left_id, right_id in edge_pairs:
+            edge_variable = model.edge_variable_index(left_id, right_id)
+            for bit_index in range(position_bit_count):
+                position_variable = model.position_variable_index(
+                    left_id, right_id, bit_index
+                )
+                # z_e,k <= x_e, or equivalently z_e,k * (1 - x_e) = 0.
+                model.add_linear(position_variable, activation_penalty)
+                model.add_quadratic(
+                    position_variable,
+                    edge_variable,
+                    -activation_penalty,
+                )
+
+        # For P_e = x_e + sum_k 2^k z_e,k, the residual
+        # O_v - I_v - D_v simplifies because each outgoing x_e cancels
+        # against the selected-outgoing count in D_v.
+        for read_id in read_ids:
+            coefficients: dict[int, float] = {
+                model.source_variable_index(read_id): -1.0,
+                model.sink_variable_index(read_id): float(n),
+            }
+            for left_id, right_id in incoming[read_id]:
+                self._add_coefficient(
+                    coefficients,
+                    model.edge_variable_index(left_id, right_id),
+                    -1.0,
+                )
+                for bit_index in range(position_bit_count):
+                    self._add_coefficient(
+                        coefficients,
+                        model.position_variable_index(left_id, right_id, bit_index),
+                        -float(1 << bit_index),
+                    )
+            for left_id, right_id in outgoing[read_id]:
+                for bit_index in range(position_bit_count):
+                    self._add_coefficient(
+                        coefficients,
+                        model.position_variable_index(left_id, right_id, bit_index),
+                        float(1 << bit_index),
+                    )
+            self._add_square(
+                model,
+                coefficients,
+                constant=0.0,
+                penalty=order_penalty,
+            )
+
+        model.quadratic = {
+            pair: coefficient
+            for pair, coefficient in model.quadratic.items()
+            if abs(coefficient) > 1e-12
+        }
+        return model
+
+    def _best_extension_costs_by_pair(
+        self,
+        read_ids: list[str],
+        read_length: dict[str, int],
+        edges: list[OverlapEdge],
+    ) -> dict[tuple[str, str], float]:
+        allowed = set(read_ids)
+        result: dict[tuple[str, str], float] = {}
+        for edge in edges:
+            if edge.left_id not in allowed or edge.right_id not in allowed:
+                continue
+            if edge.left_id == edge.right_id:
+                continue
+            pair = (edge.left_id, edge.right_id)
+            cost = float(max(0, read_length[edge.right_id] - edge.overlap_len))
+            previous = result.get(pair)
+            if previous is None or cost < previous:
+                result[pair] = cost
+        return result
+
+    def _best_rewards_by_pair(
+        self,
+        read_ids: list[str],
+        edges: list[OverlapEdge],
+        score_mode: str,
+    ) -> dict[tuple[str, str], float]:
+        allowed = set(read_ids)
+        result: dict[tuple[str, str], float] = {}
+        for edge in edges:
+            if edge.left_id not in allowed or edge.right_id not in allowed:
+                continue
+            if edge.left_id == edge.right_id:
+                continue
+            pair = (edge.left_id, edge.right_id)
+            reward = self.scorer.score(edge, score_mode)
+            if not math.isfinite(reward):
+                raise ValueError(f"non-finite edge reward for {pair}: {reward}")
+            previous = result.get(pair)
+            if previous is None or reward > previous:
+                result[pair] = reward
+        return result
+
+    @staticmethod
+    def _add_coefficient(
+        coefficients: dict[int, float],
+        variable: int,
+        value: float,
+    ) -> None:
+        coefficients[variable] = coefficients.get(variable, 0.0) + value
+        if abs(coefficients[variable]) <= 1e-12:
+            del coefficients[variable]
+
+    @staticmethod
+    def _add_square(
+        model: QUBOModel,
+        coefficients: dict[int, float],
+        *,
+        constant: float,
+        penalty: float,
+    ) -> None:
+        items = [
+            (variable, coefficient)
+            for variable, coefficient in coefficients.items()
+            if coefficient != 0.0
+        ]
+        model.add_constant(penalty * constant * constant)
+        for variable, coefficient in items:
+            model.add_linear(
+                variable,
+                penalty * (coefficient * coefficient + 2.0 * constant * coefficient),
+            )
+        for offset, (left, left_coefficient) in enumerate(items):
+            for right, right_coefficient in items[offset + 1:]:
+                model.add_quadratic(
+                    left,
+                    right,
+                    2.0 * penalty * left_coefficient * right_coefficient,
+                )
 
 
 @dataclass(frozen=True)
@@ -1640,7 +2099,10 @@ class OpenJijSQAConfig:
     num_sweeps: int = 1000
     seed: Optional[int] = 42
     beta: Optional[float] = None
+    gamma: Optional[float] = None
     trotter: Optional[int] = None
+    schedule: Optional[tuple[tuple[float, ...], ...]] = None
+    initial_state: Optional[tuple[int, ...]] = None
 
     def validate(self) -> None:
         if self.num_reads <= 0:
@@ -1649,8 +2111,26 @@ class OpenJijSQAConfig:
             raise ValueError("num_sweeps must be positive")
         if self.beta is not None and self.beta <= 0.0:
             raise ValueError("beta must be positive")
-        if self.trotter is not None and self.trotter <= 0:
-            raise ValueError("trotter must be positive")
+        if self.gamma is not None and self.gamma <= 0.0:
+            raise ValueError("gamma must be positive")
+        if self.trotter is not None and self.trotter < 2:
+            raise ValueError("trotter must be at least 2")
+        if self.schedule is not None:
+            if not self.schedule:
+                raise ValueError("schedule must not be empty")
+            for entry in self.schedule:
+                if len(entry) not in (2, 3):
+                    raise ValueError("schedule entries must contain 2 or 3 values")
+                if not 0.0 <= entry[0] <= 1.0:
+                    raise ValueError("schedule annealing parameter must be in [0, 1]")
+                if len(entry) == 3 and entry[1] <= 0.0:
+                    raise ValueError("schedule beta must be positive")
+                if entry[-1] <= 0 or int(entry[-1]) != entry[-1]:
+                    raise ValueError("schedule step length must be a positive integer")
+        if self.initial_state is not None and any(
+            value not in (0, 1) for value in self.initial_state
+        ):
+            raise ValueError("initial_state must contain only binary values")
 
 
 class OpenJijSimulatedQuantumAnnealer:
@@ -1680,8 +2160,22 @@ class OpenJijSimulatedQuantumAnnealer:
             kwargs["seed"] = self.config.seed
         if self.config.beta is not None:
             kwargs["beta"] = self.config.beta
+        if self.config.gamma is not None:
+            kwargs["gamma"] = self.config.gamma
         if self.config.trotter is not None:
             kwargs["trotter"] = self.config.trotter
+        if self.config.schedule is not None:
+            # OpenJij accepts a list or numpy array, not an immutable tuple.
+            kwargs["schedule"] = list(self.config.schedule)
+        if self.config.initial_state is not None:
+            if len(self.config.initial_state) != model.num_variables:
+                raise ValueError(
+                    "initial_state length must match the QUBO variable count"
+                )
+            kwargs["initial_state"] = {
+                index: value
+                for index, value in enumerate(self.config.initial_state)
+            }
 
         response = sampler.sample_qubo(qubo, **kwargs)
         self.last_response = response
@@ -1783,6 +2277,34 @@ class DWaveQPUAnnealer:
 def qubo_sample_for_order(model: QUBOModel, order: list[str]) -> list[int]:
     """Encode a complete read order for either position or edge-path QUBOs."""
     sample = [0] * model.num_variables
+    if isinstance(model, EdgeOrderedPathQUBOModel):
+        if len(order) != len(model.read_ids) or len(set(order)) != len(model.read_ids):
+            raise ValueError(
+                "Edge-ordered path samples require one ordered occurrence of every read."
+            )
+        if set(order) != set(model.read_ids):
+            raise ValueError("Edge-ordered path samples must contain exactly the model reads.")
+        for position, edge_pair in enumerate(zip(order, order[1:]), start=2):
+            variable = model.edge_index_by_pair.get(edge_pair)
+            if variable is None:
+                raise ValueError(
+                    f"Order uses edge {edge_pair[0]} -> {edge_pair[1]} "
+                    "that is absent from the candidate graph."
+                )
+            sample[variable] = 1
+            encoded_position = position - 1
+            if encoded_position >= (1 << model.position_bit_count):
+                raise ValueError("Edge position does not fit the model's binary encoding.")
+            for bit_index in range(model.position_bit_count):
+                if (encoded_position >> bit_index) & 1:
+                    sample[model.position_variable_index(
+                        edge_pair[0], edge_pair[1], bit_index
+                    )] = 1
+        if order:
+            sample[model.source_variable_index(order[0])] = 1
+            sample[model.sink_variable_index(order[-1])] = 1
+        return sample
+
     if isinstance(model, PDFAssemblyQUBOModel):
         if len(order) != len(model.read_ids):
             raise ValueError("PDF assembly samples require one ordered occurrence of every read.")
@@ -1891,7 +2413,11 @@ class QUBOLayoutSolver(LayoutSolver):
         anneal_seconds = perf_counter() - anneal_start
 
         decode_start = perf_counter()
-        if isinstance(model, PDFAssemblyQUBOModel):
+        if isinstance(model, EdgeOrderedPathQUBOModel):
+            order, decode_metadata = self._decode_edge_ordered_path(
+                model, annealing_result.sample
+            )
+        elif isinstance(model, PDFAssemblyQUBOModel):
             order, decode_metadata = self._decode_pdf_assembly(model, annealing_result.sample)
         elif isinstance(model, EdgeCycleCoverDAGQUBOModel):
             order, decode_metadata = self._decode_edge_cycle_cover(model, annealing_result.sample)
@@ -1908,7 +2434,9 @@ class QUBOLayoutSolver(LayoutSolver):
             "polish_improvements": 0,
             "polish_passes": 0,
         }
-        if self.polisher is not None and isinstance(model, EdgePathDAGQUBOModel):
+        if self.polisher is not None and isinstance(
+            model, (EdgePathDAGQUBOModel, EdgeOrderedPathQUBOModel)
+        ):
             raise ValueError("Permutation polish is not supported for edge-path QUBO models.")
         if self.polisher is not None:
             polish_result = self.polisher.polish(model, order)
@@ -2009,6 +2537,7 @@ class QUBOLayoutSolver(LayoutSolver):
                 "hamiltonian": "edge_cycle_cover_dag",
                 "degree_penalty": self.hamiltonian.config.degree_penalty,
                 "edge_reward_scale": self.hamiltonian.config.edge_reward_scale,
+                "edge_selection_penalty": self.hamiltonian.config.edge_selection_penalty,
                 "score_mode": self.hamiltonian.config.score_mode or weight_mode,
                 "normalize_rewards": self.hamiltonian.config.normalize_rewards,
                 "edge_count": self.hamiltonian.last_edge_count,
@@ -2016,6 +2545,37 @@ class QUBOLayoutSolver(LayoutSolver):
                 "reward_max": self.hamiltonian.last_reward_max,
                 "candidate_dag": True,
                 "void_node": EdgeCycleCoverDAGQUBOModel.void_id,
+            })
+        elif isinstance(self.hamiltonian, EdgeOrderedPathQUBOHamiltonian):
+            metadata.update({
+                "hamiltonian": "edge_ordered_path",
+                "degree_penalty": self.hamiltonian.last_degree_penalty,
+                "order_penalty": self.hamiltonian.last_order_penalty,
+                "activation_penalty": self.hamiltonian.last_activation_penalty,
+                "edge_cost_scale": self.hamiltonian.config.edge_cost_scale,
+                "cost_mode": self.hamiltonian.config.cost_mode,
+                "score_mode": self.hamiltonian.last_score_mode,
+                "quality_identity_threshold": self.hamiltonian.config.quality_identity_threshold,
+                "quality_error_penalty": (
+                    self.hamiltonian.config.quality_identity_threshold
+                    / (1.0 - self.hamiltonian.config.quality_identity_threshold)
+                ),
+                "quality_margin_coefficients": quality_margin_coefficients(
+                    self.hamiltonian.config.quality_identity_threshold
+                ),
+                "normalize_costs": self.hamiltonian.config.normalize_costs,
+                "cost_normalizer": self.hamiltonian.last_cost_normalizer,
+                "include_source_length": self.hamiltonian.config.include_source_length,
+                "objective_upper_bound": self.hamiltonian.last_objective_upper_bound,
+                "edge_count": self.hamiltonian.last_edge_count,
+                "position_bit_count": self.hamiltonian.last_position_bit_count,
+                "cost_min": self.hamiltonian.last_cost_min,
+                "cost_max": self.hamiltonian.last_cost_max,
+                "reward_min": self.hamiltonian.last_reward_min,
+                "reward_max": self.hamiltonian.last_reward_max,
+                "reward_shift": self.hamiltonian.last_reward_shift,
+                "candidate_dag": False,
+                "void_node": EdgeOrderedPathQUBOModel.void_id,
             })
         elif isinstance(self.hamiltonian, EdgePathCoverDAGQUBOHamiltonian):
             metadata.update({
@@ -2078,6 +2638,179 @@ class QUBOLayoutSolver(LayoutSolver):
             "valid_binary_layout": valid_sample,
             "read_assignment_violations": read_violations,
             "position_assignment_violations": position_violations,
+        }
+
+    @staticmethod
+    def _decode_edge_ordered_path(
+        model: EdgeOrderedPathQUBOModel,
+        sample: list[int],
+    ) -> tuple[list[str], dict[str, object]]:
+        rank = {read_id: index for index, read_id in enumerate(model.read_ids)}
+        selected_edges = [
+            edge_pair
+            for edge_pair in model.edge_pairs
+            if sample[model.edge_variable_index(*edge_pair)]
+        ]
+        selected_sources = [
+            read_id
+            for read_id in model.read_ids
+            if sample[model.source_variable_index(read_id)]
+        ]
+        selected_sinks = [
+            read_id
+            for read_id in model.read_ids
+            if sample[model.sink_variable_index(read_id)]
+        ]
+
+        incoming: dict[str, list[str]] = {read_id: [] for read_id in model.read_ids}
+        outgoing: dict[str, list[str]] = {read_id: [] for read_id in model.read_ids}
+        incoming_pairs: dict[str, list[tuple[str, str]]] = {
+            read_id: [] for read_id in model.read_ids
+        }
+        outgoing_pairs: dict[str, list[tuple[str, str]]] = {
+            read_id: [] for read_id in model.read_ids
+        }
+        positions: dict[tuple[str, str], int] = {}
+        activation_violations = 0
+        for left_id, right_id in model.edge_pairs:
+            outgoing_pairs[left_id].append((left_id, right_id))
+            incoming_pairs[right_id].append((left_id, right_id))
+            edge_selected = bool(sample[model.edge_variable_index(left_id, right_id)])
+            active_position_bits = sum(
+                int(sample[model.position_variable_index(left_id, right_id, bit_index)])
+                for bit_index in range(model.position_bit_count)
+            )
+            if not edge_selected:
+                activation_violations += active_position_bits
+            positions[(left_id, right_id)] = model.edge_position(
+                left_id, right_id, sample
+            )
+            if edge_selected:
+                outgoing[left_id].append(right_id)
+                incoming[right_id].append(left_id)
+
+        read_in_constraint_violations = 0
+        read_out_constraint_violations = 0
+        order_constraint_violations = 0
+        order_residuals: dict[str, int] = {}
+        for read_id in model.read_ids:
+            read_in_constraint_violations += abs(
+                1 - len(incoming[read_id]) - int(read_id in selected_sources)
+            )
+            read_out_constraint_violations += abs(
+                1 - len(outgoing[read_id]) - int(read_id in selected_sinks)
+            )
+            # Match the exact compact QUBO residual, including position bits
+            # that are incorrectly active on an unselected edge.  Those ghost
+            # bits are also reported separately as activation violations.
+            residual = (
+                -int(read_id in selected_sources)
+                + len(model.read_ids) * int(read_id in selected_sinks)
+                - sum(positions[edge_pair] for edge_pair in incoming_pairs[read_id])
+                + sum(
+                    positions[edge_pair]
+                    - int(bool(sample[model.edge_variable_index(*edge_pair)]))
+                    for edge_pair in outgoing_pairs[read_id]
+                )
+            )
+            order_residuals[read_id] = residual
+            order_constraint_violations += abs(residual)
+
+        void_out_constraint_violation = abs(1 - len(selected_sources))
+        void_in_constraint_violation = abs(1 - len(selected_sinks))
+        in_degree_violations = sum(max(0, len(values) - 1) for values in incoming.values())
+        out_degree_violations = sum(max(0, len(values) - 1) for values in outgoing.values())
+
+        path: list[str] = []
+        cycle_closed_through_void = False
+        if len(selected_sources) == 1:
+            current = selected_sources[0]
+            seen: set[str] = set()
+            while current not in seen:
+                path.append(current)
+                seen.add(current)
+                if current in selected_sinks:
+                    cycle_closed_through_void = True
+                    break
+                next_nodes = sorted(outgoing[current], key=rank.get)
+                if len(next_nodes) != 1:
+                    break
+                current = next_nodes[0]
+
+        selected_path_positions = [
+            positions[edge_pair]
+            for edge_pair in zip(path, path[1:])
+        ]
+        expected_path_positions = list(range(2, len(model.read_ids) + 1))
+        position_sequence_valid = selected_path_positions == expected_path_positions
+        single_path = (
+            read_in_constraint_violations == 0
+            and read_out_constraint_violations == 0
+            and void_in_constraint_violation == 0
+            and void_out_constraint_violation == 0
+            and activation_violations == 0
+            and order_constraint_violations == 0
+            and cycle_closed_through_void
+            and len(path) == len(model.read_ids)
+            and position_sequence_valid
+        )
+
+        used = set(path)
+        order = path + [
+            read_id
+            for read_id in model.read_ids
+            if read_id not in used
+        ]
+        closing_edge = None
+        endpoints_connected = False
+        if path:
+            candidate = (path[-1], path[0])
+            if candidate in model.edge_index_by_pair:
+                closing_edge = candidate
+                endpoints_connected = True
+
+        cycle_components = []
+        if path:
+            cycle_components.append([
+                EdgeOrderedPathQUBOModel.void_id,
+                *path,
+                EdgeOrderedPathQUBOModel.void_id,
+            ])
+
+        return order, {
+            "valid_binary_layout": single_path,
+            "valid_edge_path": single_path,
+            "single_path_layout": single_path,
+            "valid_edge_cycle": single_path,
+            "valid_cycle_cover": single_path,
+            "single_cycle_cover": single_path,
+            "selected_edge_count": len(selected_edges),
+            "selected_edges": selected_edges,
+            "selected_edge_positions": [
+                (left_id, right_id, positions[(left_id, right_id)])
+                for left_id, right_id in selected_edges
+            ],
+            "selected_source_count": len(selected_sources),
+            "selected_sink_count": len(selected_sinks),
+            "selected_sources": selected_sources,
+            "selected_sinks": selected_sinks,
+            "read_in_constraint_violations": read_in_constraint_violations,
+            "read_out_constraint_violations": read_out_constraint_violations,
+            "void_in_constraint_violation": void_in_constraint_violation,
+            "void_out_constraint_violation": void_out_constraint_violation,
+            "activation_violations": activation_violations,
+            "order_constraint_violations": order_constraint_violations,
+            "order_residuals": order_residuals,
+            "in_degree_violations": in_degree_violations,
+            "out_degree_violations": out_degree_violations,
+            "cycle_closed_through_void": cycle_closed_through_void,
+            "position_sequence_valid": position_sequence_valid,
+            "selected_path_positions": selected_path_positions,
+            "path_endpoints_connected": endpoints_connected,
+            "closing_edge": closing_edge,
+            "cycle_components": cycle_components,
+            "cycle_component_count": len(cycle_components),
+            "void_node": EdgeOrderedPathQUBOModel.void_id,
         }
 
     @staticmethod

@@ -2,8 +2,9 @@
 olc_pipeline.refiner
 Version: 0.1.0
 
-Overlap refinement modules. ParasailOverlapRefiner is the main intended
-refiner. It aligns only minimap2/original candidates, not all read pairs.
+Overlap edge-construction modules. PafCandidateEdgeAdapter preserves minimap2
+PAF geometry directly, while ParasailOverlapRefiner optionally realigns only
+minimap2/original candidates, not all read pairs.
 
 This module uses parasail's semi-global traceback alignment to refine overlap
 boundaries and build aligned strings for MI scoring.
@@ -21,6 +22,21 @@ import parasail
 from .data import Read, OverlapCandidate, PairwiseAlignment, OverlapEdge
 
 MODULE_VERSION = "0.1.0"
+
+
+def reverse_complement(seq: str) -> str:
+    """Return the DNA reverse complement used for oriented-read refinement."""
+    table = str.maketrans("ACGTNacgtn", "TGCANtgcan")
+    return seq.translate(table)[::-1]
+
+
+def oriented_sequence(seq: str, orientation: int) -> str:
+    """Return a physical read in the requested +1/-1 orientation."""
+    if orientation == +1:
+        return seq
+    if orientation == -1:
+        return reverse_complement(seq)
+    raise ValueError(f"read orientation must be +1 or -1, got {orientation!r}")
 
 
 class OverlapRefiner(ABC):
@@ -52,6 +68,50 @@ class RefinerConfig:
     gap_extend: int = 1
 
 
+class PafCandidateEdgeAdapter(OverlapRefiner):
+    """Convert an already-filtered minimap2 PAF candidate directly to an edge.
+
+    This deliberately performs no sequence realignment.  PAF does not split
+    non-matching alignment columns into substitutions and gaps in the fields
+    retained by :class:`OverlapCandidate`, so ``mismatches`` and
+    ``edit_distance`` both record their combined count as a PAF-level estimate.
+    """
+
+    def refine(self, candidate: OverlapCandidate, reads_by_id: dict[str, Read]) -> OverlapEdge:
+        del reads_by_id
+        overlap_len = candidate.aln_block_len
+        nonmatching_columns = max(0, overlap_len - candidate.n_match)
+        identity = candidate.n_match / overlap_len if overlap_len > 0 else 0.0
+        error_rate = nonmatching_columns / overlap_len if overlap_len > 0 else 1.0
+
+        return OverlapEdge(
+            left_id=candidate.left_id,
+            right_id=candidate.right_id,
+            left_start=candidate.left_start_hint,
+            left_end=candidate.left_end_hint,
+            right_start=candidate.right_start_hint,
+            right_end=candidate.right_end_hint,
+            overlap_len=overlap_len,
+            shift=candidate.rough_shift,
+            matches=candidate.n_match,
+            mismatches=nonmatching_columns,
+            insertions=0,
+            deletions=0,
+            gaps=0,
+            edit_distance=nonmatching_columns,
+            error_rate=error_rate,
+            identity=identity,
+            dp_score=float(candidate.n_match),
+            weight_dp=float(candidate.n_match),
+            candidate_source=f"{candidate.source}_paf_direct",
+            mapq=candidate.mapq,
+            accepted=overlap_len > 0,
+            alignment=None,
+            left_orientation=candidate.left_orientation,
+            right_orientation=candidate.right_orientation,
+        )
+
+
 class ParasailOverlapRefiner(OverlapRefiner):
     """
     Refine candidate overlaps with parasail-style semi-global alignment.
@@ -74,7 +134,13 @@ class ParasailOverlapRefiner(OverlapRefiner):
         left = reads_by_id[candidate.left_id]
         right = reads_by_id[candidate.right_id]
 
-        left_region, right_region, left_offset, right_offset = self._extract_regions(candidate, left, right)
+        left_seq = oriented_sequence(left.seq, candidate.left_orientation)
+        right_seq = oriented_sequence(right.seq, candidate.right_orientation)
+        left_region, right_region, left_offset, right_offset = self._extract_regions(
+            candidate,
+            left_seq,
+            right_seq,
+        )
 
         alignment = self._align_overlap_parasail(left_region, right_region, left_offset, right_offset)
 
@@ -109,13 +175,15 @@ class ParasailOverlapRefiner(OverlapRefiner):
             mapq=candidate.mapq,
             accepted=accepted,
             alignment=alignment,
+            left_orientation=candidate.left_orientation,
+            right_orientation=candidate.right_orientation,
         )
 
     def _extract_regions(
         self,
         candidate: OverlapCandidate,
-        left: Read,
-        right: Read,
+        left_seq: str,
+        right_seq: str,
     ) -> tuple[str, str, int, int]:
         """
         Extract left suffix and right prefix regions with a small margin.
@@ -126,19 +194,19 @@ class ParasailOverlapRefiner(OverlapRefiner):
         """
         margin = self.config.margin
         left_start = max(0, candidate.left_start_hint - margin)
-        left_end = min(len(left.seq), candidate.left_end_hint)
+        left_end = min(len(left_seq), candidate.left_end_hint)
 
         # For suffix-prefix overlap, right_start is usually 0. We keep it fixed at
         # 0 for now to avoid accidentally aligning non-overlap prefixes.
         right_start = max(0, candidate.right_start_hint)
-        right_end = min(len(right.seq), candidate.right_end_hint + margin)
+        right_end = min(len(right_seq), candidate.right_end_hint + margin)
 
         if left_start >= left_end:
-            left_start, left_end = 0, len(left.seq)
+            left_start, left_end = 0, len(left_seq)
         if right_start >= right_end:
-            right_start, right_end = 0, len(right.seq)
+            right_start, right_end = 0, len(right_seq)
 
-        return left.seq[left_start:left_end], right.seq[right_start:right_end], left_start, right_start
+        return left_seq[left_start:left_end], right_seq[right_start:right_end], left_start, right_start
 
     def _align_overlap_parasail(
         self,

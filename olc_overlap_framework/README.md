@@ -24,6 +24,8 @@ src/olc_pipeline/
   refiner.py           ParasailOverlapRefiner using parasail semi-global alignment.
   mi_scorer.py         Shannon MI / NMI scorer over aligned columns.
   evaluator.py         Edge and layout evaluation helpers.
+  graph_builder.py     Reference-free oriented graph cleanup helpers.
+  reference_evaluator.py  Circular-reference-only order evaluation.
   layout_solver.py     Dummy/OR-Tools/QUBO layout solver interfaces and built-in binary SA.
   pipeline.py          High-level experiment runner.
 ```
@@ -86,6 +88,46 @@ Then run any demo from that activated WSL shell, for example:
 python demo.py
 python demo_exact_vs_minimap.py
 ```
+
+### Real phiX174 graph audit
+
+The phi174 graph audits keep candidate finding, preprocessing, and graph
+orientation reads-only. Their current preprocessing mode converts accepted
+minimap2 PAF candidates directly into graph edges; Parasail/DP refinement is
+deferred and is not used to reject these edges. The reference FASTA is used
+separately to report read placements and mapping error rates; it is not passed
+into graph building.
+
+```bash
+python demo_phi174_graph12.py
+```
+
+The graph stage represents each physical read once. For a small graph, the
+single orientation per read is selected exhaustively from overlap evidence,
+with one anchor orientation fixed only to remove the global reverse-complement
+symmetry. The generated DOT/SVG/PNG and per-read reference audit are written
+under `debug/phi174_cycle12_graph/`.
+
+Before layout, the graph builder applies a reference-free full-coverage
+reduction.  PAF query/target endpoints must be exact (no terminal tolerance),
+the total match ratio must be at least `0.990`, and reverse-strand records are
+included.  Strict containment and co-linear duplicate reads are handled by the
+same rule: each connected group keeps its longest read and incident edges of
+removed nodes are discarded.  No edge rewiring, transitive reduction, or
+degree normalization is performed.  The 742-read demo uses `0.990` for both
+candidate acceptance and this reduction.  The 12-read benchmark retains its
+documented `0.96` candidate threshold because its genuine ring edges include
+identities below `0.990`; its full-coverage reduction threshold remains
+`0.990`.
+
+The 742-read audit accepts `--min-overlap`. A scan at 80, 70, 60, and 50 bp
+found 34 reads missing at least one directed side at every threshold, while
+the selected edge count grew from 8,506 to 12,070. The current conservative
+baseline therefore remains 80 bp. At this baseline the demo performs one
+non-recursive low-support pass and removes those 34 reads. The resulting
+812-node, 8,385-edge graph is strongly connected, has no zero-in/zero-out
+nodes, and contains a graph-verified Hamilton cycle. The 50 bp case remains a
+later comparison rather than the current default.
 
 To include the C++ version of the original exact-overlap algorithm in the speed
 comparison, compile it in WSL and pass the resulting binary to the comparison
@@ -409,4 +451,6 @@ source .venv/bin/activate
 
 - `OriginalCandidateFinder` is a reserved interface for the custom/original overlap algorithm.
 - `ORToolsLayoutSolver` is intentionally left unimplemented.
-- The first version only handles same-strand (`+`) suffix-prefix overlaps. Reverse-complement handling should be added in a later version.
+- The legacy default candidate configuration preserves same-strand behavior for
+  existing experiments. Real-read bidirected demos explicitly enable reverse
+  PAF parsing and reciprocal reverse-complement edges.

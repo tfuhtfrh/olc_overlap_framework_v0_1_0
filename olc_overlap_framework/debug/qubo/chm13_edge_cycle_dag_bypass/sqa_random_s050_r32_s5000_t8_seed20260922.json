@@ -1,0 +1,92 @@
+{
+  "dataset": "D:\\Pytnon\\olc_overlap_framework_v0_1_0\\test_data\\CHM13\\CHM13_complex144",
+  "dag_check_bypassed": true,
+  "reads": 144,
+  "edges": 261,
+  "logical_variables": 549,
+  "quadratic_terms": 21434,
+  "degree_penalty": 100.0,
+  "edge_reward_scale": 1.0,
+  "score_mode": "dp",
+  "reward_normalizer": 16826,
+  "reference": {
+    "energy": -79.82247711875448,
+    "valid_single_cycle": true,
+    "degree_feasible_cycle_cover": true,
+    "selected_edge_count": 143,
+    "selected_source_count": 1,
+    "selected_sink_count": 1,
+    "read_in_constraint_violations": 0,
+    "read_out_constraint_violations": 0,
+    "void_in_constraint_violation": 0,
+    "void_out_constraint_violation": 0,
+    "selected_edge_reward_sum": 1343093,
+    "cycle_component_count": 1,
+    "cycle_component_read_sizes": [
+      144
+    ],
+    "void_component_read_count": 144,
+    "single_flip": {
+      "minimum_delta": 199.0,
+      "downhill_flips": 0,
+      "flat_flips": 0
+    }
+  },
+  "exact_maximum_weight_cycle_cover": {
+    "energy": -79.83685962202094,
+    "valid_single_cycle": false,
+    "degree_feasible_cycle_cover": true,
+    "selected_edge_count": 143,
+    "selected_source_count": 1,
+    "selected_sink_count": 1,
+    "read_in_constraint_violations": 0,
+    "read_out_constraint_violations": 0,
+    "void_in_constraint_violation": 0,
+    "void_out_constraint_violation": 0,
+    "selected_edge_reward_sum": 1343335,
+    "cycle_component_count": 2,
+    "cycle_component_read_sizes": [
+      141,
+      3
+    ],
+    "void_component_read_count": 141,
+    "single_flip": {
+      "minimum_delta": 199.21092357066445,
+      "downhill_flips": 0,
+      "flat_flips": 0
+    }
+  },
+  "sqa": {
+    "energy": -76.71603470819446,
+    "valid_single_cycle": false,
+    "degree_feasible_cycle_cover": true,
+    "selected_edge_count": 143,
+    "selected_source_count": 1,
+    "selected_sink_count": 1,
+    "read_in_constraint_violations": 0,
+    "read_out_constraint_violations": 0,
+    "void_in_constraint_violation": 0,
+    "void_out_constraint_violation": 0,
+    "selected_edge_reward_sum": 1290824,
+    "cycle_component_count": 3,
+    "cycle_component_read_sizes": [
+      140,
+      2,
+      2
+    ],
+    "void_component_read_count": 140,
+    "single_flip": {
+      "minimum_delta": 199.0,
+      "downhill_flips": 0,
+      "flat_flips": 0
+    },
+    "num_reads": 32,
+    "num_sweeps": 5000,
+    "trotter": 8,
+    "seed": 20260922,
+    "start_s": 0.5,
+    "seconds": 6.746470800135285,
+    "reported_energy": -76.71603470806804,
+    "energy_above_exact_cycle_cover": 3.1208249139529016
+  }
+}

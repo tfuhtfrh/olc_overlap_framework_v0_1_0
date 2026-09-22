@@ -1,0 +1,18 @@
+{
+  "scheme": "quality_margin_gcd_normalized_v2",
+  "identity_threshold": 0.98,
+  "symbols": {
+    "M": "exact matching bases",
+    "B": "alignment block length",
+    "d": "B-M; mismatch and gap bases"
+  },
+  "source_formula": "1000*M - 980*B",
+  "primitive_formula": "1*M - 49*d",
+  "divisor": 20,
+  "energy_convention": "E_layout = -sum(weight) over selected path edges",
+  "reference_used_in_weight": false,
+  "reference_path_score": 1343093,
+  "runner_up_score": 1338209,
+  "reference_margin": 4884,
+  "ranking_equivalence": "Multiplying every primary weight and path score by 20 exactly recovers the original 1000*M-980*B scale."
+}

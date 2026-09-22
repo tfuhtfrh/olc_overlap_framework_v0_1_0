@@ -1,0 +1,53 @@
+== phi174 cycle742 unsupported-read reference audit ==
+audit_scope: before_approved_one_pass_low_support_deletion
+current_action_for_flagged_reads: removed_by_cycle742_demo
+reference_used_for_graph: no
+edge_preprocessing: minimap2_paf_direct_no_dp
+reads: 994
+read_length_mean: 150.378270
+read_length_min: 140
+read_length_max: 151
+mapped_reads: 984/994
+min_overlap: 80
+candidate_identity_threshold: 0.990
+full_coverage_identity_threshold: 0.990
+full_coverage_terminal_tolerance: 0
+selected_one_side_edges: 8506
+orientation_constraints: 11913
+orientation_constraint_conflicts: 0
+full_coverage_evidence: 169
+full_coverage_reads_removed: 148
+containment_evidence: 2
+contained_reads_removed: 0
+unsupported_reads: 34
+unsupported_status_counts: {'no_in_or_out_support': 11, 'no_in_support': 8, 'no_out_support': 15}
+unsupported_mapped_reads: 24/34
+unsupported_mapped_status_counts: {'no_in_or_out_support': 3, 'no_in_support': 7, 'no_out_support': 14}
+unsupported_raw_physical_status_counts: {'no_in_or_out_support': 11, 'supported': 23}
+unsupported_selected_zero_in_but_raw_in_exists: 8
+unsupported_selected_zero_out_but_raw_out_exists: 15
+unsupported_final_zero_in_but_pre_full_filter_in_exists: 0
+unsupported_final_zero_out_but_pre_full_filter_out_exists: 0
+raw_no_support_mapped_reads: 3/11
+raw_no_support_unmapped_ids: SRR27862880.55001_m1,SRR27862880.62001_m1,SRR27862880.202001_m1,SRR27862880.218501_m1,SRR27862880.231501_m1,SRR27862880.55001_m2,SRR27862880.107501_m2,SRR27862880.218501_m2
+raw_no_support_read_length_mean: 150.273
+raw_no_support_mapped_identity_mean: 0.96719600;min=0.93918919;max=0.98888889
+unsupported_read_length_mean: 150.324
+unsupported_mapped_identity_mean: 0.98210531
+unsupported_orientation_agreement_direct: 0.916667
+unsupported_with_edge_to_one_of_6_reference_neighbors: 6/24
+missing_side_count: 45
+missing_side_primary_cause_counts: {'below_identity_0.990': 24, 'below_min_overlap': 1, 'no_positive_shift_dovetail': 2, 'reference_unmapped': 18}
+unsupported_reference_unmapped_reads: 10
+retained_graph_mapped_reads: 836/846
+retained_graph_reference_coverage_bp: 5386/5386
+supported_only_reads: 812
+supported_only_mapped_reads: 812/812
+supported_only_reference_coverage_bp: 5386/5386
+reference_coverage_bp: 5386/5386
+reference_preset: sr
+placements_tsv: /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/olc_overlap_framework/debug/phi174_cycle742_graph/cycle742_reference_placements.tsv
+unsupported_reads_tsv: /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/olc_overlap_framework/debug/phi174_cycle742_graph/cycle742_unsupported_reads.tsv
+neighbors_tsv: /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/olc_overlap_framework/debug/phi174_cycle742_graph/cycle742_unsupported_read_neighbors.tsv
+missing_sides_tsv: /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/olc_overlap_framework/debug/phi174_cycle742_graph/cycle742_unsupported_missing_sides.tsv
+unmapped_reads_tsv: /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/olc_overlap_framework/debug/phi174_cycle742_graph/cycle742_unsupported_unmapped_reads.tsv

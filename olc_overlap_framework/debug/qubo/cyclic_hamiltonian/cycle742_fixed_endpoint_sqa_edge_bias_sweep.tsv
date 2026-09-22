@@ -1,0 +1,8 @@
+degree_penalty	edge_reward_scale	edge_selection_penalty	num_reads	num_sweeps	seed	raw_edges	raw_in_violations	raw_out_violations	post_edges	post_in_violations	post_out_violations	valid
+100	10	0	1	1000	3	817	6	6	817	6	6	false
+100	10	4	1	1000	3	819	8	8	819	8	8	false
+100	10	6	1	1000	3	813	4	2	814	3	3	false
+100	10	8	1	1000	3	811	2	4	810	3	3	false
+100	10	10	1	1000	3	805	6	6	805	6	6	false
+100	10	12	1	1000	3	804	7	7	804	7	7	false
+100	10	8	10	2000	11	811	4	2	810	3	3	false

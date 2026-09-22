@@ -1,0 +1,78 @@
+== reference-free full-length co-linear filter sweep ==
+reads: 994
+paf: /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/test_data/phi174/SRR27862880_phiX174_OLC_cycle742_pilot/all_vs_all.exact.paf
+definition: both PAF intervals exactly span both full reads; no reference used
+representative: highest accepted-edge incidence in that threshold graph, then ID
+
+threshold: 0.995
+full_collinear_pairs: 60
+full_collinear_groups: 49
+full_collinear_group_sizes: [4, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+removed_nodes: 54
+retained_nodes: 940
+selected_edges: 9969
+zero_in_nodes: 52
+zero_out_nodes: 51
+hamilton_cycle: no
+after_one_pass_low_support_nodes: 862
+after_one_pass_low_support_edges: 9653
+after_one_pass_low_support_zero_in_nodes: 0
+after_one_pass_low_support_zero_out_nodes: 1
+after_one_pass_low_support_hamilton_cycle: no
+
+threshold: 0.993
+full_collinear_pairs: 63
+full_collinear_groups: 52
+full_collinear_group_sizes: [4, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+removed_nodes: 57
+retained_nodes: 937
+selected_edges: 10052
+zero_in_nodes: 31
+zero_out_nodes: 35
+hamilton_cycle: no
+after_one_pass_low_support_nodes: 889
+after_one_pass_low_support_edges: 9918
+after_one_pass_low_support_zero_in_nodes: 0
+after_one_pass_low_support_zero_out_nodes: 0
+after_one_pass_low_support_hamilton_cycle: unknown_timeout
+
+A_C_pair_present_at_threshold: True
+A_C_pair_removed_representative: SRR27862880.71501_m1
+
+threshold: 0.990
+full_collinear_pairs: 63
+full_collinear_groups: 52
+full_collinear_group_sizes: [4, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+removed_nodes: 57
+retained_nodes: 937
+selected_edges: 10518
+zero_in_nodes: 20
+zero_out_nodes: 27
+hamilton_cycle: no
+after_one_pass_low_support_nodes: 902
+after_one_pass_low_support_edges: 10397
+after_one_pass_low_support_zero_in_nodes: 0
+after_one_pass_low_support_zero_out_nodes: 0
+after_one_pass_low_support_hamilton_cycle: unknown_timeout
+
+A_C_pair_present_at_threshold: True
+A_C_pair_removed_representative: SRR27862880.71501_m1
+
+threshold: 0.985
+full_collinear_pairs: 66
+full_collinear_groups: 55
+full_collinear_group_sizes: [4, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+removed_nodes: 60
+retained_nodes: 934
+selected_edges: 10495
+zero_in_nodes: 18
+zero_out_nodes: 26
+hamilton_cycle: no
+after_one_pass_low_support_nodes: 902
+after_one_pass_low_support_edges: 10397
+after_one_pass_low_support_zero_in_nodes: 0
+after_one_pass_low_support_zero_out_nodes: 0
+after_one_pass_low_support_hamilton_cycle: unknown_timeout
+
+A_C_pair_present_at_threshold: True
+A_C_pair_removed_representative: SRR27862880.71501_m1

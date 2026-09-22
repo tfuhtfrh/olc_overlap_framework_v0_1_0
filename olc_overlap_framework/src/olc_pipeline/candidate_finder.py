@@ -21,7 +21,7 @@ import subprocess
 import tempfile
 from typing import Iterable, Optional
 
-from .data import Read, OverlapCandidate
+from .data import ContainmentEvidence, FullCoverageEvidence, Read, OverlapCandidate
 from .io_utils import write_reads_fasta
 
 MODULE_VERSION = "0.1.0"
@@ -53,6 +53,11 @@ class Minimap2Config:
     max_error_rate_hint: float = 0.25
     overhang_tolerance: int = 50
     min_mapq: int = 0
+    support_reverse_strand: bool = False
+    include_reverse_complement_edges: bool = False
+    min_paf_identity: Optional[float] = None
+    full_coverage_min_identity: Optional[float] = None
+    containment_terminal_tolerance: int = 2
     extra_args: tuple[str, ...] = ()
     debug_dir: Optional[Path] = None
 
@@ -71,6 +76,8 @@ class Minimap2CandidateFinder(OverlapCandidateFinder):
         self.last_command: list[str] = []
         self.last_stderr: str = ""
         self.last_filter_counts: Counter[str] = Counter()
+        self.last_containment_evidence: list[ContainmentEvidence] = []
+        self.last_full_coverage_evidence: list[FullCoverageEvidence] = []
         self.last_debug_paf_path: Optional[Path] = None
 
     def find_candidates(self, reads: list[Read]) -> list[OverlapCandidate]:
@@ -134,6 +141,10 @@ class Minimap2CandidateFinder(OverlapCandidateFinder):
 
     def _parse_paf_lines(self, lines: Iterable[str]) -> Iterable[OverlapCandidate]:
         counts: Counter[str] = Counter()
+        containment_keys: set[tuple[str, str, int, int]] = set()
+        full_coverage_keys: set[tuple[str, str]] = set()
+        self.last_containment_evidence = []
+        self.last_full_coverage_evidence = []
         for line in lines:
             if not line.strip():
                 continue
@@ -170,14 +181,77 @@ class Minimap2CandidateFinder(OverlapCandidateFinder):
                 counts["skipped_empty_alignment"] += 1
                 continue
 
+            # Capture the node-reduction evidence before the directed-edge
+            # quality/geometry filters.  Full-coverage evidence is governed
+            # by its own identity threshold and must not disappear merely
+            # because the same PAF record cannot form a positive-shift edge.
+            full_coverage = self._paf_to_full_coverage_evidence(
+                q_id=q_id,
+                q_len=q_len,
+                q_st=q_st,
+                q_en=q_en,
+                strand=strand,
+                t_id=t_id,
+                t_len=t_len,
+                t_st=t_st,
+                t_en=t_en,
+                n_match=n_match,
+                aln_block_len=aln_block_len,
+                mapq=mapq,
+            )
+            full_coverage_threshold = self.config.full_coverage_min_identity
+            if full_coverage_threshold is None:
+                full_coverage_threshold = self.config.min_paf_identity
+            if (
+                full_coverage is not None
+                and full_coverage_threshold is not None
+                and n_match / aln_block_len >= full_coverage_threshold
+            ):
+                key = tuple(sorted((full_coverage.first_id, full_coverage.second_id)))
+                if key not in full_coverage_keys:
+                    full_coverage_keys.add(key)
+                    self.last_full_coverage_evidence.append(full_coverage)
+                    counts["full_coverage_evidence"] += 1
+
+            if (
+                self.config.min_paf_identity is not None
+                and n_match / aln_block_len < self.config.min_paf_identity
+            ):
+                counts["skipped_paf_identity"] += 1
+                continue
+
             error_rate_hint = self._error_rate_hint(n_match, aln_block_len, tags)
             if error_rate_hint > self.config.max_error_rate_hint:
                 counts["skipped_error_hint"] += 1
                 continue
 
-            # Version 0.1.0 only handles same-strand directed overlaps.
-            # Reverse-complement handling is left for a later module update.
-            if strand != "+":
+            containment = self._paf_to_containment_evidence(
+                q_id=q_id,
+                q_len=q_len,
+                q_st=q_st,
+                q_en=q_en,
+                strand=strand,
+                t_id=t_id,
+                t_len=t_len,
+                t_st=t_st,
+                t_en=t_en,
+                n_match=n_match,
+                aln_block_len=aln_block_len,
+                mapq=mapq,
+            )
+            if containment is not None:
+                key = (
+                    containment.contained_id,
+                    containment.container_id,
+                    containment.contained_orientation,
+                    containment.container_orientation,
+                )
+                if key not in containment_keys:
+                    containment_keys.add(key)
+                    self.last_containment_evidence.append(containment)
+                    counts["containment_evidence"] += 1
+
+            if strand != "+" and not self.config.support_reverse_strand:
                 counts["skipped_reverse_strand"] += 1
                 continue
 
@@ -198,9 +272,90 @@ class Minimap2CandidateFinder(OverlapCandidateFinder):
             if cand is not None:
                 counts["accepted"] += 1
                 yield cand
+                if self.config.include_reverse_complement_edges:
+                    counts["accepted_reverse_complement"] += 1
+                    yield self._reverse_complement_candidate(cand)
             else:
                 counts["skipped_geometry"] += 1
         self.last_filter_counts = counts
+
+    @staticmethod
+    def _paf_to_full_coverage_evidence(
+        q_id: str,
+        q_len: int,
+        q_st: int,
+        q_en: int,
+        strand: str,
+        t_id: str,
+        t_len: int,
+        t_st: int,
+        t_en: int,
+        n_match: int,
+        aln_block_len: int,
+        mapq: int,
+    ) -> Optional[FullCoverageEvidence]:
+        """Recognize exact full-read coverage, including coextensive pairs."""
+        q_full = q_st == 0 and q_en == q_len
+        t_full = t_st == 0 and t_en == t_len
+        q_is_covered = q_full and q_len < t_len
+        t_is_covered = t_full and t_len < q_len
+        coextensive = q_full and t_full and q_len == t_len
+        if not (q_is_covered or t_is_covered or coextensive):
+            return None
+        return FullCoverageEvidence(
+            first_id=q_id,
+            second_id=t_id,
+            first_orientation=+1,
+            second_orientation=+1 if strand == "+" else -1,
+            alignment_length=aln_block_len,
+            identity=n_match / aln_block_len,
+            mapq=mapq,
+        )
+
+    def _paf_to_containment_evidence(
+        self,
+        q_id: str,
+        q_len: int,
+        q_st: int,
+        q_en: int,
+        strand: str,
+        t_id: str,
+        t_len: int,
+        t_st: int,
+        t_en: int,
+        n_match: int,
+        aln_block_len: int,
+        mapq: int,
+    ) -> Optional[ContainmentEvidence]:
+        """Recognize full-read/internal-target PAF containment evidence."""
+        tolerance = self.config.containment_terminal_tolerance
+        target_orientation = +1 if strand == "+" else -1
+        q_full = q_st <= tolerance and q_len - q_en <= tolerance
+        t_internal = t_st > tolerance and t_len - t_en > tolerance
+        if q_full and t_internal and q_len < t_len:
+            return ContainmentEvidence(
+                contained_id=q_id,
+                container_id=t_id,
+                contained_orientation=+1,
+                container_orientation=target_orientation,
+                alignment_length=aln_block_len,
+                identity=n_match / aln_block_len,
+                mapq=mapq,
+            )
+
+        t_full = t_st <= tolerance and t_len - t_en <= tolerance
+        q_internal = q_st > tolerance and q_len - q_en > tolerance
+        if t_full and q_internal and t_len < q_len:
+            return ContainmentEvidence(
+                contained_id=t_id,
+                container_id=q_id,
+                contained_orientation=target_orientation,
+                container_orientation=+1,
+                alignment_length=aln_block_len,
+                identity=n_match / aln_block_len,
+                mapq=mapq,
+            )
+        return None
 
     @staticmethod
     def _parse_optional_tags(fields: list[str]) -> dict[str, str]:
@@ -263,9 +418,24 @@ class Minimap2CandidateFinder(OverlapCandidateFinder):
         Case B:
             query suffix aligns target prefix: query -> target
         """
+        target_orientation = +1 if strand == "+" else -1
+        # Convert target coordinates into the orientation that aligns to the
+        # query.  For a reverse PAF strand, the target interval is mirrored.
+        oriented_t_st = t_st if target_orientation == +1 else t_len - t_en
+        oriented_t_en = t_en if target_orientation == +1 else t_len - t_st
+
+        target_to_query_shift = oriented_t_st - q_st
+        query_to_target_shift = q_st - oriented_t_st
+
+        # When both reads are nearly full-length aligned, both endpoint tests
+        # can pass within the overhang tolerance.  Prefer the direction that
+        # advances the layout and reject zero/negative-shift duplicate edges.
         # target suffix -> query prefix
-        if self._near_end(t_en, t_len) and self._near_start(q_st):
-            rough_shift = t_st - q_st
+        if (
+            self._near_end(oriented_t_en, t_len)
+            and self._near_start(q_st)
+            and target_to_query_shift > 0
+        ):
             return OverlapCandidate(
                 left_id=t_id,
                 right_id=q_id,
@@ -282,17 +452,22 @@ class Minimap2CandidateFinder(OverlapCandidateFinder):
                 n_match=n_match,
                 aln_block_len=aln_block_len,
                 mapq=mapq,
-                left_start_hint=max(0, t_st),
+                left_start_hint=max(0, oriented_t_st),
                 left_end_hint=t_len,
                 right_start_hint=0,
                 right_end_hint=min(q_len, q_en),
                 rough_overlap_len=aln_block_len,
-                rough_shift=rough_shift,
+                rough_shift=oriented_t_st - q_st,
+                left_orientation=target_orientation,
+                right_orientation=+1,
             )
 
         # query suffix -> target prefix
-        if self._near_end(q_en, q_len) and self._near_start(t_st):
-            rough_shift = q_st - t_st
+        if (
+            self._near_end(q_en, q_len)
+            and self._near_start(oriented_t_st)
+            and query_to_target_shift > 0
+        ):
             return OverlapCandidate(
                 left_id=q_id,
                 right_id=t_id,
@@ -312,12 +487,52 @@ class Minimap2CandidateFinder(OverlapCandidateFinder):
                 left_start_hint=max(0, q_st),
                 left_end_hint=q_len,
                 right_start_hint=0,
-                right_end_hint=min(t_len, t_en),
+                right_end_hint=min(t_len, oriented_t_en),
                 rough_overlap_len=aln_block_len,
-                rough_shift=rough_shift,
+                rough_shift=q_st - oriented_t_st,
+                left_orientation=+1,
+                right_orientation=target_orientation,
             )
 
         return None
+
+    @staticmethod
+    def _reverse_complement_candidate(candidate: OverlapCandidate) -> OverlapCandidate:
+        """Return the reciprocal edge on the reverse-complement strand."""
+        left_len = candidate.q_len if candidate.left_id == candidate.query_id else candidate.t_len
+        right_len = candidate.q_len if candidate.right_id == candidate.query_id else candidate.t_len
+        left_start = right_len - candidate.right_end_hint
+        left_end = right_len - candidate.right_start_hint
+        right_start = left_len - candidate.left_end_hint
+        right_end = left_len - candidate.left_start_hint
+        return OverlapCandidate(
+            left_id=candidate.right_id,
+            right_id=candidate.left_id,
+            source=candidate.source,
+            query_id=candidate.target_id,
+            target_id=candidate.query_id,
+            strand=candidate.strand,
+            q_len=candidate.t_len,
+            q_st=candidate.t_len - candidate.t_en,
+            q_en=candidate.t_len - candidate.t_st,
+            t_len=candidate.q_len,
+            t_st=candidate.q_len - candidate.q_en,
+            t_en=candidate.q_len - candidate.q_st,
+            n_match=candidate.n_match,
+            aln_block_len=candidate.aln_block_len,
+            mapq=candidate.mapq,
+            # The reverse candidate's left read is the original right read,
+            # and its right read is the original left read.  Clip each hint
+            # against the corresponding reverse-candidate read length.
+            left_start_hint=max(0, left_start),
+            left_end_hint=min(right_len, left_end),
+            right_start_hint=max(0, right_start),
+            right_end_hint=min(left_len, right_end),
+            rough_overlap_len=candidate.rough_overlap_len,
+            rough_shift=left_start - right_start,
+            left_orientation=-candidate.right_orientation,
+            right_orientation=-candidate.left_orientation,
+        )
 
 
 class OriginalCandidateFinder(OverlapCandidateFinder):

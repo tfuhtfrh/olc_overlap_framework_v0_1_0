@@ -76,6 +76,38 @@ class OverlapCandidate:
     rough_overlap_len: int
     rough_shift: int
 
+    # Orientation of each physical read in the directed layout edge.  The
+    # default keeps version-0.1 callers source-compatible while allowing a
+    # bidirected candidate finder to carry reverse-complement geometry.
+    left_orientation: int = +1
+    right_orientation: int = +1
+
+
+@dataclass(frozen=True)
+class ContainmentEvidence:
+    """Reference-free evidence that one physical read is contained in another."""
+
+    contained_id: str
+    container_id: str
+    contained_orientation: int
+    container_orientation: int
+    alignment_length: int
+    identity: float
+    mapq: int
+
+
+@dataclass(frozen=True)
+class FullCoverageEvidence:
+    """Reference-free evidence that two reads are fully co-linear/covered."""
+
+    first_id: str
+    second_id: str
+    first_orientation: int
+    second_orientation: int
+    alignment_length: int
+    identity: float
+    mapq: int
+
 
 @dataclass
 class PairwiseAlignment:
@@ -148,6 +180,11 @@ class OverlapEdge:
     mapq: int = 0
     accepted: bool = False
     alignment: Optional[PairwiseAlignment] = None
+
+    # Physical read IDs remain stable for I/O and reporting; these fields say
+    # which oriented copy participates in the directed overlap.
+    left_orientation: int = +1
+    right_orientation: int = +1
 
 
 @dataclass(frozen=True)

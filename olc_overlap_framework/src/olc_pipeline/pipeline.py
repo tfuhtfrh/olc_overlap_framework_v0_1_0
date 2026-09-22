@@ -71,7 +71,7 @@ class OverlapExperimentPipeline:
                     self.mi_scorer.attach_to_edge(edge)
                 edges.append(edge)
         edges = self._deduplicate_edges(edges)
-        timings["refinement_and_mi_sec"] = perf_counter() - t1
+        timings["edge_processing_sec"] = perf_counter() - t1
 
         t2 = perf_counter()
         candidate_report = self.edge_evaluator.evaluate_candidates(reads, candidates)
@@ -90,10 +90,15 @@ class OverlapExperimentPipeline:
 
     @staticmethod
     def _deduplicate_edges(edges: list[OverlapEdge]) -> list[OverlapEdge]:
-        """Keep the highest DP-weight edge for each directed read pair."""
-        best: dict[tuple[str, str], OverlapEdge] = {}
+        """Keep the highest-weight edge for each directed oriented pair."""
+        best: dict[tuple[str, str, int, int], OverlapEdge] = {}
         for edge in edges:
-            key = (edge.left_id, edge.right_id)
+            key = (
+                edge.left_id,
+                edge.right_id,
+                edge.left_orientation,
+                edge.right_orientation,
+            )
             score = edge.weight_dp if edge.weight_dp is not None else edge.dp_score
             old = best.get(key)
             old_score = old.weight_dp if old and old.weight_dp is not None else (old.dp_score if old else float("-inf"))

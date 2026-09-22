@@ -1,0 +1,69 @@
+== reference-free full-coverage/co-linear filter sweep ==
+reads: 994
+paf: /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/test_data/phi174/SRR27862880_phiX174_OLC_cycle742_pilot/all_vs_all.exact.paf
+definition: the shorter read is exactly full-length; equal-length pairs require both reads exactly full-length
+representative: longest read, then highest accepted-edge incidence, then ID
+
+threshold: 0.995
+full_coverage_pairs: 155
+full_coverage_groups: 111
+full_coverage_group_sizes: [4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+removed_nodes: 137
+retained_nodes: 857
+selected_edges: 8114
+zero_in_nodes: 52
+zero_out_nodes: 51
+hamilton_cycle: no
+after_one_pass_low_support_nodes: 779
+after_one_pass_low_support_edges: 7829
+after_one_pass_low_support_zero_in_nodes: 0
+after_one_pass_low_support_zero_out_nodes: 1
+after_one_pass_low_support_hamilton_cycle: no
+
+threshold: 0.993
+full_coverage_pairs: 167
+full_coverage_groups: 118
+full_coverage_group_sizes: [5, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+removed_nodes: 147
+retained_nodes: 847
+selected_edges: 8075
+zero_in_nodes: 31
+zero_out_nodes: 35
+hamilton_cycle: no
+after_one_pass_low_support_nodes: 799
+after_one_pass_low_support_edges: 7952
+after_one_pass_low_support_zero_in_nodes: 0
+after_one_pass_low_support_zero_out_nodes: 0
+after_one_pass_low_support_hamilton_cycle: unknown_timeout
+
+threshold: 0.990
+full_coverage_pairs: 169
+full_coverage_groups: 118
+full_coverage_group_sizes: [5, 5, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+removed_nodes: 148
+retained_nodes: 846
+selected_edges: 8459
+zero_in_nodes: 20
+zero_out_nodes: 27
+hamilton_cycle: no
+after_one_pass_low_support_nodes: 811
+after_one_pass_low_support_edges: 8345
+after_one_pass_low_support_zero_in_nodes: 0
+after_one_pass_low_support_zero_out_nodes: 0
+after_one_pass_low_support_hamilton_cycle: unknown_timeout
+
+threshold: 0.985
+full_coverage_pairs: 175
+full_coverage_groups: 122
+full_coverage_group_sizes: [5, 5, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+removed_nodes: 154
+retained_nodes: 840
+selected_edges: 8396
+zero_in_nodes: 18
+zero_out_nodes: 24
+hamilton_cycle: no
+after_one_pass_low_support_nodes: 810
+after_one_pass_low_support_edges: 8319
+after_one_pass_low_support_zero_in_nodes: 0
+after_one_pass_low_support_zero_out_nodes: 0
+after_one_pass_low_support_hamilton_cycle: unknown_timeout

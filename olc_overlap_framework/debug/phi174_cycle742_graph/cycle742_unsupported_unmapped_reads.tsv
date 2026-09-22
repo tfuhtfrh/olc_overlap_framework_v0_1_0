@@ -1,0 +1,11 @@
+read_id	read_length	support_status	incident_paf_pairs	accepted_candidate_edges	preprocessed_paf_edges	best_partner_ids	best_pair_stages	best_pair_identities	best_pair_alignment_blocks
+SRR27862880.107501_m2	150	no_in_or_out_support	0	0	0				
+SRR27862880.202001_m1	151	no_in_or_out_support	4	0	0	SRR27862880.40001_m1|SRR27862880.40001_m2|SRR27862880.213001_m1|SRR27862880.27001_m1	below_min_overlap|below_min_overlap|below_min_overlap|below_min_overlap	1.00000000|1.00000000|1.00000000|1.00000000	59|58|45|45
+SRR27862880.218501_m1	150	no_in_or_out_support	9	0	0	SRR27862880.237501_m1|SRR27862880.32501_m2|SRR27862880.230001_m2|SRR27862880.138501_m1|SRR27862880.173501_m1|SRR27862880.121001_m1|SRR27862880.177501_m1|SRR27862880.141001_m2|SRR27862880.35001_m1	below_identity_0.990|below_identity_0.990|below_identity_0.990|below_identity_0.990|below_identity_0.990|below_identity_0.990|below_identity_0.990|below_identity_0.990|below_identity_0.990	0.93617021|0.93617021|0.93617021|0.92907801|0.92753623|0.93382353|0.93233083|0.93233083|0.93023256	141|141|141|141|138|136|133|133|129
+SRR27862880.218501_m2	151	no_in_or_out_support	2	0	0	SRR27862880.138001_m2|SRR27862880.6001_m2	below_identity_0.990|below_identity_0.990	0.85135135|0.85034014	148|147
+SRR27862880.231501_m1	151	no_in_or_out_support	0	0	0				
+SRR27862880.40001_m1	151	no_in_support	2	2	2	SRR27862880.40001_m2|SRR27862880.202001_m1	directed_candidate_geometry|below_min_overlap	1.00000000|1.00000000	106|59
+SRR27862880.40001_m2	150	no_out_support	2	2	2	SRR27862880.40001_m1|SRR27862880.202001_m1	directed_candidate_geometry|below_min_overlap	1.00000000|1.00000000	106|58
+SRR27862880.55001_m1	151	no_in_or_out_support	0	0	0				
+SRR27862880.55001_m2	151	no_in_or_out_support	0	0	0				
+SRR27862880.62001_m1	151	no_in_or_out_support	0	0	0				

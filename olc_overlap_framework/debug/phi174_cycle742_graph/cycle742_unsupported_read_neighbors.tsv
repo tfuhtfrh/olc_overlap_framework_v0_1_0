@@ -1,0 +1,289 @@
+unsupported_read_id	support_status	unsupported_reference_start	neighbor_scope	neighbor_side	neighbor_rank	start_distance_bp	neighbor_id	neighbor_reference_orientation	neighbor_reference_start	neighbor_reference_end	neighbor_identity	neighbor_graph_status	neighbor_removal_reason	graph_edge_flag_to_neighbor	graph_edge_neighbor_to_flag	paf_stage	paf_record_count	paf_max_identity	paf_max_alignment_block	paf_best_alignment_block	paf_best_strand	paf_best_coordinates
+SRR27862880.110001_m1	no_in_support	2817	all_mapped	previous	1	17	SRR27862880.131501_m1	-1	2800	2951	0.99337748	retained				below_identity_0.990	1	0.98507463	134	134	+	q:17-151/151;t:0-134/151
+SRR27862880.110001_m1	no_in_support	2817	all_mapped	previous	2	21	SRR27862880.196001_m1	-1	2796	2946	0.99333333	retained				below_identity_0.990	1	0.98449612	129	129	+	q:22-151/151;t:0-129/150
+SRR27862880.110001_m1	no_in_support	2817	all_mapped	previous	3	31	SRR27862880.146001_m1	-1	2786	2936	0.99333333	retained				below_identity_0.990	1	0.98319328	119	119	+	q:32-151/151;t:0-119/150
+SRR27862880.110001_m1	no_in_support	2817	all_mapped	next	1	4	SRR27862880.124001_m1	+1	2821	2972	0.99337748	retained				below_identity_0.990	1	0.97959184	147	147	-	q:0-147/151;t:0-147/151
+SRR27862880.110001_m1	no_in_support	2817	all_mapped	next	2	12	SRR27862880.190501_m2	+1	2829	2980	1.00000000	retained		overlap=139;identity=0.992806;error=0.007194		directed_candidate_geometry	1	0.99280576	139	139	-	q:0-139/151;t:0-139/151
+SRR27862880.110001_m1	no_in_support	2817	all_mapped	next	3	16	SRR27862880.173001_m1	-1	2833	2984	1.00000000	removed	full_coverage_with:SRR27862880.205001_m1			directed_candidate_geometry	1	0.99259259	135	135	+	q:0-135/151;t:16-151/151
+SRR27862880.110001_m2	no_out_support	2576	all_mapped	previous	1	1	SRR27862880.146001_m2	+1	2575	2726	1.00000000	retained				below_identity_0.990	1	0.98666667	150	150	+	q:0-150/151;t:1-151/151
+SRR27862880.110001_m2	no_out_support	2576	all_mapped	previous	2	17	SRR27862880.115001_m1	+1	2559	2710	1.00000000	retained			overlap=134;identity=0.992537;error=0.007463	directed_candidate_geometry	1	0.99253731	134	134	+	q:0-134/151;t:17-151/151
+SRR27862880.110001_m2	no_out_support	2576	all_mapped	previous	3	23	SRR27862880.196001_m2	+1	2553	2704	0.98675497	retained				below_identity_0.990	1	0.98412698	126	126	+	q:0-126/151;t:23-149/151
+SRR27862880.110001_m2	no_out_support	2576	all_mapped	next	1	12	SRR27862880.131501_m2	+1	2588	2739	0.99337748	removed	full_coverage_with:SRR27862880.84501_m1			below_identity_0.990	1	0.98561151	139	139	+	q:12-151/151;t:0-139/151
+SRR27862880.110001_m2	no_out_support	2576	all_mapped	next	2	12	SRR27862880.84501_m1	+1	2588	2739	0.99337748	retained				below_identity_0.990	1	0.98561151	139	139	+	q:12-151/151;t:0-139/151
+SRR27862880.110001_m2	no_out_support	2576	all_mapped	next	3	27	SRR27862880.173001_m2	+1	2603	2754	0.99337748	retained				below_identity_0.990	1	0.98387097	124	124	+	q:27-151/151;t:0-124/151
+SRR27862880.125501_m1	no_in_support	4272	all_mapped	previous	1	8	SRR27862880.167501_m1	-1	4264	4414	1.00000000	retained				below_identity_0.990	1	0.97887324	142	142	+	q:8-150/150;t:0-142/150
+SRR27862880.125501_m1	no_in_support	4272	all_mapped	previous	2	11	SRR27862880.501_m2	+1	4261	4412	1.00000000	retained				below_identity_0.990	1	0.97857143	140	140	-	q:10-150/150;t:11-151/151
+SRR27862880.125501_m1	no_in_support	4272	all_mapped	previous	3	15	SRR27862880.170501_m1	-1	4257	4408	1.00000000	retained				below_identity_0.990	1	0.97794118	136	136	+	q:14-150/150;t:0-136/151
+SRR27862880.125501_m1	no_in_support	4272	all_mapped	next	1	13	SRR27862880.164001_m1	-1	4285	4436	1.00000000	retained				below_identity_0.990	1	0.98507463	134	134	+	q:0-134/150;t:14-148/151
+SRR27862880.125501_m1	no_in_support	4272	all_mapped	next	2	19	SRR27862880.51501_m2	-1	4291	4441	1.00000000	retained				below_identity_0.990	1	0.98473282	131	131	+	q:0-131/150;t:19-150/150
+SRR27862880.125501_m1	no_in_support	4272	all_mapped	next	3	20	SRR27862880.121501_m2	+1	4292	4443	1.00000000	retained				below_identity_0.990	1	0.98461538	130	130	-	q:0-130/151;t:0-130/150
+SRR27862880.126001_m1	no_out_support	5300	all_mapped	previous	1	3	SRR27862880.194001_m1	+1	5297	5447	1.00000000	retained				below_identity_0.990	1	0.98639456	147	147	+	q:0-147/151;t:3-150/150
+SRR27862880.126001_m1	no_out_support	5300	all_mapped	previous	2	6	SRR27862880.67001_m2	-1	5294	5444	0.98666667	retained				below_identity_0.990	1	0.97887324	142	142	-	q:2-144/151;t:0-142/150
+SRR27862880.126001_m1	no_out_support	5300	all_mapped	previous	3	10	SRR27862880.122501_m1	-1	5290	5440	1.00000000	retained				below_identity_0.990	1	0.98571429	140	140	-	q:0-140/150;t:0-140/151
+SRR27862880.126001_m1	no_out_support	5300	all_mapped	next	1	0	SRR27862880.184501_m1	+1	5300	5451	1.00000000	retained				below_identity_0.990	1	0.98675497	151	151	+	q:0-151/151;t:0-151/151
+SRR27862880.126001_m1	no_out_support	5300	all_mapped	next	2	8	SRR27862880.3001_m1	+1	5308	5459	1.00000000	retained				below_identity_0.990	1	0.98601399	143	143	+	q:8-151/151;t:0-143/151
+SRR27862880.126001_m1	no_out_support	5300	all_mapped	next	3	19	SRR27862880.221501_m1	+1	5319	5470	1.00000000	retained				below_identity_0.990	1	0.98484848	132	132	+	q:19-151/151;t:0-132/151
+SRR27862880.159001_m1	no_out_support	4527	all_mapped	previous	1	5	SRR27862880.121501_m1	-1	4522	4672	1.00000000	retained				below_identity_0.990	1	0.97931034	145	145	-	q:0-145/150;t:0-145/151
+SRR27862880.159001_m1	no_out_support	4527	all_mapped	previous	2	10	SRR27862880.174001_m1	+1	4517	4667	1.00000000	retained				below_identity_0.990	1	0.97857143	140	140	+	q:0-140/151;t:10-150/150
+SRR27862880.159001_m1	no_out_support	4527	all_mapped	previous	3	23	SRR27862880.37501_m1	-1	4504	4655	1.00000000	retained				below_identity_0.990	1	0.98400000	125	125	-	q:0-125/151;t:3-128/151
+SRR27862880.159001_m1	no_out_support	4527	all_mapped	next	1	12	SRR27862880.242501_m1	+1	4539	4690	0.99337748	retained				below_identity_0.990	1	0.97122302	139	139	+	q:12-151/151;t:0-139/151
+SRR27862880.159001_m1	no_out_support	4527	all_mapped	next	2	14	SRR27862880.93501_m1	-1	4541	4692	1.00000000	retained				below_identity_0.990	1	0.97810219	137	137	-	q:14-151/151;t:14-151/151
+SRR27862880.159001_m1	no_out_support	4527	all_mapped	next	3	16	SRR27862880.65001_m2	-1	4543	4693	1.00000000	retained				below_identity_0.990	1	0.97777778	135	135	-	q:16-151/151;t:15-150/150
+SRR27862880.169501_m2	no_out_support	984	all_mapped	previous	1	28	SRR27862880.237001_m1	-1	956	1107	1.00000000	retained				below_identity_0.990	1	0.98373984	123	123	-	q:0-123/151;t:0-123/151
+SRR27862880.169501_m2	no_out_support	984	all_mapped	previous	2	31	SRR27862880.123001_m2	-1	953	1104	1.00000000	retained				below_identity_0.990	1	0.98333333	120	120	-	q:0-120/151;t:0-120/151
+SRR27862880.169501_m2	no_out_support	984	all_mapped	previous	3	31	SRR27862880.10001_m2	-1	953	1103	1.00000000	removed	full_coverage_with:SRR27862880.123001_m2			directed_candidate_geometry	1	0.99137931	116	116	-	q:3-119/150;t:0-116/151
+SRR27862880.169501_m2	no_out_support	984	all_mapped	next	1	3	SRR27862880.94501_m1	+1	987	1138	1.00000000	retained				below_identity_0.990	1	0.98648649	148	148	+	q:3-151/151;t:0-148/151
+SRR27862880.169501_m2	no_out_support	984	all_mapped	next	2	9	SRR27862880.239501_m2	+1	993	1144	1.00000000	retained				below_identity_0.990	1	0.98591549	142	142	+	q:9-151/151;t:0-142/151
+SRR27862880.169501_m2	no_out_support	984	all_mapped	next	3	13	SRR27862880.92001_m2	+1	997	1148	1.00000000	retained				below_identity_0.990	1	0.98550725	138	138	+	q:13-151/151;t:0-138/151
+SRR27862880.174501_m2	no_out_support	2755	all_mapped	previous	1	31	SRR27862880.236501_m2	-1	2724	2874	0.98666667	retained				below_identity_0.990	1	0.98319328	119	119	-	q:0-119/150;t:0-119/150
+SRR27862880.174501_m2	no_out_support	2755	all_mapped	previous	2	33	SRR27862880.172001_m2	-1	2722	2872	0.98666667	removed	full_coverage_with:SRR27862880.120501_m2			below_identity_0.990	1	0.98290598	117	117	-	q:0-117/150;t:0-117/150
+SRR27862880.174501_m2	no_out_support	2755	all_mapped	previous	3	34	SRR27862880.120501_m2	+1	2721	2872	0.98675497	retained				below_identity_0.990	1	0.98290598	117	117	+	q:34-151/151;t:0-117/150
+SRR27862880.174501_m2	no_out_support	2755	all_mapped	next	1	4	SRR27862880.115001_m2	-1	2759	2909	0.99333333	retained				below_identity_0.990	1	0.98630137	146	146	-	q:4-150/150;t:4-150/150
+SRR27862880.174501_m2	no_out_support	2755	all_mapped	next	2	7	SRR27862880.249501_m1	-1	2762	2913	0.99337748	retained				below_identity_0.990	1	0.98601399	143	143	-	q:7-150/150;t:8-151/151
+SRR27862880.174501_m2	no_out_support	2755	all_mapped	next	3	8	SRR27862880.84501_m2	-1	2763	2914	0.99337748	retained				below_identity_0.990	1	0.98591549	142	142	-	q:8-150/150;t:9-151/151
+SRR27862880.176001_m1	no_in_or_out_support	2428	all_mapped	previous	1	4	SRR27862880.71001_m1	+1	2424	2575	1.00000000	retained				below_identity_0.990	1	0.98888889	90	90	+	q:0-90/148;t:4-94/151
+SRR27862880.176001_m1	no_in_or_out_support	2428	all_mapped	previous	2	4	SRR27862880.5001_m2	+1	2424	2575	1.00000000	removed	full_coverage_with:SRR27862880.71001_m1			below_identity_0.990	1	0.98888889	90	90	+	q:0-90/148;t:4-94/151
+SRR27862880.176001_m1	no_in_or_out_support	2428	all_mapped	previous	3	11	SRR27862880.193001_m1	-1	2417	2568	1.00000000	retained				below_identity_0.990	1	0.98888889	90	90	-	q:0-90/148;t:50-140/151
+SRR27862880.176001_m1	no_in_or_out_support	2428	all_mapped	next	1	13	SRR27862880.4001_m2	+1	2441	2592	1.00000000	retained				below_min_overlap	1	0.98701299	77	77	+	q:13-90/148;t:0-77/151
+SRR27862880.176001_m1	no_in_or_out_support	2428	all_mapped	next	2	25	SRR27862880.236501_m1	+1	2453	2604	1.00000000	removed	full_coverage_with:SRR27862880.43001_m1			below_min_overlap	1	0.98461538	65	65	+	q:25-90/148;t:0-65/151
+SRR27862880.176001_m1	no_in_or_out_support	2428	all_mapped	next	3	25	SRR27862880.43001_m1	+1	2453	2604	1.00000000	retained				below_min_overlap	1	0.98461538	65	65	+	q:25-90/148;t:0-65/151
+SRR27862880.178001_m2	no_out_support	1441	all_mapped	previous	1	1	SRR27862880.140001_m1	+1	1440	1590	1.00000000	retained				below_identity_0.990	1	0.98657718	149	149	+	q:1-150/150;t:0-149/149
+SRR27862880.178001_m2	no_out_support	1441	all_mapped	previous	2	11	SRR27862880.188501_m1	-1	1430	1581	1.00000000	retained				below_identity_0.990	1	0.98571429	140	140	-	q:0-140/149;t:0-140/151
+SRR27862880.178001_m2	no_out_support	1441	all_mapped	previous	3	15	SRR27862880.185001_m1	-1	1426	1575	1.00000000	retained			overlap=134;identity=0.992537;error=0.007463	directed_candidate_geometry	1	0.99253731	134	134	-	q:0-134/149;t:0-134/149
+SRR27862880.178001_m2	no_out_support	1441	all_mapped	next	1	0	SRR27862880.2501_m2	-1	1441	1592	1.00000000	retained				below_identity_0.990	1	0.98657718	149	149	-	q:0-149/149;t:2-151/151
+SRR27862880.178001_m2	no_out_support	1441	all_mapped	next	2	2	SRR27862880.136501_m2	+1	1443	1594	1.00000000	removed	full_coverage_with:SRR27862880.238501_m1			below_identity_0.990	1	0.98639456	147	147	+	q:0-147/151;t:2-149/149
+SRR27862880.178001_m2	no_out_support	1441	all_mapped	next	3	2	SRR27862880.238501_m1	-1	1443	1594	1.00000000	retained				below_identity_0.990	1	0.98639456	147	147	-	q:2-149/149;t:4-151/151
+SRR27862880.196001_m2	no_out_support	2553	all_mapped	previous	1	3	SRR27862880.120001_m1	+1	2550	2701	1.00000000	retained				below_identity_0.990	1	0.98648649	148	148	+	q:3-151/151;t:0-148/151
+SRR27862880.196001_m2	no_out_support	2553	all_mapped	previous	2	6	SRR27862880.172001_m1	+1	2547	2697	1.00000000	retained				below_identity_0.990	1	0.98611111	144	144	+	q:6-150/150;t:0-144/151
+SRR27862880.196001_m2	no_out_support	2553	all_mapped	previous	3	11	SRR27862880.50501_m1	-1	2542	2693	1.00000000	retained				below_identity_0.990	1	0.98571429	140	140	-	q:0-140/151;t:0-140/151
+SRR27862880.196001_m2	no_out_support	2553	all_mapped	next	1	6	SRR27862880.115001_m1	+1	2559	2710	1.00000000	retained				below_identity_0.990	1	0.98620690	145	145	+	q:0-145/151;t:6-151/151
+SRR27862880.196001_m2	no_out_support	2553	all_mapped	next	2	22	SRR27862880.146001_m2	+1	2575	2726	1.00000000	retained				below_identity_0.990	1	0.98449612	129	129	+	q:0-129/151;t:22-151/151
+SRR27862880.196001_m2	no_out_support	2553	all_mapped	next	3	23	SRR27862880.110001_m2	+1	2576	2727	0.98675497	retained				below_identity_0.990	1	0.98412698	126	126	+	q:0-126/151;t:23-149/151
+SRR27862880.213001_m1	no_out_support	512	all_mapped	previous	1	2	SRR27862880.14001_m1	+1	510	661	0.99337748	retained				no_positive_shift_dovetail	1	1.00000000	86	86	+	q:2-88/151;t:0-86/150
+SRR27862880.213001_m1	no_out_support	512	all_mapped	previous	2	8	SRR27862880.49501_m1	+1	504	655	0.99337748	retained				no_positive_shift_dovetail	1	1.00000000	86	86	+	q:0-86/150;t:8-94/151
+SRR27862880.213001_m1	no_out_support	512	all_mapped	previous	3	8	SRR27862880.39001_m1	+1	504	655	0.99337748	removed	full_coverage_with:SRR27862880.49501_m1			no_positive_shift_dovetail	1	1.00000000	86	86	+	q:0-86/150;t:8-94/151
+SRR27862880.213001_m1	no_out_support	512	all_mapped	next	1	1	SRR27862880.24001_m1	+1	513	663	0.99333333	retained				no_positive_shift_dovetail	1	1.00000000	85	85	+	q:1-86/150;t:0-85/150
+SRR27862880.213001_m1	no_out_support	512	all_mapped	next	2	6	SRR27862880.162001_m1	-1	518	669	0.99337748	removed	full_coverage_with:SRR27862880.46001_m1			no_positive_shift_dovetail	1	1.00000000	80	80	-	q:71-151/151;t:6-86/150
+SRR27862880.213001_m1	no_out_support	512	all_mapped	next	3	6	SRR27862880.46001_m1	-1	518	669	0.99337748	retained				no_positive_shift_dovetail	1	1.00000000	80	80	-	q:6-86/150;t:71-151/151
+SRR27862880.213501_m1	no_in_support	778	all_mapped	previous	1	0	SRR27862880.133001_m2	-1	778	929	0.99337748	retained				below_identity_0.990	1	0.98675497	151	151	+	q:0-151/151;t:0-151/151
+SRR27862880.213501_m1	no_in_support	778	all_mapped	previous	2	5	SRR27862880.39001_m2	-1	773	924	0.99337748	retained				below_identity_0.990	1	0.98630137	146	146	+	q:5-151/151;t:0-146/151
+SRR27862880.213501_m1	no_in_support	778	all_mapped	previous	3	5	SRR27862880.200001_m2	-1	773	923	0.99333333	removed	full_coverage_with:SRR27862880.39001_m2			below_identity_0.990	1	0.98620690	145	145	+	q:0-145/150;t:6-151/151
+SRR27862880.213501_m1	no_in_support	778	all_mapped	next	1	10	SRR27862880.126501_m2	-1	788	938	0.99333333	retained				below_identity_0.990	1	0.98581560	141	141	+	q:9-150/150;t:0-141/151
+SRR27862880.213501_m1	no_in_support	778	all_mapped	next	2	19	SRR27862880.59501_m2	-1	797	948	0.99337748	retained				below_identity_0.990	1	0.98484848	132	132	+	q:0-132/151;t:19-151/151
+SRR27862880.213501_m1	no_in_support	778	all_mapped	next	3	22	SRR27862880.218001_m1	-1	800	951	0.99337748	retained		overlap=128;identity=0.992188;error=0.007812		directed_candidate_geometry	1	0.99218750	128	128	+	q:0-128/151;t:22-150/151
+SRR27862880.229001_m1	no_in_or_out_support	1730	all_mapped	previous	1	16	SRR27862880.6501_m2	-1	1714	1864	1.00000000	retained				below_identity_0.990	1	0.95488722	133	133	+	q:14-147/148;t:0-133/150
+SRR27862880.229001_m1	no_in_or_out_support	1730	all_mapped	previous	2	26	SRR27862880.18001_m2	+1	1704	1855	1.00000000	retained				below_identity_0.990	1	0.95161290	124	124	-	q:27-151/151;t:23-147/148
+SRR27862880.229001_m1	no_in_or_out_support	1730	all_mapped	previous	3	30	SRR27862880.48001_m2	-1	1700	1850	1.00000000	retained				below_identity_0.990	1	0.94957983	119	119	+	q:28-147/148;t:0-119/150
+SRR27862880.229001_m1	no_in_or_out_support	1730	all_mapped	next	1	12	SRR27862880.222501_m2	-1	1742	1891	1.00000000	retained				below_identity_0.990	1	0.94814815	135	135	+	q:14-149/149;t:1-136/148
+SRR27862880.229001_m1	no_in_or_out_support	1730	all_mapped	next	2	14	SRR27862880.154001_m2	+1	1744	1893	1.00000000	retained				below_identity_0.990	1	0.94736842	133	133	-	q:0-133/149;t:1-134/148
+SRR27862880.229001_m1	no_in_or_out_support	1730	all_mapped	next	3	21	SRR27862880.154001_m1	-1	1751	1902	1.00000000	removed	full_coverage_with:SRR27862880.28501_m2			below_identity_0.990	1	0.94444444	126	126	+	q:25-151/151;t:1-127/148
+SRR27862880.229001_m2	no_out_support	1520	all_mapped	previous	1	4	SRR27862880.6501_m1	+1	1516	1667	1.00000000	retained				below_identity_0.990	1	0.97959184	147	147	+	q:0-147/150;t:4-151/151
+SRR27862880.229001_m2	no_out_support	1520	all_mapped	previous	2	17	SRR27862880.225001_m1	-1	1503	1654	1.00000000	retained				below_identity_0.990	1	0.98507463	134	134	-	q:0-134/151;t:0-134/150
+SRR27862880.229001_m2	no_out_support	1520	all_mapped	previous	3	20	SRR27862880.197501_m2	-1	1500	1651	1.00000000	retained				below_identity_0.990	1	0.98473282	131	131	-	q:0-131/151;t:0-131/150
+SRR27862880.229001_m2	no_out_support	1520	all_mapped	next	1	0	SRR27862880.66001_m1	+1	1520	1671	1.00000000	retained				below_identity_0.990	1	0.98000000	150	150	+	q:0-150/150;t:0-150/151
+SRR27862880.229001_m2	no_out_support	1520	all_mapped	next	2	5	SRR27862880.151501_m2	+1	1525	1675	1.00000000	removed	full_coverage_with:SRR27862880.88001_m1			below_identity_0.990	1	0.97931034	145	145	+	q:0-145/150;t:5-150/150
+SRR27862880.229001_m2	no_out_support	1520	all_mapped	next	3	5	SRR27862880.88001_m1	-1	1525	1675	1.00000000	retained				below_identity_0.990	1	0.97931034	145	145	-	q:5-150/150;t:5-150/150
+SRR27862880.245001_m2	no_out_support	1078	all_mapped	previous	1	12	SRR27862880.7001_m1	-1	1066	1217	1.00000000	retained				below_identity_0.990	1	0.98561151	139	139	-	q:0-139/150;t:0-139/151
+SRR27862880.245001_m2	no_out_support	1078	all_mapped	previous	2	13	SRR27862880.119501_m1	+1	1065	1216	1.00000000	retained				below_identity_0.990	1	0.98550725	138	138	+	q:13-151/151;t:0-138/150
+SRR27862880.245001_m2	no_out_support	1078	all_mapped	previous	3	15	SRR27862880.39501_m1	-1	1063	1213	1.00000000	retained				below_identity_0.990	1	0.98518519	135	135	-	q:0-135/150;t:0-135/150
+SRR27862880.245001_m2	no_out_support	1078	all_mapped	next	1	5	SRR27862880.243501_m1	-1	1083	1231	1.00000000	retained				below_identity_0.990	1	0.98620690	145	145	-	q:3-148/148;t:5-150/150
+SRR27862880.245001_m2	no_out_support	1078	all_mapped	next	2	17	SRR27862880.44501_m2	-1	1095	1246	1.00000000	retained				below_identity_0.990	1	0.98496241	133	133	-	q:17-150/150;t:18-151/151
+SRR27862880.245001_m2	no_out_support	1078	all_mapped	next	3	24	SRR27862880.177001_m2	+1	1102	1251	1.00000000	retained				below_identity_0.990	1	0.98412698	126	126	+	q:0-126/149;t:24-150/150
+SRR27862880.27001_m1	no_out_support	888	all_mapped	previous	1	1	SRR27862880.226501_m2	+1	887	1037	1.00000000	retained				no_positive_shift_dovetail	1	1.00000000	104	104	+	q:1-105/150;t:0-104/151
+SRR27862880.27001_m1	no_out_support	888	all_mapped	previous	2	5	SRR27862880.58501_m2	+1	883	1034	1.00000000	retained				no_positive_shift_dovetail	1	1.00000000	104	104	+	q:0-104/151;t:5-109/151
+SRR27862880.27001_m1	no_out_support	888	all_mapped	previous	3	17	SRR27862880.242001_m1	-1	871	1019	1.00000000	removed	full_coverage_with:SRR27862880.44501_m1			no_positive_shift_dovetail	1	1.00000000	104	104	-	q:27-131/148;t:0-104/151
+SRR27862880.27001_m1	no_out_support	888	all_mapped	next	1	6	SRR27862880.70501_m1	-1	894	1045	1.00000000	retained				no_positive_shift_dovetail	1	1.00000000	98	98	-	q:6-104/151;t:53-151/151
+SRR27862880.27001_m1	no_out_support	888	all_mapped	next	2	22	SRR27862880.127001_m2	-1	910	1060	1.00000000	removed	full_coverage_with:SRR27862880.17501_m2			no_positive_shift_dovetail	1	1.00000000	82	82	-	q:68-150/150;t:22-104/151
+SRR27862880.27001_m1	no_out_support	888	all_mapped	next	3	23	SRR27862880.17501_m2	+1	911	1062	1.00000000	retained				no_positive_shift_dovetail	1	1.00000000	81	81	+	q:0-81/151;t:23-104/151
+SRR27862880.3001_m2	no_in_support	155	all_mapped	previous	1	25	SRR27862880.194001_m2	-1	130	281	1.00000000	retained				below_identity_0.990	1	0.98412698	126	126	+	q:0-126/151;t:24-150/150
+SRR27862880.3001_m2	no_in_support	155	all_mapped	previous	2	26	SRR27862880.228501_m1	+1	129	279	1.00000000	retained				below_identity_0.990	1	0.98387097	124	124	-	q:26-150/150;t:26-150/150
+SRR27862880.3001_m2	no_in_support	155	all_mapped	previous	3	26	SRR27862880.209001_m1	+1	129	279	1.00000000	removed	full_coverage_with:SRR27862880.228501_m1			below_identity_0.990	1	0.98387097	124	124	-	q:26-150/150;t:26-150/150
+SRR27862880.3001_m2	no_in_support	155	all_mapped	next	1	7	SRR27862880.61001_m2	+1	162	313	1.00000000	retained				below_identity_0.990	1	0.98601399	143	143	-	q:0-143/150;t:0-143/151
+SRR27862880.3001_m2	no_in_support	155	all_mapped	next	2	10	SRR27862880.119001_m2	+1	165	316	1.00000000	retained				below_identity_0.990	1	0.98571429	140	140	-	q:0-140/151;t:0-140/150
+SRR27862880.3001_m2	no_in_support	155	all_mapped	next	3	14	SRR27862880.11001_m2	+1	169	318	1.00000000	retained				below_identity_0.990	1	0.98529412	136	136	-	q:0-136/149;t:0-136/150
+SRR27862880.38001_m1	no_out_support	1964	all_mapped	previous	1	10	SRR27862880.23501_m2	+1	1954	2105	1.00000000	retained				below_identity_0.990	1	0.98581560	141	141	+	q:10-151/151;t:0-141/151
+SRR27862880.38001_m1	no_out_support	1964	all_mapped	previous	2	21	SRR27862880.69001_m1	+1	1943	2094	1.00000000	retained			overlap=129;identity=0.992248;error=0.007752	directed_candidate_geometry	1	0.99224806	129	129	+	q:0-129/151;t:21-150/151
+SRR27862880.38001_m1	no_out_support	1964	all_mapped	previous	3	31	SRR27862880.245501_m1	+1	1933	2084	1.00000000	retained			overlap=120;identity=0.991667;error=0.008333	directed_candidate_geometry	1	0.99166667	120	120	+	q:31-151/151;t:0-120/151
+SRR27862880.38001_m1	no_out_support	1964	all_mapped	next	1	13	SRR27862880.74001_m2	+1	1977	2128	1.00000000	retained				below_identity_0.990	1	0.98550725	138	138	+	q:13-151/151;t:0-138/151
+SRR27862880.38001_m1	no_out_support	1964	all_mapped	next	2	50	SRR27862880.191001_m2	-1	2014	2164	1.00000000	removed	full_coverage_with:SRR27862880.224501_m2			below_identity_0.990	1	0.98019802	101	101	-	q:49-150/150;t:50-151/151
+SRR27862880.38001_m1	no_out_support	1964	all_mapped	next	3	50	SRR27862880.224501_m2	-1	2014	2164	1.00000000	retained				below_identity_0.990	1	0.98019802	101	101	-	q:49-150/150;t:50-151/151
+SRR27862880.46501_m1	no_in_support	4661	all_mapped	previous	1	6	SRR27862880.211501_m1	-1	4655	4806	1.00000000	retained				below_identity_0.990	1	0.98620690	145	145	+	q:0-145/151;t:5-150/150
+SRR27862880.46501_m1	no_in_support	4661	all_mapped	previous	2	18	SRR27862880.186501_m1	-1	4643	4794	1.00000000	retained				below_identity_0.990	1	0.98496241	133	133	+	q:0-133/151;t:17-150/150
+SRR27862880.46501_m1	no_in_support	4661	all_mapped	previous	3	23	SRR27862880.129001_m2	+1	4638	4789	1.00000000	retained				below_identity_0.990	1	0.98437500	128	128	-	q:23-151/151;t:22-150/150
+SRR27862880.46501_m1	no_in_support	4661	all_mapped	next	1	0	SRR27862880.91001_m1	-1	4661	4811	1.00000000	retained				below_identity_0.990	1	0.98666667	150	150	+	q:0-150/150;t:0-150/150
+SRR27862880.46501_m1	no_in_support	4661	all_mapped	next	2	2	SRR27862880.44001_m2	+1	4663	4814	1.00000000	retained				below_identity_0.990	1	0.98648649	148	148	-	q:0-148/151;t:0-148/150
+SRR27862880.46501_m1	no_in_support	4661	all_mapped	next	3	3	SRR27862880.210501_m1	-1	4664	4815	1.00000000	retained				below_identity_0.990	1	0.98639456	147	147	+	q:4-151/151;t:0-147/150
+SRR27862880.46501_m2	no_out_support	4400	all_mapped	previous	1	8	SRR27862880.62001_m2	-1	4392	4543	0.98013245	retained				below_identity_0.990	1	0.95804196	143	143	-	q:0-143/150;t:0-143/151
+SRR27862880.46501_m2	no_out_support	4400	all_mapped	previous	2	11	SRR27862880.7501_m2	-1	4389	4539	1.00000000	retained				below_identity_0.990	1	0.97841727	139	139	-	q:0-139/150;t:0-139/150
+SRR27862880.46501_m2	no_out_support	4400	all_mapped	previous	3	17	SRR27862880.93001_m1	+1	4383	4534	1.00000000	retained				below_identity_0.990	1	0.97761194	134	134	+	q:0-134/150;t:17-151/151
+SRR27862880.46501_m2	no_out_support	4400	all_mapped	next	1	4	SRR27862880.102001_m2	+1	4404	4554	1.00000000	retained				below_identity_0.990	1	0.97260274	146	146	+	q:0-146/150;t:4-150/150
+SRR27862880.46501_m2	no_out_support	4400	all_mapped	next	2	5	SRR27862880.148501_m2	+1	4405	4556	1.00000000	retained				below_identity_0.990	1	0.97241379	145	145	+	q:0-145/151;t:5-150/150
+SRR27862880.46501_m2	no_out_support	4400	all_mapped	next	3	24	SRR27862880.222001_m1	-1	4424	4575	1.00000000	retained				below_identity_0.990	1	0.96825397	126	126	-	q:25-151/151;t:24-150/150
+SRR27862880.62001_m2	no_in_support	4392	all_mapped	previous	1	3	SRR27862880.7501_m2	-1	4389	4539	1.00000000	retained				below_identity_0.990	1	0.97959184	147	147	+	q:4-151/151;t:0-147/150
+SRR27862880.62001_m2	no_in_support	4392	all_mapped	previous	2	9	SRR27862880.93001_m1	+1	4383	4534	1.00000000	retained				below_identity_0.990	1	0.97887324	142	142	-	q:9-151/151;t:9-151/151
+SRR27862880.62001_m2	no_in_support	4392	all_mapped	previous	3	17	SRR27862880.163001_m2	+1	4375	4524	1.00000000	retained				below_identity_0.990	1	0.97727273	132	132	-	q:17-149/149;t:19-151/151
+SRR27862880.62001_m2	no_in_support	4392	all_mapped	next	1	8	SRR27862880.46501_m2	+1	4400	4550	0.97333333	retained				below_identity_0.990	1	0.95804196	143	143	-	q:0-143/150;t:0-143/151
+SRR27862880.62001_m2	no_in_support	4392	all_mapped	next	2	12	SRR27862880.102001_m2	+1	4404	4554	1.00000000	retained				below_identity_0.990	1	0.97841727	139	139	-	q:0-139/150;t:0-139/151
+SRR27862880.62001_m2	no_in_support	4392	all_mapped	next	3	13	SRR27862880.148501_m2	+1	4405	4556	1.00000000	retained				below_identity_0.990	1	0.97826087	138	138	-	q:0-138/151;t:0-138/151
+SRR27862880.63501_m2	no_out_support	3644	all_mapped	previous	1	1	SRR27862880.142001_m2	-1	3643	3794	1.00000000	removed	full_coverage_with:SRR27862880.240001_m2			below_identity_0.990	1	0.98666667	150	150	-	q:0-150/151;t:0-150/150
+SRR27862880.63501_m2	no_out_support	3644	all_mapped	previous	2	1	SRR27862880.106001_m2	-1	3643	3792	1.00000000	removed	full_coverage_with:SRR27862880.240001_m2			below_identity_0.990	1	0.98648649	148	148	-	q:0-148/149;t:0-148/150
+SRR27862880.63501_m2	no_out_support	3644	all_mapped	previous	3	2	SRR27862880.240001_m2	+1	3642	3793	1.00000000	retained				below_identity_0.990	1	0.98657718	149	149	+	q:2-151/151;t:0-149/150
+SRR27862880.63501_m2	no_out_support	3644	all_mapped	next	1	3	SRR27862880.20501_m1	-1	3647	3798	1.00000000	retained				below_identity_0.990	1	0.98639456	147	147	-	q:4-151/151;t:3-150/150
+SRR27862880.63501_m2	no_out_support	3644	all_mapped	next	2	3	SRR27862880.234501_m1	-1	3647	3796	1.00000000	removed	full_coverage_with:SRR27862880.20501_m1			below_identity_0.990	1	0.98639456	147	147	-	q:2-149/149;t:3-150/150
+SRR27862880.63501_m2	no_out_support	3644	all_mapped	next	3	16	SRR27862880.64001_m1	+1	3660	3811	1.00000000	retained				below_identity_0.990	1	0.98507463	134	134	+	q:16-150/150;t:0-134/151
+SRR27862880.66501_m1	no_in_or_out_support	1234	all_mapped	previous	1	6	SRR27862880.239501_m1	-1	1228	1379	1.00000000	retained				below_identity_0.990	1	0.97241379	145	145	+	q:0-145/151;t:6-151/151
+SRR27862880.66501_m1	no_in_or_out_support	1234	all_mapped	previous	2	14	SRR27862880.80001_m1	-1	1220	1371	1.00000000	retained				below_identity_0.990	1	0.97080292	137	137	+	q:14-151/151;t:0-137/151
+SRR27862880.66501_m1	no_in_or_out_support	1234	all_mapped	previous	3	14	SRR27862880.238501_m2	+1	1220	1371	1.00000000	removed	full_coverage_with:SRR27862880.80001_m1			below_identity_0.990	1	0.97080292	137	137	-	q:14-151/151;t:14-151/151
+SRR27862880.66501_m1	no_in_or_out_support	1234	all_mapped	next	1	3	SRR27862880.8501_m2	+1	1237	1387	1.00000000	retained				below_identity_0.990	1	0.97297297	148	148	-	q:0-148/151;t:0-148/150
+SRR27862880.66501_m1	no_in_or_out_support	1234	all_mapped	next	2	7	SRR27862880.232001_m2	-1	1241	1390	1.00000000	retained				below_identity_0.990	1	0.97222222	144	144	+	q:5-149/149;t:0-144/151
+SRR27862880.66501_m1	no_in_or_out_support	1234	all_mapped	next	3	10	SRR27862880.100501_m2	-1	1244	1395	1.00000000	retained				below_identity_0.990	1	0.97163121	141	141	+	q:10-151/151;t:0-141/151
+SRR27862880.66501_m2	no_in_support	1021	all_mapped	previous	1	0	SRR27862880.36501_m1	+1	1021	1172	1.00000000	retained				below_identity_0.990	1	0.97972973	148	148	+	q:0-148/151;t:0-148/148
+SRR27862880.66501_m2	no_in_support	1021	all_mapped	previous	2	2	SRR27862880.199501_m2	+1	1019	1169	1.00000000	retained				below_identity_0.990	1	0.97972973	148	148	+	q:2-150/150;t:0-148/148
+SRR27862880.66501_m2	no_in_support	1021	all_mapped	previous	3	7	SRR27862880.14501_m2	+1	1014	1164	1.00000000	retained				below_identity_0.990	1	0.98581560	141	141	+	q:7-148/150;t:0-141/148
+SRR27862880.66501_m2	no_in_support	1021	all_mapped	next	1	3	SRR27862880.80001_m2	+1	1024	1175	1.00000000	retained				below_identity_0.990	1	0.97931034	145	145	+	q:3-148/148;t:0-145/151
+SRR27862880.66501_m2	no_in_support	1021	all_mapped	next	2	6	SRR27862880.190001_m1	-1	1027	1178	1.00000000	retained				below_identity_0.990	1	0.97887324	142	142	-	q:9-151/151;t:6-148/148
+SRR27862880.66501_m2	no_in_support	1021	all_mapped	next	3	12	SRR27862880.203501_m1	-1	1033	1184	1.00000000	retained				below_identity_0.990	1	0.97794118	136	136	-	q:15-151/151;t:12-148/148
+SRR27862880.110001_m1	no_in_support	2817	retained_graph	previous	1	17	SRR27862880.131501_m1	-1	2800	2951	0.99337748	retained				below_identity_0.990	1	0.98507463	134	134	+	q:17-151/151;t:0-134/151
+SRR27862880.110001_m1	no_in_support	2817	retained_graph	previous	2	21	SRR27862880.196001_m1	-1	2796	2946	0.99333333	retained				below_identity_0.990	1	0.98449612	129	129	+	q:22-151/151;t:0-129/150
+SRR27862880.110001_m1	no_in_support	2817	retained_graph	previous	3	31	SRR27862880.146001_m1	-1	2786	2936	0.99333333	retained				below_identity_0.990	1	0.98319328	119	119	+	q:32-151/151;t:0-119/150
+SRR27862880.110001_m1	no_in_support	2817	retained_graph	next	1	4	SRR27862880.124001_m1	+1	2821	2972	0.99337748	retained				below_identity_0.990	1	0.97959184	147	147	-	q:0-147/151;t:0-147/151
+SRR27862880.110001_m1	no_in_support	2817	retained_graph	next	2	12	SRR27862880.190501_m2	+1	2829	2980	1.00000000	retained		overlap=139;identity=0.992806;error=0.007194		directed_candidate_geometry	1	0.99280576	139	139	-	q:0-139/151;t:0-139/151
+SRR27862880.110001_m1	no_in_support	2817	retained_graph	next	3	16	SRR27862880.205001_m1	-1	2833	2984	1.00000000	retained		overlap=135;identity=0.992593;error=0.007407		directed_candidate_geometry	1	0.99259259	135	135	+	q:0-135/151;t:16-151/151
+SRR27862880.110001_m2	no_out_support	2576	retained_graph	previous	1	1	SRR27862880.146001_m2	+1	2575	2726	1.00000000	retained				below_identity_0.990	1	0.98666667	150	150	+	q:0-150/151;t:1-151/151
+SRR27862880.110001_m2	no_out_support	2576	retained_graph	previous	2	17	SRR27862880.115001_m1	+1	2559	2710	1.00000000	retained			overlap=134;identity=0.992537;error=0.007463	directed_candidate_geometry	1	0.99253731	134	134	+	q:0-134/151;t:17-151/151
+SRR27862880.110001_m2	no_out_support	2576	retained_graph	previous	3	23	SRR27862880.196001_m2	+1	2553	2704	0.98675497	retained				below_identity_0.990	1	0.98412698	126	126	+	q:0-126/151;t:23-149/151
+SRR27862880.110001_m2	no_out_support	2576	retained_graph	next	1	12	SRR27862880.84501_m1	+1	2588	2739	0.99337748	retained				below_identity_0.990	1	0.98561151	139	139	+	q:12-151/151;t:0-139/151
+SRR27862880.110001_m2	no_out_support	2576	retained_graph	next	2	27	SRR27862880.173001_m2	+1	2603	2754	0.99337748	retained				below_identity_0.990	1	0.98387097	124	124	+	q:27-151/151;t:0-124/151
+SRR27862880.110001_m2	no_out_support	2576	retained_graph	next	3	30	SRR27862880.204001_m1	-1	2606	2757	0.99337748	retained				below_identity_0.990	1	0.98347107	121	121	-	q:30-151/151;t:30-151/151
+SRR27862880.125501_m1	no_in_support	4272	retained_graph	previous	1	8	SRR27862880.167501_m1	-1	4264	4414	1.00000000	retained				below_identity_0.990	1	0.97887324	142	142	+	q:8-150/150;t:0-142/150
+SRR27862880.125501_m1	no_in_support	4272	retained_graph	previous	2	11	SRR27862880.501_m2	+1	4261	4412	1.00000000	retained				below_identity_0.990	1	0.97857143	140	140	-	q:10-150/150;t:11-151/151
+SRR27862880.125501_m1	no_in_support	4272	retained_graph	previous	3	15	SRR27862880.170501_m1	-1	4257	4408	1.00000000	retained				below_identity_0.990	1	0.97794118	136	136	+	q:14-150/150;t:0-136/151
+SRR27862880.125501_m1	no_in_support	4272	retained_graph	next	1	13	SRR27862880.164001_m1	-1	4285	4436	1.00000000	retained				below_identity_0.990	1	0.98507463	134	134	+	q:0-134/150;t:14-148/151
+SRR27862880.125501_m1	no_in_support	4272	retained_graph	next	2	19	SRR27862880.51501_m2	-1	4291	4441	1.00000000	retained				below_identity_0.990	1	0.98473282	131	131	+	q:0-131/150;t:19-150/150
+SRR27862880.125501_m1	no_in_support	4272	retained_graph	next	3	20	SRR27862880.121501_m2	+1	4292	4443	1.00000000	retained				below_identity_0.990	1	0.98461538	130	130	-	q:0-130/151;t:0-130/150
+SRR27862880.126001_m1	no_out_support	5300	retained_graph	previous	1	3	SRR27862880.194001_m1	+1	5297	5447	1.00000000	retained				below_identity_0.990	1	0.98639456	147	147	+	q:0-147/151;t:3-150/150
+SRR27862880.126001_m1	no_out_support	5300	retained_graph	previous	2	6	SRR27862880.67001_m2	-1	5294	5444	0.98666667	retained				below_identity_0.990	1	0.97887324	142	142	-	q:2-144/151;t:0-142/150
+SRR27862880.126001_m1	no_out_support	5300	retained_graph	previous	3	10	SRR27862880.122501_m1	-1	5290	5440	1.00000000	retained				below_identity_0.990	1	0.98571429	140	140	-	q:0-140/150;t:0-140/151
+SRR27862880.126001_m1	no_out_support	5300	retained_graph	next	1	0	SRR27862880.184501_m1	+1	5300	5451	1.00000000	retained				below_identity_0.990	1	0.98675497	151	151	+	q:0-151/151;t:0-151/151
+SRR27862880.126001_m1	no_out_support	5300	retained_graph	next	2	8	SRR27862880.3001_m1	+1	5308	5459	1.00000000	retained				below_identity_0.990	1	0.98601399	143	143	+	q:8-151/151;t:0-143/151
+SRR27862880.126001_m1	no_out_support	5300	retained_graph	next	3	19	SRR27862880.221501_m1	+1	5319	5470	1.00000000	retained				below_identity_0.990	1	0.98484848	132	132	+	q:19-151/151;t:0-132/151
+SRR27862880.159001_m1	no_out_support	4527	retained_graph	previous	1	5	SRR27862880.121501_m1	-1	4522	4672	1.00000000	retained				below_identity_0.990	1	0.97931034	145	145	-	q:0-145/150;t:0-145/151
+SRR27862880.159001_m1	no_out_support	4527	retained_graph	previous	2	10	SRR27862880.174001_m1	+1	4517	4667	1.00000000	retained				below_identity_0.990	1	0.97857143	140	140	+	q:0-140/151;t:10-150/150
+SRR27862880.159001_m1	no_out_support	4527	retained_graph	previous	3	23	SRR27862880.37501_m1	-1	4504	4655	1.00000000	retained				below_identity_0.990	1	0.98400000	125	125	-	q:0-125/151;t:3-128/151
+SRR27862880.159001_m1	no_out_support	4527	retained_graph	next	1	12	SRR27862880.242501_m1	+1	4539	4690	0.99337748	retained				below_identity_0.990	1	0.97122302	139	139	+	q:12-151/151;t:0-139/151
+SRR27862880.159001_m1	no_out_support	4527	retained_graph	next	2	14	SRR27862880.93501_m1	-1	4541	4692	1.00000000	retained				below_identity_0.990	1	0.97810219	137	137	-	q:14-151/151;t:14-151/151
+SRR27862880.159001_m1	no_out_support	4527	retained_graph	next	3	16	SRR27862880.65001_m2	-1	4543	4693	1.00000000	retained				below_identity_0.990	1	0.97777778	135	135	-	q:16-151/151;t:15-150/150
+SRR27862880.169501_m2	no_out_support	984	retained_graph	previous	1	28	SRR27862880.237001_m1	-1	956	1107	1.00000000	retained				below_identity_0.990	1	0.98373984	123	123	-	q:0-123/151;t:0-123/151
+SRR27862880.169501_m2	no_out_support	984	retained_graph	previous	2	31	SRR27862880.123001_m2	-1	953	1104	1.00000000	retained				below_identity_0.990	1	0.98333333	120	120	-	q:0-120/151;t:0-120/151
+SRR27862880.169501_m2	no_out_support	984	retained_graph	previous	3	32	SRR27862880.234001_m2	-1	952	1102	1.00000000	retained			overlap=116;identity=0.991379;error=0.008621	directed_candidate_geometry	1	0.99137931	116	116	-	q:0-116/151;t:2-118/150
+SRR27862880.169501_m2	no_out_support	984	retained_graph	next	1	3	SRR27862880.94501_m1	+1	987	1138	1.00000000	retained				below_identity_0.990	1	0.98648649	148	148	+	q:3-151/151;t:0-148/151
+SRR27862880.169501_m2	no_out_support	984	retained_graph	next	2	9	SRR27862880.239501_m2	+1	993	1144	1.00000000	retained				below_identity_0.990	1	0.98591549	142	142	+	q:9-151/151;t:0-142/151
+SRR27862880.169501_m2	no_out_support	984	retained_graph	next	3	13	SRR27862880.92001_m2	+1	997	1148	1.00000000	retained				below_identity_0.990	1	0.98550725	138	138	+	q:13-151/151;t:0-138/151
+SRR27862880.174501_m2	no_out_support	2755	retained_graph	previous	1	31	SRR27862880.236501_m2	-1	2724	2874	0.98666667	retained				below_identity_0.990	1	0.98319328	119	119	-	q:0-119/150;t:0-119/150
+SRR27862880.174501_m2	no_out_support	2755	retained_graph	previous	2	34	SRR27862880.120501_m2	+1	2721	2872	0.98675497	retained				below_identity_0.990	1	0.98290598	117	117	+	q:34-151/151;t:0-117/150
+SRR27862880.174501_m2	no_out_support	2755	retained_graph	previous	3	36	SRR27862880.51001_m1	+1	2719	2870	0.98675497	retained				below_identity_0.990	1	0.98260870	115	115	+	q:0-115/150;t:36-151/151
+SRR27862880.174501_m2	no_out_support	2755	retained_graph	next	1	4	SRR27862880.115001_m2	-1	2759	2909	0.99333333	retained				below_identity_0.990	1	0.98630137	146	146	-	q:4-150/150;t:4-150/150
+SRR27862880.174501_m2	no_out_support	2755	retained_graph	next	2	7	SRR27862880.249501_m1	-1	2762	2913	0.99337748	retained				below_identity_0.990	1	0.98601399	143	143	-	q:7-150/150;t:8-151/151
+SRR27862880.174501_m2	no_out_support	2755	retained_graph	next	3	8	SRR27862880.84501_m2	-1	2763	2914	0.99337748	retained				below_identity_0.990	1	0.98591549	142	142	-	q:8-150/150;t:9-151/151
+SRR27862880.176001_m1	no_in_or_out_support	2428	retained_graph	previous	1	4	SRR27862880.71001_m1	+1	2424	2575	1.00000000	retained				below_identity_0.990	1	0.98888889	90	90	+	q:0-90/148;t:4-94/151
+SRR27862880.176001_m1	no_in_or_out_support	2428	retained_graph	previous	2	11	SRR27862880.193001_m1	-1	2417	2568	1.00000000	retained				below_identity_0.990	1	0.98888889	90	90	-	q:0-90/148;t:50-140/151
+SRR27862880.176001_m1	no_in_or_out_support	2428	retained_graph	previous	3	13	SRR27862880.219001_m1	-1	2415	2563	0.99324324	retained				below_identity_0.990	1	0.97777778	90	90	-	q:0-90/148;t:45-135/148
+SRR27862880.176001_m1	no_in_or_out_support	2428	retained_graph	next	1	13	SRR27862880.4001_m2	+1	2441	2592	1.00000000	retained				below_min_overlap	1	0.98701299	77	77	+	q:13-90/148;t:0-77/151
+SRR27862880.176001_m1	no_in_or_out_support	2428	retained_graph	next	2	25	SRR27862880.43001_m1	+1	2453	2604	1.00000000	retained				below_min_overlap	1	0.98461538	65	65	+	q:25-90/148;t:0-65/151
+SRR27862880.176001_m1	no_in_or_out_support	2428	retained_graph	next	3	53	SRR27862880.206001_m1	-1	2481	2632	1.00000000	retained				no_paf_record	0					
+SRR27862880.178001_m2	no_out_support	1441	retained_graph	previous	1	1	SRR27862880.140001_m1	+1	1440	1590	1.00000000	retained				below_identity_0.990	1	0.98657718	149	149	+	q:1-150/150;t:0-149/149
+SRR27862880.178001_m2	no_out_support	1441	retained_graph	previous	2	11	SRR27862880.188501_m1	-1	1430	1581	1.00000000	retained				below_identity_0.990	1	0.98571429	140	140	-	q:0-140/149;t:0-140/151
+SRR27862880.178001_m2	no_out_support	1441	retained_graph	previous	3	15	SRR27862880.185001_m1	-1	1426	1575	1.00000000	retained			overlap=134;identity=0.992537;error=0.007463	directed_candidate_geometry	1	0.99253731	134	134	-	q:0-134/149;t:0-134/149
+SRR27862880.178001_m2	no_out_support	1441	retained_graph	next	1	0	SRR27862880.2501_m2	-1	1441	1592	1.00000000	retained				below_identity_0.990	1	0.98657718	149	149	-	q:0-149/149;t:2-151/151
+SRR27862880.178001_m2	no_out_support	1441	retained_graph	next	2	2	SRR27862880.238501_m1	-1	1443	1594	1.00000000	retained				below_identity_0.990	1	0.98639456	147	147	-	q:2-149/149;t:4-151/151
+SRR27862880.178001_m2	no_out_support	1441	retained_graph	next	3	10	SRR27862880.85501_m1	-1	1451	1602	1.00000000	retained				below_identity_0.990	1	0.98561151	139	139	-	q:10-149/149;t:12-151/151
+SRR27862880.196001_m2	no_out_support	2553	retained_graph	previous	1	3	SRR27862880.120001_m1	+1	2550	2701	1.00000000	retained				below_identity_0.990	1	0.98648649	148	148	+	q:3-151/151;t:0-148/151
+SRR27862880.196001_m2	no_out_support	2553	retained_graph	previous	2	6	SRR27862880.172001_m1	+1	2547	2697	1.00000000	retained				below_identity_0.990	1	0.98611111	144	144	+	q:6-150/150;t:0-144/151
+SRR27862880.196001_m2	no_out_support	2553	retained_graph	previous	3	11	SRR27862880.50501_m1	-1	2542	2693	1.00000000	retained				below_identity_0.990	1	0.98571429	140	140	-	q:0-140/151;t:0-140/151
+SRR27862880.196001_m2	no_out_support	2553	retained_graph	next	1	6	SRR27862880.115001_m1	+1	2559	2710	1.00000000	retained				below_identity_0.990	1	0.98620690	145	145	+	q:0-145/151;t:6-151/151
+SRR27862880.196001_m2	no_out_support	2553	retained_graph	next	2	22	SRR27862880.146001_m2	+1	2575	2726	1.00000000	retained				below_identity_0.990	1	0.98449612	129	129	+	q:0-129/151;t:22-151/151
+SRR27862880.196001_m2	no_out_support	2553	retained_graph	next	3	23	SRR27862880.110001_m2	+1	2576	2727	0.98675497	retained				below_identity_0.990	1	0.98412698	126	126	+	q:0-126/151;t:23-149/151
+SRR27862880.213001_m1	no_out_support	512	retained_graph	previous	1	2	SRR27862880.14001_m1	+1	510	661	0.99337748	retained				no_positive_shift_dovetail	1	1.00000000	86	86	+	q:2-88/151;t:0-86/150
+SRR27862880.213001_m1	no_out_support	512	retained_graph	previous	2	8	SRR27862880.49501_m1	+1	504	655	0.99337748	retained				no_positive_shift_dovetail	1	1.00000000	86	86	+	q:0-86/150;t:8-94/151
+SRR27862880.213001_m1	no_out_support	512	retained_graph	previous	3	25	SRR27862880.134001_m1	+1	487	638	0.99337748	retained				no_positive_shift_dovetail	1	1.00000000	86	86	+	q:25-111/151;t:0-86/150
+SRR27862880.213001_m1	no_out_support	512	retained_graph	next	1	1	SRR27862880.24001_m1	+1	513	663	0.99333333	retained				no_positive_shift_dovetail	1	1.00000000	85	85	+	q:1-86/150;t:0-85/150
+SRR27862880.213001_m1	no_out_support	512	retained_graph	next	2	6	SRR27862880.46001_m1	-1	518	669	0.99337748	retained				no_positive_shift_dovetail	1	1.00000000	80	80	-	q:6-86/150;t:71-151/151
+SRR27862880.213001_m1	no_out_support	512	retained_graph	next	3	7	SRR27862880.73501_m1	+1	519	670	0.98675497	retained				below_min_overlap	1	1.00000000	79	79	+	q:7-86/150;t:0-79/151
+SRR27862880.213501_m1	no_in_support	778	retained_graph	previous	1	0	SRR27862880.133001_m2	-1	778	929	0.99337748	retained				below_identity_0.990	1	0.98675497	151	151	+	q:0-151/151;t:0-151/151
+SRR27862880.213501_m1	no_in_support	778	retained_graph	previous	2	5	SRR27862880.39001_m2	-1	773	924	0.99337748	retained				below_identity_0.990	1	0.98630137	146	146	+	q:5-151/151;t:0-146/151
+SRR27862880.213501_m1	no_in_support	778	retained_graph	previous	3	7	SRR27862880.22501_m2	-1	771	922	0.99337748	retained				below_identity_0.990	1	0.98611111	144	144	+	q:7-151/151;t:0-144/151
+SRR27862880.213501_m1	no_in_support	778	retained_graph	next	1	10	SRR27862880.126501_m2	-1	788	938	0.99333333	retained				below_identity_0.990	1	0.98581560	141	141	+	q:9-150/150;t:0-141/151
+SRR27862880.213501_m1	no_in_support	778	retained_graph	next	2	19	SRR27862880.59501_m2	-1	797	948	0.99337748	retained				below_identity_0.990	1	0.98484848	132	132	+	q:0-132/151;t:19-151/151
+SRR27862880.213501_m1	no_in_support	778	retained_graph	next	3	22	SRR27862880.218001_m1	-1	800	951	0.99337748	retained		overlap=128;identity=0.992188;error=0.007812		directed_candidate_geometry	1	0.99218750	128	128	+	q:0-128/151;t:22-150/151
+SRR27862880.229001_m1	no_in_or_out_support	1730	retained_graph	previous	1	16	SRR27862880.6501_m2	-1	1714	1864	1.00000000	retained				below_identity_0.990	1	0.95488722	133	133	+	q:14-147/148;t:0-133/150
+SRR27862880.229001_m1	no_in_or_out_support	1730	retained_graph	previous	2	26	SRR27862880.18001_m2	+1	1704	1855	1.00000000	retained				below_identity_0.990	1	0.95161290	124	124	-	q:27-151/151;t:23-147/148
+SRR27862880.229001_m1	no_in_or_out_support	1730	retained_graph	previous	3	30	SRR27862880.48001_m2	-1	1700	1850	1.00000000	retained				below_identity_0.990	1	0.94957983	119	119	+	q:28-147/148;t:0-119/150
+SRR27862880.229001_m1	no_in_or_out_support	1730	retained_graph	next	1	12	SRR27862880.222501_m2	-1	1742	1891	1.00000000	retained				below_identity_0.990	1	0.94814815	135	135	+	q:14-149/149;t:1-136/148
+SRR27862880.229001_m1	no_in_or_out_support	1730	retained_graph	next	2	14	SRR27862880.154001_m2	+1	1744	1893	1.00000000	retained				below_identity_0.990	1	0.94736842	133	133	-	q:0-133/149;t:1-134/148
+SRR27862880.229001_m1	no_in_or_out_support	1730	retained_graph	next	3	21	SRR27862880.28501_m2	-1	1751	1902	1.00000000	retained				below_identity_0.990	1	0.94444444	126	126	+	q:1-127/148;t:25-151/151
+SRR27862880.229001_m2	no_out_support	1520	retained_graph	previous	1	4	SRR27862880.6501_m1	+1	1516	1667	1.00000000	retained				below_identity_0.990	1	0.97959184	147	147	+	q:0-147/150;t:4-151/151
+SRR27862880.229001_m2	no_out_support	1520	retained_graph	previous	2	17	SRR27862880.225001_m1	-1	1503	1654	1.00000000	retained				below_identity_0.990	1	0.98507463	134	134	-	q:0-134/151;t:0-134/150
+SRR27862880.229001_m2	no_out_support	1520	retained_graph	previous	3	20	SRR27862880.197501_m2	-1	1500	1651	1.00000000	retained				below_identity_0.990	1	0.98473282	131	131	-	q:0-131/151;t:0-131/150
+SRR27862880.229001_m2	no_out_support	1520	retained_graph	next	1	0	SRR27862880.66001_m1	+1	1520	1671	1.00000000	retained				below_identity_0.990	1	0.98000000	150	150	+	q:0-150/150;t:0-150/151
+SRR27862880.229001_m2	no_out_support	1520	retained_graph	next	2	5	SRR27862880.88001_m1	-1	1525	1675	1.00000000	retained				below_identity_0.990	1	0.97931034	145	145	-	q:5-150/150;t:5-150/150
+SRR27862880.229001_m2	no_out_support	1520	retained_graph	next	3	13	SRR27862880.28501_m1	+1	1533	1684	1.00000000	retained				below_identity_0.990	1	0.97810219	137	137	+	q:13-150/150;t:0-137/151
+SRR27862880.245001_m2	no_out_support	1078	retained_graph	previous	1	12	SRR27862880.7001_m1	-1	1066	1217	1.00000000	retained				below_identity_0.990	1	0.98561151	139	139	-	q:0-139/150;t:0-139/151
+SRR27862880.245001_m2	no_out_support	1078	retained_graph	previous	2	13	SRR27862880.119501_m1	+1	1065	1216	1.00000000	retained				below_identity_0.990	1	0.98550725	138	138	+	q:13-151/151;t:0-138/150
+SRR27862880.245001_m2	no_out_support	1078	retained_graph	previous	3	15	SRR27862880.39501_m1	-1	1063	1213	1.00000000	retained				below_identity_0.990	1	0.98518519	135	135	-	q:0-135/150;t:0-135/150
+SRR27862880.245001_m2	no_out_support	1078	retained_graph	next	1	5	SRR27862880.243501_m1	-1	1083	1231	1.00000000	retained				below_identity_0.990	1	0.98620690	145	145	-	q:3-148/148;t:5-150/150
+SRR27862880.245001_m2	no_out_support	1078	retained_graph	next	2	17	SRR27862880.44501_m2	-1	1095	1246	1.00000000	retained				below_identity_0.990	1	0.98496241	133	133	-	q:17-150/150;t:18-151/151
+SRR27862880.245001_m2	no_out_support	1078	retained_graph	next	3	24	SRR27862880.177001_m2	+1	1102	1251	1.00000000	retained				below_identity_0.990	1	0.98412698	126	126	+	q:0-126/149;t:24-150/150
+SRR27862880.27001_m1	no_out_support	888	retained_graph	previous	1	1	SRR27862880.226501_m2	+1	887	1037	1.00000000	retained				no_positive_shift_dovetail	1	1.00000000	104	104	+	q:1-105/150;t:0-104/151
+SRR27862880.27001_m1	no_out_support	888	retained_graph	previous	2	5	SRR27862880.58501_m2	+1	883	1034	1.00000000	retained				no_positive_shift_dovetail	1	1.00000000	104	104	+	q:0-104/151;t:5-109/151
+SRR27862880.27001_m1	no_out_support	888	retained_graph	previous	3	18	SRR27862880.44501_m1	+1	870	1021	1.00000000	retained				no_positive_shift_dovetail	1	1.00000000	104	104	+	q:0-104/151;t:18-122/151
+SRR27862880.27001_m1	no_out_support	888	retained_graph	next	1	6	SRR27862880.70501_m1	-1	894	1045	1.00000000	retained				no_positive_shift_dovetail	1	1.00000000	98	98	-	q:6-104/151;t:53-151/151
+SRR27862880.27001_m1	no_out_support	888	retained_graph	next	2	23	SRR27862880.17501_m2	+1	911	1062	1.00000000	retained				no_positive_shift_dovetail	1	1.00000000	81	81	+	q:0-81/151;t:23-104/151
+SRR27862880.27001_m1	no_out_support	888	retained_graph	next	3	28	SRR27862880.160001_m1	+1	916	1067	1.00000000	retained				below_min_overlap	1	1.00000000	76	76	+	q:0-76/151;t:28-104/151
+SRR27862880.3001_m2	no_in_support	155	retained_graph	previous	1	25	SRR27862880.194001_m2	-1	130	281	1.00000000	retained				below_identity_0.990	1	0.98412698	126	126	+	q:0-126/151;t:24-150/150
+SRR27862880.3001_m2	no_in_support	155	retained_graph	previous	2	26	SRR27862880.228501_m1	+1	129	279	1.00000000	retained				below_identity_0.990	1	0.98387097	124	124	-	q:26-150/150;t:26-150/150
+SRR27862880.3001_m2	no_in_support	155	retained_graph	previous	3	43	SRR27862880.77501_m2	-1	112	263	1.00000000	retained				below_identity_0.990	1	0.98148148	108	108	+	q:42-150/150;t:0-108/151
+SRR27862880.3001_m2	no_in_support	155	retained_graph	next	1	7	SRR27862880.61001_m2	+1	162	313	1.00000000	retained				below_identity_0.990	1	0.98601399	143	143	-	q:0-143/150;t:0-143/151
+SRR27862880.3001_m2	no_in_support	155	retained_graph	next	2	10	SRR27862880.119001_m2	+1	165	316	1.00000000	retained				below_identity_0.990	1	0.98571429	140	140	-	q:0-140/151;t:0-140/150
+SRR27862880.3001_m2	no_in_support	155	retained_graph	next	3	14	SRR27862880.11001_m2	+1	169	318	1.00000000	retained				below_identity_0.990	1	0.98529412	136	136	-	q:0-136/149;t:0-136/150
+SRR27862880.38001_m1	no_out_support	1964	retained_graph	previous	1	10	SRR27862880.23501_m2	+1	1954	2105	1.00000000	retained				below_identity_0.990	1	0.98581560	141	141	+	q:10-151/151;t:0-141/151
+SRR27862880.38001_m1	no_out_support	1964	retained_graph	previous	2	21	SRR27862880.69001_m1	+1	1943	2094	1.00000000	retained			overlap=129;identity=0.992248;error=0.007752	directed_candidate_geometry	1	0.99224806	129	129	+	q:0-129/151;t:21-150/151
+SRR27862880.38001_m1	no_out_support	1964	retained_graph	previous	3	31	SRR27862880.245501_m1	+1	1933	2084	1.00000000	retained			overlap=120;identity=0.991667;error=0.008333	directed_candidate_geometry	1	0.99166667	120	120	+	q:31-151/151;t:0-120/151
+SRR27862880.38001_m1	no_out_support	1964	retained_graph	next	1	13	SRR27862880.74001_m2	+1	1977	2128	1.00000000	retained				below_identity_0.990	1	0.98550725	138	138	+	q:13-151/151;t:0-138/151
+SRR27862880.38001_m1	no_out_support	1964	retained_graph	next	2	50	SRR27862880.224501_m2	-1	2014	2164	1.00000000	retained				below_identity_0.990	1	0.98019802	101	101	-	q:49-150/150;t:50-151/151
+SRR27862880.38001_m1	no_out_support	1964	retained_graph	next	3	65	SRR27862880.26001_m2	+1	2029	2178	1.00000000	retained				below_identity_0.990	1	0.97674419	86	86	+	q:0-86/149;t:65-151/151
+SRR27862880.46501_m1	no_in_support	4661	retained_graph	previous	1	6	SRR27862880.211501_m1	-1	4655	4806	1.00000000	retained				below_identity_0.990	1	0.98620690	145	145	+	q:0-145/151;t:5-150/150
+SRR27862880.46501_m1	no_in_support	4661	retained_graph	previous	2	18	SRR27862880.186501_m1	-1	4643	4794	1.00000000	retained				below_identity_0.990	1	0.98496241	133	133	+	q:0-133/151;t:17-150/150
+SRR27862880.46501_m1	no_in_support	4661	retained_graph	previous	3	23	SRR27862880.129001_m2	+1	4638	4789	1.00000000	retained				below_identity_0.990	1	0.98437500	128	128	-	q:23-151/151;t:22-150/150
+SRR27862880.46501_m1	no_in_support	4661	retained_graph	next	1	0	SRR27862880.91001_m1	-1	4661	4811	1.00000000	retained				below_identity_0.990	1	0.98666667	150	150	+	q:0-150/150;t:0-150/150
+SRR27862880.46501_m1	no_in_support	4661	retained_graph	next	2	2	SRR27862880.44001_m2	+1	4663	4814	1.00000000	retained				below_identity_0.990	1	0.98648649	148	148	-	q:0-148/151;t:0-148/150
+SRR27862880.46501_m1	no_in_support	4661	retained_graph	next	3	3	SRR27862880.210501_m1	-1	4664	4815	1.00000000	retained				below_identity_0.990	1	0.98639456	147	147	+	q:4-151/151;t:0-147/150
+SRR27862880.46501_m2	no_out_support	4400	retained_graph	previous	1	8	SRR27862880.62001_m2	-1	4392	4543	0.98013245	retained				below_identity_0.990	1	0.95804196	143	143	-	q:0-143/150;t:0-143/151
+SRR27862880.46501_m2	no_out_support	4400	retained_graph	previous	2	11	SRR27862880.7501_m2	-1	4389	4539	1.00000000	retained				below_identity_0.990	1	0.97841727	139	139	-	q:0-139/150;t:0-139/150
+SRR27862880.46501_m2	no_out_support	4400	retained_graph	previous	3	17	SRR27862880.93001_m1	+1	4383	4534	1.00000000	retained				below_identity_0.990	1	0.97761194	134	134	+	q:0-134/150;t:17-151/151
+SRR27862880.46501_m2	no_out_support	4400	retained_graph	next	1	4	SRR27862880.102001_m2	+1	4404	4554	1.00000000	retained				below_identity_0.990	1	0.97260274	146	146	+	q:0-146/150;t:4-150/150
+SRR27862880.46501_m2	no_out_support	4400	retained_graph	next	2	5	SRR27862880.148501_m2	+1	4405	4556	1.00000000	retained				below_identity_0.990	1	0.97241379	145	145	+	q:0-145/151;t:5-150/150
+SRR27862880.46501_m2	no_out_support	4400	retained_graph	next	3	24	SRR27862880.222001_m1	-1	4424	4575	1.00000000	retained				below_identity_0.990	1	0.96825397	126	126	-	q:25-151/151;t:24-150/150
+SRR27862880.62001_m2	no_in_support	4392	retained_graph	previous	1	3	SRR27862880.7501_m2	-1	4389	4539	1.00000000	retained				below_identity_0.990	1	0.97959184	147	147	+	q:4-151/151;t:0-147/150
+SRR27862880.62001_m2	no_in_support	4392	retained_graph	previous	2	9	SRR27862880.93001_m1	+1	4383	4534	1.00000000	retained				below_identity_0.990	1	0.97887324	142	142	-	q:9-151/151;t:9-151/151
+SRR27862880.62001_m2	no_in_support	4392	retained_graph	previous	3	17	SRR27862880.163001_m2	+1	4375	4524	1.00000000	retained				below_identity_0.990	1	0.97727273	132	132	-	q:17-149/149;t:19-151/151
+SRR27862880.62001_m2	no_in_support	4392	retained_graph	next	1	8	SRR27862880.46501_m2	+1	4400	4550	0.97333333	retained				below_identity_0.990	1	0.95804196	143	143	-	q:0-143/150;t:0-143/151
+SRR27862880.62001_m2	no_in_support	4392	retained_graph	next	2	12	SRR27862880.102001_m2	+1	4404	4554	1.00000000	retained				below_identity_0.990	1	0.97841727	139	139	-	q:0-139/150;t:0-139/151
+SRR27862880.62001_m2	no_in_support	4392	retained_graph	next	3	13	SRR27862880.148501_m2	+1	4405	4556	1.00000000	retained				below_identity_0.990	1	0.97826087	138	138	-	q:0-138/151;t:0-138/151
+SRR27862880.63501_m2	no_out_support	3644	retained_graph	previous	1	2	SRR27862880.240001_m2	+1	3642	3793	1.00000000	retained				below_identity_0.990	1	0.98657718	149	149	+	q:2-151/151;t:0-149/150
+SRR27862880.63501_m2	no_out_support	3644	retained_graph	previous	2	15	SRR27862880.163501_m2	+1	3629	3780	1.00000000	retained				below_identity_0.990	1	0.98529412	136	136	+	q:15-151/151;t:0-136/150
+SRR27862880.63501_m2	no_out_support	3644	retained_graph	previous	3	17	SRR27862880.203001_m1	+1	3627	3778	1.00000000	retained				below_identity_0.990	1	0.98507463	134	134	+	q:17-151/151;t:0-134/150
+SRR27862880.63501_m2	no_out_support	3644	retained_graph	next	1	3	SRR27862880.20501_m1	-1	3647	3798	1.00000000	retained				below_identity_0.990	1	0.98639456	147	147	-	q:4-151/151;t:3-150/150
+SRR27862880.63501_m2	no_out_support	3644	retained_graph	next	2	16	SRR27862880.64001_m1	+1	3660	3811	1.00000000	retained				below_identity_0.990	1	0.98507463	134	134	+	q:16-150/150;t:0-134/151
+SRR27862880.63501_m2	no_out_support	3644	retained_graph	next	3	21	SRR27862880.112501_m2	-1	3665	3816	1.00000000	retained				below_identity_0.990	1	0.98449612	129	129	-	q:22-151/151;t:21-150/150
+SRR27862880.66501_m1	no_in_or_out_support	1234	retained_graph	previous	1	6	SRR27862880.239501_m1	-1	1228	1379	1.00000000	retained				below_identity_0.990	1	0.97241379	145	145	+	q:0-145/151;t:6-151/151
+SRR27862880.66501_m1	no_in_or_out_support	1234	retained_graph	previous	2	14	SRR27862880.80001_m1	-1	1220	1371	1.00000000	retained				below_identity_0.990	1	0.97080292	137	137	+	q:14-151/151;t:0-137/151
+SRR27862880.66501_m1	no_in_or_out_support	1234	retained_graph	previous	3	15	SRR27862880.2501_m1	+1	1219	1370	1.00000000	retained				below_identity_0.990	1	0.97058824	136	136	-	q:15-151/151;t:15-151/151
+SRR27862880.66501_m1	no_in_or_out_support	1234	retained_graph	next	1	3	SRR27862880.8501_m2	+1	1237	1387	1.00000000	retained				below_identity_0.990	1	0.97297297	148	148	-	q:0-148/151;t:0-148/150
+SRR27862880.66501_m1	no_in_or_out_support	1234	retained_graph	next	2	7	SRR27862880.232001_m2	-1	1241	1390	1.00000000	retained				below_identity_0.990	1	0.97222222	144	144	+	q:5-149/149;t:0-144/151
+SRR27862880.66501_m1	no_in_or_out_support	1234	retained_graph	next	3	10	SRR27862880.100501_m2	-1	1244	1395	1.00000000	retained				below_identity_0.990	1	0.97163121	141	141	+	q:10-151/151;t:0-141/151
+SRR27862880.66501_m2	no_in_support	1021	retained_graph	previous	1	0	SRR27862880.36501_m1	+1	1021	1172	1.00000000	retained				below_identity_0.990	1	0.97972973	148	148	+	q:0-148/151;t:0-148/148
+SRR27862880.66501_m2	no_in_support	1021	retained_graph	previous	2	2	SRR27862880.199501_m2	+1	1019	1169	1.00000000	retained				below_identity_0.990	1	0.97972973	148	148	+	q:2-150/150;t:0-148/148
+SRR27862880.66501_m2	no_in_support	1021	retained_graph	previous	3	7	SRR27862880.14501_m2	+1	1014	1164	1.00000000	retained				below_identity_0.990	1	0.98581560	141	141	+	q:7-148/150;t:0-141/148
+SRR27862880.66501_m2	no_in_support	1021	retained_graph	next	1	3	SRR27862880.80001_m2	+1	1024	1175	1.00000000	retained				below_identity_0.990	1	0.97931034	145	145	+	q:3-148/148;t:0-145/151
+SRR27862880.66501_m2	no_in_support	1021	retained_graph	next	2	6	SRR27862880.190001_m1	-1	1027	1178	1.00000000	retained				below_identity_0.990	1	0.97887324	142	142	-	q:9-151/151;t:6-148/148
+SRR27862880.66501_m2	no_in_support	1021	retained_graph	next	3	12	SRR27862880.203501_m1	-1	1033	1184	1.00000000	retained				below_identity_0.990	1	0.97794118	136	136	-	q:15-151/151;t:12-148/148

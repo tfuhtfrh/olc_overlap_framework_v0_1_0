@@ -1,0 +1,725 @@
+{
+  "method": "source BAM primary alignment strand; reference-assisted preprocessing isolates layout order",
+  "reads": [
+    {
+      "id": "m64062_190803_042216/36898953/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/41419626/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/35522216/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/64226171/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/157811529/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/90900269/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190807_194840/169609489/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/42600005/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/100140798/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/44499289/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/44173964/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/155582878/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/91948018/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190804_172951/129435048/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/18941553/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/124979683/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/117901287/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/151062315/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/77725913/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/147260971/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/118882990/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/115607081/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/168888464/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/85459505/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/70518252/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/135725370/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/173146610/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/106365251/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/74908890/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/166528477/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/119800317/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/89655134/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/106236189/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/28903706/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/3277534/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/177799801/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/120390470/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/53283334/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/37357632/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/104202824/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/83624383/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/107416213/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/135594902/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/52758518/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/71763664/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/84148411/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/56033843/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190807_194840/108134550/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/99682083/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/29493110/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/16451763/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/145098390/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/21236247/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/138739829/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/34736402/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190804_172951/80480160/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/140838845/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/49546951/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/2557337/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/36309233/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/164824450/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/148833519/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/48106032/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/136906798/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/139922172/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/153092420/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/49611632/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/73139865/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/53740738/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/80871694/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/121765970/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/144377136/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/36701650/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/176620373/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/139527823/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/88410241/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/142149314/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/64096710/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190804_172951/20775541/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/108986702/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/13763593/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/97714662/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/129174017/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/112592516/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/131137839/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/53739553/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/180355373/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/71633248/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/121309663/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/149817135/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/178783212/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/155911360/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/119408928/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/86376721/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/133103689/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/46990555/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/40044698/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/55968709/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/10617565/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/50136055/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/57868618/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/26479381/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/72419950/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/15533448/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/162529556/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/121242687/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/172819372/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/105188101/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/136119835/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/47645698/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/53937123/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/111806121/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/24971205/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/53346526/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/93652138/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/39651930/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190807_194840/163580356/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/41617533/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/110757013/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/21169754/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/145164152/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190807_194840/51185706/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/51120393/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/129893236/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/128845544/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/125305484/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/133825423/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/136709217/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190807_194840/69665132/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/72614749/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/53870657/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/25428422/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/33622791/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/151191564/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/146276363/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/20317928/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/11405042/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190803_042216/31394282/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/46334670/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/113051251/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190803_042216/96799380/ccs",
+      "selected_sign": "+",
+      "reverse_complemented_in_normalized_fasta": false
+    },
+    {
+      "id": "m64062_190806_063919/55509938/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/153224330/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    },
+    {
+      "id": "m64062_190806_063919/1181955/ccs",
+      "selected_sign": "-",
+      "reverse_complemented_in_normalized_fasta": true
+    }
+  ]
+}

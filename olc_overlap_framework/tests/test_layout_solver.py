@@ -1,4 +1,8 @@
+import sys
 import unittest
+from itertools import product
+from types import SimpleNamespace
+from unittest.mock import patch
 
 from olc_pipeline.data import OverlapEdge, Read
 from olc_pipeline.layout_solver import (
@@ -11,11 +15,17 @@ from olc_pipeline.layout_solver import (
     EdgeCycleCoverDAGHamiltonianConfig,
     EdgeCycleCoverDAGQUBOHamiltonian,
     EdgeCycleCoverDAGQUBOModel,
+    EdgeOrderedPathHamiltonianConfig,
+    EdgeOrderedPathQUBOHamiltonian,
+    EdgeOrderedPathQUBOModel,
     EdgePathCoverDAGHamiltonianConfig,
     EdgePathCoverDAGQUBOHamiltonian,
     EdgePathCoverDAGQUBOModel,
     MissingEdgeHamiltonianConfig,
     MissingEdgeQUBOHamiltonian,
+    OpenJijSQAConfig,
+    OpenJijSimulatedQuantumAnnealer,
+    OverlapRewardScorerConfig,
     OverlapRewardScorer,
     PDFAssemblyHamiltonianConfig,
     PDFAssemblyQUBOHamiltonian,
@@ -27,6 +37,7 @@ from olc_pipeline.layout_solver import (
     QUBOModel,
     WeightedOverlapHamiltonianConfig,
     WeightedOverlapQUBOHamiltonian,
+    quality_margin_coefficients,
     qubo_sample_for_order,
 )
 
@@ -37,7 +48,11 @@ def make_edge(
     weight: float = 1.0,
     overlap_len: int = 10,
     mi: float | None = None,
+    matches: int | None = None,
+    errors: int = 0,
 ) -> OverlapEdge:
+    match_count = overlap_len if matches is None else matches
+    alignment_block = match_count + errors
     return OverlapEdge(
         left_id=left_id,
         right_id=right_id,
@@ -47,14 +62,14 @@ def make_edge(
         right_end=overlap_len,
         overlap_len=overlap_len,
         shift=overlap_len,
-        matches=overlap_len,
-        mismatches=0,
+        matches=match_count,
+        mismatches=errors,
         insertions=0,
         deletions=0,
         gaps=0,
-        edit_distance=0,
-        error_rate=0.0,
-        identity=1.0,
+        edit_distance=errors,
+        error_rate=(errors / alignment_block if alignment_block else 0.0),
+        identity=(match_count / alignment_block if alignment_block else 0.0),
         dp_score=weight,
         mi=mi,
         weight_mi=mi,
@@ -64,6 +79,56 @@ def make_edge(
 
 
 class QUBOLayoutSolverTests(unittest.TestCase):
+    def test_openjij_sqa_config_validates_gamma_and_schedule(self):
+        with self.assertRaisesRegex(ValueError, "gamma must be positive"):
+            OpenJijSQAConfig(gamma=0.0).validate()
+        with self.assertRaisesRegex(ValueError, "at least 2"):
+            OpenJijSQAConfig(trotter=1).validate()
+        with self.assertRaisesRegex(ValueError, "must not be empty"):
+            OpenJijSQAConfig(schedule=()).validate()
+        with self.assertRaisesRegex(ValueError, "must be in"):
+            OpenJijSQAConfig(schedule=((1.1, 1),)).validate()
+        with self.assertRaisesRegex(ValueError, "positive integer"):
+            OpenJijSQAConfig(schedule=((0.5, 0),)).validate()
+        with self.assertRaisesRegex(ValueError, "binary"):
+            OpenJijSQAConfig(initial_state=(0, 2)).validate()
+
+    def test_openjij_sqa_forwards_gamma_and_custom_schedule(self):
+        captured = {}
+
+        class FakeSampler:
+            def sample_qubo(self, qubo, **kwargs):
+                captured["qubo"] = qubo
+                captured["kwargs"] = kwargs
+                return SimpleNamespace(
+                    first=SimpleNamespace(sample={0: 1}, energy=-3.0)
+                )
+
+        fake_openjij = SimpleNamespace(SQASampler=FakeSampler)
+        model = QUBOModel(read_ids=["r0"], linear=[-3.0])
+        annealer = OpenJijSimulatedQuantumAnnealer(OpenJijSQAConfig(
+            num_reads=2,
+            num_sweeps=7,
+            seed=11,
+            beta=1.5,
+            gamma=8.0,
+            trotter=4,
+            schedule=((0.0, 2), (0.5, 3), (1.0, 2)),
+            initial_state=(1,),
+        ))
+
+        with patch.dict(sys.modules, {"openjij": fake_openjij}):
+            result = annealer.solve(model)
+
+        self.assertEqual(result.sample, [1])
+        self.assertEqual(result.energy, -3.0)
+        self.assertEqual(captured["kwargs"]["gamma"], 8.0)
+        self.assertEqual(captured["kwargs"]["initial_state"], {0: 1})
+        self.assertEqual(
+            captured["kwargs"]["schedule"],
+            [(0.0, 2), (0.5, 3), (1.0, 2)],
+        )
+
     def test_missing_edge_hamiltonian_matches_valid_path_energy(self):
         reads = [Read("r0", "A"), Read("r1", "C"), Read("r2", "G")]
         hamiltonian = MissingEdgeQUBOHamiltonian(MissingEdgeHamiltonianConfig(
@@ -430,6 +495,32 @@ class QUBOLayoutSolverTests(unittest.TestCase):
         two_void_out_edges[model.source_variable_index("r2")] = 1
         self.assertGreater(model.energy(two_void_out_edges), model.energy(valid_cycle))
 
+    def test_edge_cycle_cover_linear_edge_penalty_preserves_feasible_ranking(self):
+        reads = [Read(f"r{index}", "A") for index in range(4)]
+        edges = [
+            make_edge("r0", "r1"),
+            make_edge("r1", "r2"),
+            make_edge("r2", "r3"),
+            make_edge("r0", "r2"),
+        ]
+        base = EdgeCycleCoverDAGQUBOHamiltonian(EdgeCycleCoverDAGHamiltonianConfig(
+            degree_penalty=10.0,
+            edge_reward_scale=0.0,
+            score_mode="dp",
+        )).build(reads, edges)
+        biased = EdgeCycleCoverDAGQUBOHamiltonian(EdgeCycleCoverDAGHamiltonianConfig(
+            degree_penalty=10.0,
+            edge_reward_scale=0.0,
+            edge_selection_penalty=2.0,
+            score_mode="dp",
+        )).build(reads, edges)
+
+        sample = qubo_sample_for_order(base, ["r0", "r1", "r2", "r3"])
+        self.assertEqual(len(base.quadratic), len(biased.quadratic))
+        self.assertEqual(biased.energy(sample) - base.energy(sample), 6.0)
+        with self.assertRaisesRegex(ValueError, "edge_selection_penalty"):
+            EdgeCycleCoverDAGHamiltonianConfig(edge_selection_penalty=-1.0).validate()
+
     def test_edge_cycle_cover_dag_decodes_single_void_cycle(self):
         reads = [Read(f"r{index}", "A") for index in range(4)]
         edges = [
@@ -457,6 +548,242 @@ class QUBOLayoutSolverTests(unittest.TestCase):
             metadata["cycle_components"],
             [["__void__", "r0", "r1", "r2", "r3", "__void__"]],
         )
+
+    def test_edge_ordered_path_uses_expected_variables_and_decodes(self):
+        reads = [Read(f"r{index}", "A" * 10) for index in range(4)]
+        edges = [
+            make_edge("r0", "r1", overlap_len=8),
+            make_edge("r1", "r2", overlap_len=8),
+            make_edge("r2", "r3", overlap_len=8),
+            make_edge("r3", "r0", overlap_len=8),
+        ]
+        hamiltonian = EdgeOrderedPathQUBOHamiltonian(
+            EdgeOrderedPathHamiltonianConfig(
+                degree_penalty=100.0,
+                order_penalty=100.0,
+                activation_penalty=100.0,
+                normalize_costs=False,
+            )
+        )
+        model = hamiltonian.build(reads, edges)
+
+        self.assertIsInstance(model, EdgeOrderedPathQUBOModel)
+        self.assertEqual(model.position_bit_count, 2)
+        self.assertEqual(model.num_variables, len(edges) * 3 + 2 * len(reads))
+
+        sample = qubo_sample_for_order(model, ["r0", "r1", "r2", "r3"])
+        self.assertEqual(model.energy(sample), 16.0)
+        order, metadata = QUBOLayoutSolver._decode_edge_ordered_path(model, sample)
+
+        self.assertEqual(order, ["r0", "r1", "r2", "r3"])
+        self.assertTrue(metadata["valid_edge_path"])
+        self.assertEqual(metadata["selected_path_positions"], [2, 3, 4])
+        self.assertEqual(metadata["selected_sources"], ["r0"])
+        self.assertEqual(metadata["selected_sinks"], ["r3"])
+        self.assertTrue(metadata["path_endpoints_connected"])
+        self.assertEqual(metadata["closing_edge"], ("r3", "r0"))
+
+    def test_edge_ordered_path_ranks_shorter_valid_path_lower(self):
+        reads = [Read(f"r{index}", "A" * 10) for index in range(3)]
+        edges = [
+            make_edge("r0", "r1", overlap_len=9),
+            make_edge("r1", "r2", overlap_len=9),
+            make_edge("r0", "r2", overlap_len=2),
+            make_edge("r2", "r1", overlap_len=2),
+        ]
+        model = EdgeOrderedPathQUBOHamiltonian(
+            EdgeOrderedPathHamiltonianConfig(
+                degree_penalty=100.0,
+                order_penalty=100.0,
+                activation_penalty=100.0,
+                normalize_costs=False,
+            )
+        ).build(reads, edges)
+
+        short_path = qubo_sample_for_order(model, ["r0", "r1", "r2"])
+        long_path = qubo_sample_for_order(model, ["r0", "r2", "r1"])
+
+        self.assertEqual(model.energy(short_path), 12.0)
+        self.assertEqual(model.energy(long_path), 26.0)
+        self.assertLess(model.energy(short_path), model.energy(long_path))
+
+    def test_quality_margin_derives_error_penalty_from_identity_threshold(self):
+        edge = make_edge("r0", "r1", matches=197, errors=3)
+        scorer_98 = OverlapRewardScorer(OverlapRewardScorerConfig(
+            score_mode="quality_margin",
+            quality_identity_threshold=0.98,
+        ))
+        scorer_985 = OverlapRewardScorer(OverlapRewardScorerConfig(
+            score_mode="quality_margin",
+            quality_identity_threshold=0.985,
+        ))
+
+        self.assertAlmostEqual(scorer_98.score(edge), 50.0)
+        self.assertAlmostEqual(scorer_985.score(edge), 0.0)
+        self.assertEqual(quality_margin_coefficients(0.98), (1, 49))
+        self.assertEqual(quality_margin_coefficients(0.985), (3, 197))
+        with self.assertRaisesRegex(ValueError, "between 0 and 1"):
+            OverlapRewardScorer(OverlapRewardScorerConfig(
+                quality_identity_threshold=1.0,
+            ))
+
+    def test_edge_ordered_path_shifted_reward_ranks_higher_score_lower(self):
+        reads = [Read(f"r{index}", "A" * 10) for index in range(3)]
+        edges = [
+            make_edge("r0", "r1", weight=10.0),
+            make_edge("r1", "r2", weight=10.0),
+            make_edge("r0", "r2", weight=5.0),
+            make_edge("r2", "r1", weight=5.0),
+        ]
+        hamiltonian = EdgeOrderedPathQUBOHamiltonian(
+            EdgeOrderedPathHamiltonianConfig(
+                degree_penalty=100.0,
+                order_penalty=100.0,
+                activation_penalty=100.0,
+                cost_mode="shifted_reward",
+                score_mode="dp",
+                normalize_costs=False,
+                include_source_length=False,
+            )
+        )
+        model = hamiltonian.build(reads, edges)
+
+        high_score = qubo_sample_for_order(model, ["r0", "r1", "r2"])
+        low_score = qubo_sample_for_order(model, ["r0", "r2", "r1"])
+
+        self.assertEqual(model.energy(high_score), 0.0)
+        self.assertEqual(model.energy(low_score), 10.0)
+        self.assertLess(model.energy(high_score), model.energy(low_score))
+        self.assertEqual(hamiltonian.last_reward_shift, 10.0)
+        with self.assertRaisesRegex(ValueError, "include_source_length"):
+            EdgeOrderedPathHamiltonianConfig(
+                cost_mode="shifted_reward",
+            ).validate()
+
+    def test_edge_ordered_path_penalizes_disjoint_read_cycles(self):
+        reads = [Read(f"r{index}", "A" * 10) for index in range(4)]
+        edges = [
+            make_edge("r0", "r1", overlap_len=10),
+            make_edge("r1", "r0", overlap_len=10),
+            make_edge("r1", "r2", overlap_len=10),
+            make_edge("r2", "r3", overlap_len=10),
+            make_edge("r3", "r2", overlap_len=10),
+        ]
+        model = EdgeOrderedPathQUBOHamiltonian(
+            EdgeOrderedPathHamiltonianConfig(
+                degree_penalty=10.0,
+                order_penalty=10.0,
+                activation_penalty=10.0,
+                edge_cost_scale=0.0,
+                include_source_length=False,
+            )
+        ).build(reads, edges)
+
+        valid_path = qubo_sample_for_order(model, ["r0", "r1", "r2", "r3"])
+        disjoint_cycles = [0] * model.num_variables
+        for edge_pair in (
+            ("r0", "r1"), ("r1", "r0"),
+            ("r2", "r3"), ("r3", "r2"),
+        ):
+            disjoint_cycles[model.edge_variable_index(*edge_pair)] = 1
+
+        self.assertEqual(model.energy(valid_path), 0.0)
+        self.assertGreater(model.energy(disjoint_cycles), 0.0)
+        _, metadata = QUBOLayoutSolver._decode_edge_ordered_path(
+            model, disjoint_cycles
+        )
+        self.assertFalse(metadata["valid_edge_path"])
+        self.assertGreater(metadata["order_constraint_violations"], 0)
+
+    def test_edge_ordered_path_decoder_counts_ghost_position_bits_in_order(self):
+        reads = [Read(f"r{index}", "A" * 10) for index in range(3)]
+        edges = [
+            make_edge("r0", "r1"),
+            make_edge("r1", "r2"),
+            make_edge("r0", "r2"),
+        ]
+        model = EdgeOrderedPathQUBOHamiltonian(
+            EdgeOrderedPathHamiltonianConfig(
+                degree_penalty=10.0,
+                order_penalty=10.0,
+                activation_penalty=10.0,
+                edge_cost_scale=0.0,
+                include_source_length=False,
+            )
+        ).build(reads, edges)
+        sample = qubo_sample_for_order(model, ["r0", "r1", "r2"])
+        sample[model.position_variable_index("r0", "r2", 0)] = 1
+
+        _, metadata = QUBOLayoutSolver._decode_edge_ordered_path(model, sample)
+
+        self.assertFalse(metadata["valid_edge_path"])
+        self.assertEqual(metadata["activation_violations"], 1)
+        self.assertEqual(metadata["order_constraint_violations"], 2)
+
+    def test_edge_ordered_path_small_exact_ground_state_is_valid(self):
+        reads = [Read(f"r{index}", "A" * 10) for index in range(3)]
+        edges = [
+            make_edge("r0", "r1", overlap_len=8),
+            make_edge("r1", "r2", overlap_len=8),
+        ]
+        model = EdgeOrderedPathQUBOHamiltonian(
+            EdgeOrderedPathHamiltonianConfig(normalize_costs=False)
+        ).build(reads, edges)
+        expected = qubo_sample_for_order(model, ["r0", "r1", "r2"])
+
+        best_energy = float("inf")
+        ground_samples = []
+        for bits in product((0, 1), repeat=model.num_variables):
+            sample = list(bits)
+            energy = model.energy(sample)
+            if energy < best_energy:
+                best_energy = energy
+                ground_samples = [sample]
+            elif energy == best_energy:
+                ground_samples.append(sample)
+
+        self.assertEqual(model.num_variables, 12)
+        self.assertEqual(model.energy(expected), 14.0)
+        self.assertEqual(best_energy, model.energy(expected))
+        self.assertTrue(ground_samples)
+        for sample in ground_samples:
+            _, metadata = QUBOLayoutSolver._decode_edge_ordered_path(
+                model, sample
+            )
+            self.assertTrue(metadata["valid_edge_path"])
+
+    def test_edge_ordered_path_runs_through_layout_solver(self):
+        reads = [Read(f"r{index}", "A" * 10) for index in range(3)]
+        edges = [
+            make_edge("r0", "r1", overlap_len=8),
+            make_edge("r1", "r2", overlap_len=8),
+        ]
+
+        class KnownPathAnnealer:
+            def solve(self, model):
+                sample = qubo_sample_for_order(model, ["r0", "r1", "r2"])
+                return AnnealingResult(
+                    sample=sample,
+                    energy=model.energy(sample),
+                    iterations=1,
+                    accepted_moves=0,
+                    backend="known-path-test",
+                )
+
+        solver = QUBOLayoutSolver(
+            hamiltonian=EdgeOrderedPathQUBOHamiltonian(
+                EdgeOrderedPathHamiltonianConfig(normalize_costs=False)
+            ),
+            annealer=KnownPathAnnealer(),
+        )
+        result = solver.solve(reads, edges)
+
+        self.assertEqual(result.order, ["r0", "r1", "r2"])
+        self.assertEqual(result.objective_value, 14.0)
+        self.assertTrue(result.metadata["valid_edge_path"])
+        self.assertEqual(result.metadata["hamiltonian"], "edge_ordered_path")
+        self.assertFalse(result.metadata["candidate_dag"])
+        self.assertEqual(result.metadata["position_bit_count"], 2)
 
     def test_pdf_assembly_hamiltonian_uses_path_a_with_pdf_terms(self):
         reads = [Read(f"r{index}", "AAAA") for index in range(3)]
@@ -489,7 +816,6 @@ class QUBOLayoutSolverTests(unittest.TestCase):
         conflict_sample[model.edge_variable_index("r0", "r1")] = 1
         conflict_sample[model.edge_variable_index("r0", "r2")] = 1
         self.assertEqual(model.energy(conflict_sample), 11.0)
-
 
 if __name__ == "__main__":
     unittest.main()

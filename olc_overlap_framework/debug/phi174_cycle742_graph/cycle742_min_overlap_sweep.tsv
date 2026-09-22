@@ -1,0 +1,5 @@
+min_overlap_bp	fraction_of_mean_read_length	pre_deletion_selected_edges	pre_deletion_unsupported_reads	no_in_or_out	no_in	no_out	missing_sides
+80	0.5320	8506	34	11	8	15	45
+70	0.4655	9692	34	11	8	15	45
+60	0.3990	10876	34	11	8	15	45
+50	0.3325	12070	34	9	9	16	43

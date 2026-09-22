@@ -1,0 +1,200 @@
+"""Reference-free sweep for full-length co-linear read filtering."""
+
+from __future__ import annotations
+
+from collections import defaultdict
+from pathlib import Path
+
+from demo_phi174_common import DATA_DIR, run_reads_only_pipeline
+from olc_pipeline.graph_builder import check_hamilton_cycle, select_one_orientation_per_read
+from olc_pipeline.io_utils import read_fastq
+
+
+DATASET = DATA_DIR / "SRR27862880_phiX174_OLC_cycle742_pilot"
+PAF_PATH = DATASET / "all_vs_all.exact.paf"
+OUTPUT_PATH = Path(__file__).resolve().parent / "debug" / "phi174_cycle742_graph" / "collinear_filter_sweep.txt"
+THRESHOLDS = (0.995, 0.993, 0.990, 0.985)
+
+
+class _DisjointSet:
+    def __init__(self, values):
+        self.parent = {value: value for value in values}
+
+    def find(self, value):
+        root = value
+        while self.parent[root] != root:
+            root = self.parent[root]
+        while self.parent[value] != value:
+            next_value = self.parent[value]
+            self.parent[value] = root
+            value = next_value
+        return root
+
+    def union(self, first, second):
+        first_root = self.find(first)
+        second_root = self.find(second)
+        if first_root != second_root:
+            self.parent[second_root] = first_root
+
+
+def _full_collinear_pairs(threshold: float):
+    pairs = {}
+    with PAF_PATH.open("r", encoding="utf-8") as handle:
+        for line in handle:
+            fields = line.rstrip("\n").split("\t")
+            if len(fields) < 12:
+                continue
+            q_id, t_id = fields[0], fields[5]
+            if q_id == t_id:
+                continue
+            q_len, q_st, q_en = int(fields[1]), int(fields[2]), int(fields[3])
+            t_len, t_st, t_en = int(fields[6]), int(fields[7]), int(fields[8])
+            matches, block = int(fields[9]), int(fields[10])
+            if block <= 0 or matches / block < threshold:
+                continue
+            if not (q_st == 0 and q_en == q_len and t_st == 0 and t_en == t_len):
+                continue
+            key = tuple(sorted((q_id, t_id)))
+            record = (q_id, t_id, fields[4], q_len, t_len, matches, block)
+            old = pairs.get(key)
+            if old is None or (matches / block, block) > (old[5] / old[6], old[6]):
+                pairs[key] = record
+    return pairs
+
+
+def _groups(read_ids, pairs):
+    dsu = _DisjointSet(read_ids)
+    for first, second in pairs:
+        dsu.union(first, second)
+    grouped = defaultdict(list)
+    for read_id in read_ids:
+        grouped[dsu.find(read_id)].append(read_id)
+    return [sorted(group) for group in grouped.values() if len(group) > 1]
+
+
+def _representatives(groups, result, read_ids):
+    incident = {read_id: 0 for read_id in read_ids}
+    for edge in result.edges:
+        incident[edge.left_id] += 1
+        incident[edge.right_id] += 1
+    keep = set(read_ids)
+    removed = {}
+    for group in groups:
+        representative = max(group, key=lambda read_id: (incident[read_id], read_id))
+        for read_id in group:
+            if read_id == representative:
+                continue
+            keep.remove(read_id)
+            removed[read_id] = representative
+    return keep, removed
+
+
+def _run_graph(reads, result, keep_ids, *, apply_low_support=False):
+    selected = select_one_orientation_per_read(reads, result.edges)
+    selected_reads = [read for read in selected.reads if read.rid in keep_ids]
+    selected_edges = [
+        edge for edge in selected.edges
+        if edge.left_id in keep_ids and edge.right_id in keep_ids
+    ]
+    orientations = {
+        read_id: orientation
+        for read_id, orientation in selected.orientation_by_read.items()
+        if read_id in keep_ids
+    }
+    nodes = [(read.rid, orientations[read.rid]) for read in selected_reads]
+    incoming = {node: set() for node in nodes}
+    outgoing = {node: set() for node in nodes}
+    for edge in selected_edges:
+        left = (edge.left_id, edge.left_orientation)
+        right = (edge.right_id, edge.right_orientation)
+        if left in outgoing and right in incoming:
+            outgoing[left].add(right)
+            incoming[right].add(left)
+    if apply_low_support:
+        supported_ids = {
+            node[0]
+            for node in nodes
+            if incoming[node] and outgoing[node]
+        }
+        selected_reads = [read for read in selected_reads if read.rid in supported_ids]
+        selected_edges = [
+            edge for edge in selected_edges
+            if edge.left_id in supported_ids and edge.right_id in supported_ids
+        ]
+        nodes = [(read.rid, orientations[read.rid]) for read in selected_reads]
+        incoming = {node: set() for node in nodes}
+        outgoing = {node: set() for node in nodes}
+        for edge in selected_edges:
+            left = (edge.left_id, edge.left_orientation)
+            right = (edge.right_id, edge.right_orientation)
+            if left in outgoing and right in incoming:
+                outgoing[left].add(right)
+                incoming[right].add(left)
+    hamilton = check_hamilton_cycle(nodes, selected_edges, time_limit_sec=10.0)
+    return selected_edges, len(nodes), sum(not values for values in incoming.values()), sum(not values for values in outgoing.values()), hamilton
+
+
+def main() -> None:
+    reads = read_fastq(DATASET / "SRR27862880.stride500.unique.fastq.gz")
+    read_ids = [read.rid for read in reads]
+    lines = [
+        "== reference-free full-length co-linear filter sweep ==",
+        f"reads: {len(reads)}",
+        f"paf: {PAF_PATH}",
+        "definition: both PAF intervals exactly span both full reads; no reference used",
+        "representative: highest accepted-edge incidence in that threshold graph, then ID",
+        "",
+    ]
+    for threshold in THRESHOLDS:
+        pairs = _full_collinear_pairs(threshold)
+        groups = _groups(read_ids, pairs)
+        _, result = run_reads_only_pipeline(
+            reads,
+            minimap2_bin="minimap2",
+            min_overlap=80,
+            min_paf_identity=threshold,
+            max_error_rate_hint=0.01,
+            max_error_rate=0.01,
+            overhang_tolerance=20,
+            extra_args=("-k", "15", "-w", "5", "-m", "40", "-n", "2", "-X", "--secondary=yes", "-N", "1000", "-c", "--eqx"),
+        )
+        keep_ids, removed = _representatives(groups, result, read_ids)
+        selected_edges, node_count, zero_in, zero_out, hamilton = _run_graph(reads, result, keep_ids)
+        low_edges, low_node_count, low_zero_in, low_zero_out, low_hamilton = _run_graph(
+            reads,
+            result,
+            keep_ids,
+            apply_low_support=True,
+        )
+        group_sizes = sorted((len(group) for group in groups), reverse=True)
+        lines.extend([
+            f"threshold: {threshold:.3f}",
+            f"full_collinear_pairs: {len(pairs)}",
+            f"full_collinear_groups: {len(groups)}",
+            f"full_collinear_group_sizes: {group_sizes[:20]}",
+            f"removed_nodes: {len(removed)}",
+            f"retained_nodes: {node_count}",
+            f"selected_edges: {len(selected_edges)}",
+            f"zero_in_nodes: {zero_in}",
+            f"zero_out_nodes: {zero_out}",
+            f"hamilton_cycle: {hamilton.status}",
+            f"after_one_pass_low_support_nodes: {low_node_count}",
+            f"after_one_pass_low_support_edges: {len(low_edges)}",
+            f"after_one_pass_low_support_zero_in_nodes: {low_zero_in}",
+            f"after_one_pass_low_support_zero_out_nodes: {low_zero_out}",
+            f"after_one_pass_low_support_hamilton_cycle: {low_hamilton.status}",
+            "",
+        ])
+        if threshold <= 0.993:
+            ac_pair = tuple(sorted(("SRR27862880.208501_m2", "SRR27862880.71501_m1")))
+            lines.append(f"A_C_pair_present_at_threshold: {ac_pair in pairs}")
+            lines.append(f"A_C_pair_removed_representative: {removed.get('SRR27862880.208501_m2', removed.get('SRR27862880.71501_m1', 'none'))}")
+            lines.append("")
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    OUTPUT_PATH.write_text("\n".join(lines), encoding="utf-8")
+    print("\n".join(lines))
+    print(f"report: {OUTPUT_PATH}")
+
+
+if __name__ == "__main__":
+    main()

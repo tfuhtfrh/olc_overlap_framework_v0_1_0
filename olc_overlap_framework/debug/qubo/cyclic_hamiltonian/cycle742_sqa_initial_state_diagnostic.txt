@@ -1,0 +1,27 @@
+== fixed-endpoint SQA initial-state diagnostic ==
+test_class: non_strict_known_witness_guided
+graph_nodes: 812
+dag_edges: 6186
+reduced_qubo_variables: 6186
+reduced_qubo_quadratic_terms: 51074
+degree_penalty: 100
+edge_reward_scale: 10
+edge_selection_penalty: 0
+initial_state: encoded_certificate
+schedule: late-linear
+schedule_start_s: 0.8
+schedule_end_s: 1.0
+num_reads: 1
+num_sweeps: 1000
+trotter: 2
+beta: 2
+gamma: 1
+seed: 3
+initial_energy: -6820.95066667
+solver_energy: -6820.95066667
+selected_edges: 811
+read_in_constraint_violations: 0
+read_out_constraint_violations: 0
+matches_rotated_certificate: true
+minimum_single_flip_delta: 190
+interpretation: the feasible basin is retained by a late-start schedule; the standard forward SQA failure is entry into the basin, not absence of a valid low-energy state

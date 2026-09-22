@@ -1,0 +1,44 @@
+== phi174 graph812 / external Plan-B compatibility audit ==
+planb_module: /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/olc_overlap_framework/tests/olc_planb_complete.py
+graph_tsv: /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/test_data/phi174/SRR27862880_phiX174_OLC_graph812_i0.990_o80/graph_edges.tsv
+reference_used: no
+packaged_edges_match_qubo_demo_rebuild: True
+packaged_only_edge_records: 0
+rebuilt_only_edge_records: 0
+
+== complete 812-node cyclic input ==
+input_nodes: 812
+input_edges: 8385
+preprocess_stats: {'initial_nodes': 812, 'initial_edges': 8385, 'final_nodes': 812, 'final_edges': 8385, 'removed_contained_nodes': 0, 'removed_edge_records': 0, 'duplicate_groups': 0, 'unitig_count': 0}
+preprocessed_is_dag: False
+preprocessed_strong_components: 1
+largest_strong_component: 812
+estimated_top_qubo_variables: 8387
+estimated_top_qubo_couplings: 84589
+default_recursive_stop_reason: PLANB_NON_DAG_NO_VALID_CYCLE_CLOSED_REGION
+default_recursive_blocks: 0
+default_recursive_global_infeasible: False
+
+== known-cycle-guided cut-DAG compatibility test ==
+test_class: non_strict_known_witness_guided
+cut_seed: 20260904
+cut_position: 122
+path_source: SRR27862880.9001_m2
+path_target: SRR27862880.107001_m1
+dag_nodes: 812
+dag_edges: 6186
+dag_pair_set_matches_qubo_demo_projection: True
+dag_is_dag: True
+planb_preprocess_stats: {'initial_nodes': 812, 'initial_edges': 6186, 'final_nodes': 812, 'final_edges': 6186, 'removed_contained_nodes': 0, 'removed_edge_records': 0, 'duplicate_groups': 0, 'unitig_count': 0}
+execution_mode: recursive_planb
+recursive_stop_reason: INITIAL_TOP_DAG_CLASSICAL
+top_solver_type: classical
+top_energy: None
+top_qa_sample_variables: 0
+final_feasible: True
+final_reconstruction_ok: True
+final_raw_nodes: 812
+final_raw_edges: 811
+matches_rotated_cycle_path: True
+planb_pipeline_sec: 0.364544
+message: 

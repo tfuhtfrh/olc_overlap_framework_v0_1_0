@@ -1,0 +1,33 @@
+digraph oriented_overlap_graph {
+  rankdir=LR;
+  graph [overlap=false, splines=true];
+  node [shape=box, style=rounded, style=filled];
+  "SRR37543650.1041+" [label="SRR37543650.1041+", fillcolor="#d9edf7"];
+  "SRR37543650.2309-" [label="SRR37543650.2309-", fillcolor="#fde0dd"];
+  "SRR37543650.88-" [label="SRR37543650.88-", fillcolor="#fde0dd"];
+  "SRR37543650.947+" [label="SRR37543650.947+", fillcolor="#d9edf7"];
+  "SRR37543650.1945-" [label="SRR37543650.1945-", fillcolor="#fde0dd"];
+  "SRR37543650.2000+" [label="SRR37543650.2000+", fillcolor="#d9edf7"];
+  "SRR37543650.1728+" [label="SRR37543650.1728+", fillcolor="#d9edf7"];
+  "SRR37543650.78+" [label="SRR37543650.78+", fillcolor="#d9edf7"];
+  "SRR37543650.1552-" [label="SRR37543650.1552-", fillcolor="#fde0dd"];
+  "SRR37543650.1343-" [label="SRR37543650.1343-", fillcolor="#fde0dd"];
+  "SRR37543650.182-" [label="SRR37543650.182-", fillcolor="#fde0dd"];
+  "SRR37543650.1384+" [label="SRR37543650.1384+", fillcolor="#d9edf7"];
+  "SRR37543650.1343-" -> "SRR37543650.1552-" [label="L=1299 shift=717 id=0.981 score=1687401.000", color="#777777", penwidth=5.00];
+  "SRR37543650.182-" -> "SRR37543650.1343-" [label="L=1117 shift=1675 id=0.990 score=1247689.000", color="#777777", penwidth=3.96];
+  "SRR37543650.2000+" -> "SRR37543650.1945-" [label="L=965 shift=108 id=0.964 score=931225.000", color="#777777", penwidth=3.21];
+  "SRR37543650.1384+" -> "SRR37543650.182-" [label="L=887 shift=164 id=0.980 score=786769.000", color="#777777", penwidth=2.87];
+  "SRR37543650.1728+" -> "SRR37543650.2000+" [label="L=772 shift=370 id=0.970 score=595984.000", color="#777777", penwidth=2.41];
+  "SRR37543650.1552-" -> "SRR37543650.78+" [label="L=722 shift=759 id=0.968 score=521284.000", color="#777777", penwidth=2.24];
+  "SRR37543650.78+" -> "SRR37543650.1728+" [label="L=702 shift=199 id=0.970 score=492804.000", color="#777777", penwidth=2.17];
+  "SRR37543650.1552-" -> "SRR37543650.1728+" [label="L=521 shift=960 id=0.983 score=271441.000", color="#777777", penwidth=1.64];
+  "SRR37543650.1945-" -> "SRR37543650.947+" [label="L=405 shift=626 id=0.973 score=164025.000", color="#777777", penwidth=1.39];
+  "SRR37543650.182-" -> "SRR37543650.1552-" [label="L=397 shift=2394 id=0.980 score=157609.000", color="#777777", penwidth=1.37];
+  "SRR37543650.88-" -> "SRR37543650.2309-" [label="L=340 shift=130 id=0.965 score=115600.000", color="#777777", penwidth=1.27];
+  "SRR37543650.78+" -> "SRR37543650.2000+" [label="L=336 shift=567 id=0.973 score=112896.000", color="#777777", penwidth=1.27];
+  "SRR37543650.2309-" -> "SRR37543650.1041+" [label="L=289 shift=145 id=0.986 score=83521.000", color="#777777", penwidth=1.20];
+  "SRR37543650.947+" -> "SRR37543650.88-" [label="L=277 shift=299 id=0.986 score=76729.000", color="#777777", penwidth=1.18];
+  "SRR37543650.1041+" -> "SRR37543650.1384+" [label="L=257 shift=183 id=0.988 score=66049.000", color="#777777", penwidth=1.16];
+  "SRR37543650.78+" -> "SRR37543650.1945-" [label="L=225 shift=675 id=0.982 score=50625.000", color="#777777", penwidth=1.12];
+}
