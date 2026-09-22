@@ -164,8 +164,11 @@ best basin around:
 
 The remaining graph has two components of sizes 31 and 113, with the only
 degree break between the local region ending at node 30 and the component
-starting at node 32. This is already much closer to a valid Hamilton path than
-the original binary-edge-order zero-start basin.
+starting at node 32. Relative to the certified optimum, this near-feasible
+bitstring is 64 bits away in total: 5 edge-selection bits, 13 read-position
+bits, and 46 copy/carry auxiliary bits. The graph topology itself is therefore
+only five edge decisions away from the optimum. This is already much closer to
+a valid Hamilton path than the original binary-edge-order zero-start basin.
 
 ## Feasible-state barrier
 
