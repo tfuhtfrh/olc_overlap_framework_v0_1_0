@@ -1,0 +1,88 @@
+{
+  "dataset": "D:\\Pytnon\\olc_overlap_framework_v0_1_0\\test_data\\CHM13\\CHM13_complex144",
+  "reads": 144,
+  "edges": 261,
+  "zero_indegree_nodes": 1,
+  "zero_outdegree_nodes": 0,
+  "position_bits_per_edge": 8,
+  "logical_variables": 2637,
+  "linear_terms": 2637,
+  "quadratic_terms": 77843,
+  "maximum_absolute_linear": 4718736.0,
+  "maximum_absolute_quadratic": 9437184.0,
+  "cost_mode": "shifted_reward",
+  "score_mode": "dp",
+  "edge_cost_scale": 1.0,
+  "explicit_void_penalty": 0.0,
+  "reward_shift": 16826.0,
+  "cost_normalizer": 16791.0,
+  "auto_penalty": 144.0,
+  "reference_score": 1343093,
+  "reference_qubo_energy": 63.309213280677795,
+  "reference_path_valid": true,
+  "runner_up_score": 1338209,
+  "runner_up_qubo_energy": 63.600083380937576,
+  "qubo_optimum_margin": 0.2908701002597809,
+  "reference_single_flip": {
+    "minimum_delta": 288.0,
+    "downhill_flips": 0,
+    "flat_flips": 0
+  },
+  "reference_energy_components": {
+    "objective": 63.30921326901316,
+    "degree": 0.0,
+    "activation": 0.0,
+    "order": 0.0,
+    "explicit_void": 0.0,
+    "total": 63.30921326901316
+  },
+  "sa": {
+    "backend": "dwave-samplers",
+    "num_reads": 32,
+    "num_sweeps": 20000,
+    "seed": 20260923,
+    "beta_range": [
+      1e-07,
+      0.01
+    ],
+    "beta_schedule_type": "geometric",
+    "randomize_order": false,
+    "effective_beta_range": [
+      1e-07,
+      0.01
+    ],
+    "seconds": 51.902841799892485,
+    "energy": 644838.0214995146,
+    "recomputed_energy": 644838.0214996338,
+    "energy_above_reference": 644774.7122862339,
+    "selected_binary_variables": 1345,
+    "hamming_distance_from_reference": 1224,
+    "valid_edge_path": false,
+    "selected_edge_count": 248,
+    "selected_source_count": 131,
+    "selected_sink_count": 7,
+    "traced_path_nodes": 0,
+    "read_in_constraint_violations": 235,
+    "read_out_constraint_violations": 111,
+    "void_in_constraint_violation": 6,
+    "void_out_constraint_violation": 130,
+    "activation_violations": 18,
+    "order_constraint_violations": 641,
+    "position_sequence_valid": false,
+    "single_flip": {
+      "minimum_delta": -288.8965517241379,
+      "downhill_flips": 12,
+      "flat_flips": 69
+    },
+    "energy_components": {
+      "objective": 150.02149961288785,
+      "degree": 95616.0,
+      "activation": 2592.0,
+      "order": 546480.0,
+      "explicit_void": 0.0,
+      "total": 644838.0214996128
+    },
+    "selected_edge_reward_sum": 1653837,
+    "decoded_order": []
+  }
+}

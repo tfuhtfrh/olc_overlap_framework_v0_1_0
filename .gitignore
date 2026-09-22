@@ -3,4 +3,6 @@
 # Local-only Codex context and private environment notes.
 AGENTS.local.md
 .codex_local/
+
+# Huge data cannot be stored in GitHub, so we ignore it.
 test_data/Lambda/SRR36638466

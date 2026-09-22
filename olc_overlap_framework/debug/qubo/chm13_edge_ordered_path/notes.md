@@ -147,3 +147,41 @@ Conclusion: exact feasibility already implies one source and one sink, but the
 implicit relation gives poor local guidance.  Explicit one-hot endpoint terms
 improve endpoint counts and are a reasonable strengthening, but do not by
 themselves solve the binary-order local-minimum problem.
+
+## Follow-up: classical simulated annealing
+
+Generated: 2026-09-23 (Asia/Tokyo)
+
+The same weighted edge-ordered QUBO was tested with
+`dwave.samplers.SimulatedAnnealingSampler`.  The Hamiltonian, input graph,
+decoder, and reference state were unchanged; only the sampler was replaced.
+
+The automatic geometric schedule improved substantially over the previous SQA
+random-start result, but remained infeasible:
+
+- 8 reads x 2,000 sweeps: energy 1,664,218; invalid path.
+- 32 reads x 10,000 sweeps: energy 1,116,142; invalid path.
+- Automatic beta range: approximately `8.12e-9 .. 0.157`.
+- A linear schedule was worse (energy 21,084,200).
+
+Three narrower geometric beta ranges were tested at 16 reads x 10,000 sweeps.
+The best was `1e-7 .. 1e-2`, with energy 955,158.  A final 32-read x
+20,000-sweep run at that range reached energy 644,838 in 51.9 seconds, but was
+still not a Hamilton path:
+
+- selected edges / sources / sinks: 248 / 131 / 7;
+- read in/out residual L1: 235 / 111;
+- activation violations: 18;
+- order residual L1: 641;
+- energy components: objective 150.02, degree 95,616, activation 2,592,
+  order 546,480.
+
+Thus classical SA explores this QUBO more effectively than the tested SQA
+schedule, but increased budget and beta tuning did not reach the feasible
+manifold.  The remaining failure has the same structural cause: a useful move
+must coordinate edge selection, endpoint variables, and several binary order
+bits, while this SA backend updates one binary variable at a time.
+
+Principal output:
+
+- `sa_beta_1e-7_1e-2_r32_s20000_seed20260923.json`

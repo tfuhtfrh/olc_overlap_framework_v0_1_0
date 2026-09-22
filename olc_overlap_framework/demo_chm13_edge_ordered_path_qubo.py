@@ -1,8 +1,8 @@
-"""Instantiate the edge-ordered Hamilton-path QUBO on CHM13 complex144.
+"""Audit and optionally anneal the edge-ordered path QUBO on CHM13 complex144.
 
-This is a model/input audit, not an annealing run.  The certified reference
-path is encoded only after the QUBO is built so its feasibility and objective
-value can be checked independently of the graph construction.
+The certified reference path is encoded only after the QUBO is built so its
+feasibility and objective value can be checked independently of graph
+construction and of the optional SA/SQA run.
 """
 
 from __future__ import annotations
@@ -15,6 +15,8 @@ from time import perf_counter
 
 from olc_pipeline.data import OverlapEdge, Read
 from olc_pipeline.layout_solver import (
+    DWaveAnnealingConfig,
+    DWaveSimulatedAnnealer,
     EdgeOrderedPathHamiltonianConfig,
     EdgeOrderedPathQUBOHamiltonian,
     OpenJijSQAConfig,
@@ -44,6 +46,9 @@ SQA_SEED = 20260922
 SQA_BETA = None
 SQA_GAMMA = None
 SQA_START_S = 0.0
+SA_BETA_RANGE = None
+SA_BETA_SCHEDULE_TYPE = "geometric"
+SA_RANDOMIZE_ORDER = False
 
 OUTPUT_DIR = (
     Path(__file__).resolve().parent
@@ -155,6 +160,7 @@ def load_chm13_graph(
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--solve-sqa", action="store_true")
+    parser.add_argument("--solve-sa", action="store_true")
     parser.add_argument("--num-reads", type=int, default=SQA_NUM_READS)
     parser.add_argument("--num-sweeps", type=int, default=SQA_NUM_SWEEPS)
     parser.add_argument("--trotter", type=int, default=SQA_TROTTER)
@@ -162,6 +168,14 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--beta", type=float, default=SQA_BETA)
     parser.add_argument("--gamma", type=float, default=SQA_GAMMA)
     parser.add_argument("--start-s", type=float, default=SQA_START_S)
+    parser.add_argument("--sa-beta-min", type=float)
+    parser.add_argument("--sa-beta-max", type=float)
+    parser.add_argument(
+        "--sa-beta-schedule-type",
+        choices=("linear", "geometric"),
+        default=SA_BETA_SCHEDULE_TYPE,
+    )
+    parser.add_argument("--sa-randomize-order", action="store_true")
     parser.add_argument("--edge-cost-scale", type=float, default=EDGE_COST_SCALE)
     parser.add_argument("--constraint-penalty", type=float)
     parser.add_argument("--explicit-void-penalty", type=float, default=0.0)
@@ -440,6 +454,102 @@ def main() -> None:
             "gamma": args.gamma,
             "start_s": args.start_s,
             "initial_state": args.initial_state,
+            "seconds": anneal_seconds,
+            "energy": annealing_result.energy,
+            "recomputed_energy": model.energy(annealing_result.sample),
+            "energy_above_reference": annealing_result.energy - qubo_energy,
+            "selected_binary_variables": sum(annealing_result.sample),
+            "hamming_distance_from_reference": sum(
+                left != right
+                for left, right in zip(annealing_result.sample, sample)
+            ),
+            "valid_edge_path": solved_metadata["valid_edge_path"],
+            "selected_edge_count": solved_metadata["selected_edge_count"],
+            "selected_source_count": solved_metadata["selected_source_count"],
+            "selected_sink_count": solved_metadata["selected_sink_count"],
+            "traced_path_nodes": traced_path_nodes,
+            "read_in_constraint_violations": solved_metadata[
+                "read_in_constraint_violations"
+            ],
+            "read_out_constraint_violations": solved_metadata[
+                "read_out_constraint_violations"
+            ],
+            "void_in_constraint_violation": solved_metadata[
+                "void_in_constraint_violation"
+            ],
+            "void_out_constraint_violation": solved_metadata[
+                "void_out_constraint_violation"
+            ],
+            "activation_violations": solved_metadata["activation_violations"],
+            "order_constraint_violations": solved_metadata[
+                "order_constraint_violations"
+            ],
+            "position_sequence_valid": solved_metadata[
+                "position_sequence_valid"
+            ],
+            "single_flip": _single_flip_diagnostics(
+                model, annealing_result.sample
+            ),
+            "energy_components": _energy_components(
+                model,
+                hamiltonian,
+                annealing_result.sample,
+                reward_by_pair,
+                args.explicit_void_penalty,
+            ),
+            "selected_edge_reward_sum": selected_reward,
+            "decoded_order": solved_order if solved_metadata["valid_edge_path"] else [],
+        }
+
+    if args.solve_sa:
+        if (args.sa_beta_min is None) != (args.sa_beta_max is None):
+            raise ValueError(
+                "sa-beta-min and sa-beta-max must be provided together"
+            )
+        beta_range = None
+        if args.sa_beta_min is not None and args.sa_beta_max is not None:
+            if not 0.0 <= args.sa_beta_min < args.sa_beta_max:
+                raise ValueError("SA beta range must satisfy 0 <= min < max")
+            beta_range = (args.sa_beta_min, args.sa_beta_max)
+
+        annealer = DWaveSimulatedAnnealer(DWaveAnnealingConfig(
+            num_reads=args.num_reads,
+            num_sweeps=args.num_sweeps,
+            seed=args.seed,
+            beta_range=beta_range,
+            beta_schedule_type=args.sa_beta_schedule_type,
+            randomize_order=args.sa_randomize_order,
+        ))
+        start = perf_counter()
+        annealing_result = annealer.solve(model)
+        anneal_seconds = perf_counter() - start
+        solved_order, solved_metadata = QUBOLayoutSolver._decode_edge_ordered_path(
+            model, annealing_result.sample
+        )
+        selected_pairs = [
+            pair
+            for pair in model.edge_pairs
+            if annealing_result.sample[model.edge_variable_index(*pair)]
+        ]
+        selected_reward = sum(reward_by_pair[pair] for pair in selected_pairs)
+        traced_path_nodes = 0
+        if solved_metadata["cycle_components"]:
+            traced_path_nodes = max(
+                0, len(solved_metadata["cycle_components"][0]) - 2
+            )
+        report["sa"] = {
+            "backend": annealing_result.backend,
+            "num_reads": args.num_reads,
+            "num_sweeps": args.num_sweeps,
+            "seed": args.seed,
+            "beta_range": beta_range,
+            "beta_schedule_type": args.sa_beta_schedule_type,
+            "randomize_order": args.sa_randomize_order,
+            "effective_beta_range": list(
+                (annealer.last_sampleset.info if annealer.last_sampleset else {}).get(
+                    "beta_range", ()
+                )
+            ),
             "seconds": anneal_seconds,
             "energy": annealing_result.energy,
             "recomputed_energy": model.energy(annealing_result.sample),
