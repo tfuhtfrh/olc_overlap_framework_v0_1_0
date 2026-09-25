@@ -334,6 +334,10 @@ def run_case(
     timeout_ms: int,
     tenure: int | None,
     seed: int,
+    coefficient_z_first: int | None,
+    coefficient_z_restart: int | None,
+    lower_bound_z: int | None,
+    num_restarts: int | None,
 ) -> dict[str, Any]:
     model = problem["model"]
     bqm = bqm_from_model(model)
@@ -347,6 +351,14 @@ def run_case(
     }
     if tenure is not None:
         kwargs["tenure"] = tenure
+    if coefficient_z_first is not None:
+        kwargs["coefficient_z_first"] = coefficient_z_first
+    if coefficient_z_restart is not None:
+        kwargs["coefficient_z_restart"] = coefficient_z_restart
+    if lower_bound_z is not None:
+        kwargs["lower_bound_z"] = lower_bound_z
+    if num_restarts is not None:
+        kwargs["num_restarts"] = num_restarts
     if init is not None:
         kwargs["initial_states"] = init
         kwargs["initial_states_generator"] = "none"
@@ -377,6 +389,10 @@ def run_case(
         "num_reads": num_reads,
         "timeout_ms_per_read": timeout_ms,
         "tenure": tenure,
+        "coefficient_z_first": coefficient_z_first,
+        "coefficient_z_restart": coefficient_z_restart,
+        "lower_bound_z": lower_bound_z,
+        "num_restarts": num_restarts,
         "seed": seed,
         "seconds": seconds,
         "feasible_hits": len(feasible),
@@ -393,6 +409,10 @@ def main() -> None:
     parser.add_argument("--long-timeout-ms", type=int, default=20000)
     parser.add_argument("--short-reads", type=int, default=4)
     parser.add_argument("--long-reads", type=int, default=4)
+    parser.add_argument("--coefficient-z-first", type=int)
+    parser.add_argument("--coefficient-z-restart", type=int)
+    parser.add_argument("--lower-bound-z", type=int)
+    parser.add_argument("--num-restarts", type=int)
     args = parser.parse_args()
 
     problems = [
@@ -452,6 +472,10 @@ def main() -> None:
                 timeout_ms=args.short_timeout_ms,
                 tenure=None,
                 seed=SEED + offset,
+                coefficient_z_first=args.coefficient_z_first,
+                coefficient_z_restart=args.coefficient_z_restart,
+                lower_bound_z=args.lower_bound_z,
+                num_restarts=args.num_restarts,
             )
             all_runs.append(run)
             print(json.dumps(run, indent=2), flush=True)
@@ -466,6 +490,10 @@ def main() -> None:
             timeout_ms=args.long_timeout_ms,
             tenure=None,
             seed=SEED + 100,
+            coefficient_z_first=args.coefficient_z_first,
+            coefficient_z_restart=args.coefficient_z_restart,
+            lower_bound_z=args.lower_bound_z,
+            num_restarts=args.num_restarts,
         )
         run["budget_label"] = "long_zero"
         all_runs.append(run)
