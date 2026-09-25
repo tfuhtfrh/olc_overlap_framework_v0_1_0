@@ -252,7 +252,7 @@ def main():
     print("\nFINAL")
     for variant in ("source_sink","count"):
         vr=[r for r in all_rows if r["variant"]==variant]
-        print(json.dumps(vr[-1],flush=True))
+        print(json.dumps(vr[-1]),flush=True)
 
 
 if __name__=="__main__":
