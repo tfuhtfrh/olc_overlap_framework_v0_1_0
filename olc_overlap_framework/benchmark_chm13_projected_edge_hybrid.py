@@ -62,10 +62,21 @@ def selected_degrees(rids,selected):
 
 def best_endpoints(rids,selected):
     indeg,outdeg=selected_degrees(rids,selected)
-    # With exactly one source bit s=1, local delta is 2*indeg-1.
-    source=min(rids,key=lambda r:(2*indeg[r]-1,r))
-    sink=min(rids,key=lambda r:(2*outdeg[r]-1,r))
-    return source,sink
+    # With exactly one source and one sink, local deltas are 2*d-1.
+    # For N>1 a Hamilton path needs distinct endpoints.  Choosing them
+    # independently can select the same isolated vertex and create the
+    # pathological "isolated vertex + cycle on the rest" basin.
+    best=None
+    for source in rids:
+        ds=2*indeg[source]-1
+        for sink in rids:
+            if sink==source and len(rids)>1:
+                continue
+            score=ds+(2*outdeg[sink]-1)
+            key=(score,source,sink)
+            if best is None or key<best[0]:
+                best=(key,source,sink)
+    return best[1],best[2]
 
 
 def feedback_order_for_scc(g,nodes):
