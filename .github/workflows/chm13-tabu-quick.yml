@@ -26,8 +26,12 @@ jobs:
         run: |
           python benchmark_chm13_tabu_two_hamiltonians.py \
             --output debug/qubo/chm13_tabu_quick_20260925.json \
-            --short-timeout-ms 2000 --short-reads 1 \
-            --long-timeout-ms 5000 --long-reads 1
+            --short-timeout-ms 1500 --short-reads 1 \
+            --long-timeout-ms 3000 --long-reads 1 \
+            --coefficient-z-first 500 \
+            --coefficient-z-restart 125 \
+            --lower-bound-z 100000 \
+            --num-restarts 25
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
