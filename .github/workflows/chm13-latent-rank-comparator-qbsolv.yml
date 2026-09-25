@@ -4,6 +4,7 @@ on:
     branches: [benchmark/qubo-solvers-20260922]
     paths:
       - "olc_overlap_framework/benchmark_chm13_latent_rank_comparator_qbsolv.py"
+      - "olc_overlap_framework/experimental_chm13_latent_rank_comparator_qubo.py"
       - ".github/workflows/chm13-latent-rank-comparator-qbsolv.yml"
   workflow_dispatch:
 jobs:
