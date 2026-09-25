@@ -36,6 +36,7 @@ class LatentRankComparatorConfig:
     void_penalty: float = 144.0
     comparator_penalty: float = 288.0
     order_gate_penalty: float = 144.0
+    endpoint_distinct_penalty: float = 144.0
     edge_cost_scale: float = 1.0
 
 
@@ -175,6 +176,16 @@ def build_model(cfg=LatentRankComparatorConfig()):
         1.0,
         cfg.void_penalty,
     )
+
+    # A nontrivial Hamilton path must have distinct endpoints.  Without this
+    # term, source=sink can create the pathological "isolated vertex + cycle
+    # on the remaining vertices" degree-feasible basin.
+    for r in rids:
+        m.add_quadratic(
+            m.source_index[r],
+            m.sink_index[r],
+            cfg.endpoint_distinct_penalty,
+        )
 
     # Comparator circuit for every candidate edge.  This never constrains
     # P_u/P_v by itself; it only computes the correct final borrow.
