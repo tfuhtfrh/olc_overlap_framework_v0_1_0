@@ -67,12 +67,26 @@ def components(paths,predicate):
             if predicate(paths[i],paths[j]) or predicate(paths[j],paths[i]):
                 g.add_edge(i,j)
     comps=sorted((sorted(c) for c in nx.connected_components(g)),key=len,reverse=True)
+    summaries=[]
+    for comp in comps:
+        endpoint_pairs=sorted({(paths[i][0],paths[i][-1]) for i in comp})
+        starts=sorted({paths[i][0] for i in comp})
+        ends=sorted({paths[i][-1] for i in comp})
+        summaries.append({
+          "size":len(comp),
+          "starts":starts,
+          "ends":ends,
+          "endpoint_pair_count":len(endpoint_pairs),
+          "endpoint_pairs":endpoint_pairs,
+        })
     return {
       "edges":g.number_of_edges(),
       "components":len(comps),
       "largest_component":len(comps[0]) if comps else 0,
       "component_sizes":[len(c) for c in comps],
       "isolated_paths":sum(1 for c in comps if len(c)==1),
+      "component_summaries":summaries,
+      "_component_indices":comps,
     }
 
 
@@ -89,6 +103,13 @@ def main():
     }
     best=max(range(len(paths)),key=lambda i:scores[i])
     result["optimum_index"]=best;result["optimum_score"]=scores[best]
+    for key in ("single_read_relocation","segment_relocation_len_le_4","segment_relocation_len_le_16","arbitrary_single_segment_relocation"):
+        comps=result[key].pop("_component_indices")
+        result[key]["optimum_component"]=next(ci for ci,comp in enumerate(comps) if best in comp)
+        result[key]["component_score_ranges"]=[
+            {"min":min(scores[i] for i in comp),"max":max(scores[i] for i in comp)}
+            for comp in comps
+        ]
     OUT.parent.mkdir(parents=True,exist_ok=True)
     OUT.write_text(json.dumps(result,indent=2)+"\n")
     print(json.dumps(result,indent=2))
