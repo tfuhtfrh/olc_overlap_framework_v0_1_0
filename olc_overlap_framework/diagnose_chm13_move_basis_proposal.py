@@ -233,10 +233,17 @@ def hamilton_path_move_stats(graph, ep, reward, r2, r3):
     paths = enum["paths"]
     ham = [state_from_order(p, idx) for p in paths]
     hamset = set(ham)
-    score = {
-        st: int(sum(reward[ep[i]] for i in st))
-        for st in ham
-    }
+    # graph.graphml contains a few graph edges that the projected weighted
+    # loader intentionally excludes.  Connectivity diagnostics do not require
+    # weights, so score a path only when every edge is present in reward.
+    score = {}
+    for st in ham:
+        edges = [ep[i] for i in st]
+        score[st] = (
+            int(sum(reward[e] for e in edges))
+            if all(e in reward for e in edges)
+            else None
+        )
 
     per_path = []
     for st in ham:
@@ -251,8 +258,10 @@ def hamilton_path_move_stats(graph, ep, reward, r2, r3):
                 eligible += 1
                 if nb in hamset:
                     direct_hp += 1
-                    best = score[nb] if best is None else max(best, score[nb])
-                    if score[nb] > score[st]:
+                    if score[nb] is not None:
+                        best = score[nb] if best is None else max(best, score[nb])
+                    if (score[nb] is not None and score[st] is not None
+                            and score[nb] > score[st]):
                         improving += 1
             rec[name] = {
                 "eligible": eligible,
@@ -267,8 +276,9 @@ def hamilton_path_move_stats(graph, ep, reward, r2, r3):
 
     return ham, {
         "paths": len(paths),
-        "score_min": min(score.values()),
-        "score_max": max(score.values()),
+        "scored_paths": sum(v is not None for v in score.values()),
+        "score_min": min((v for v in score.values() if v is not None), default=None),
+        "score_max": max((v for v in score.values() if v is not None), default=None),
         "r2_eligible_hist": hist("r2", "eligible"),
         "r3_eligible_hist": hist("r3", "eligible"),
         "r2_direct_hamilton_hist": hist("r2", "direct_hamilton"),
