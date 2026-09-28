@@ -2,7 +2,7 @@
 
 Version: 0.1.0
 
-> **Active research note:** [Sampler dynamics, effective exchange, and reverse annealing](SAMPLER_DYNAMICS_RESEARCH_NOTE.md) — current CHM13 complex144 work on full-space vs fixed-cardinality SQA, exchange/reconnect kernels, the effective second-order exchange idea, and future reverse-annealing experiments.
+> **中文研究进展记录（推荐入口）:** [progress_notes_zh/00_index.ipynb](progress_notes_zh/00_index.ipynb) — 当前分支与本对话的对外进展记录，包含 Hamiltonian 进展、V66 测试报告、sampler dynamics / effective exchange / reverse annealing。Jupyter Notebook 用于正确渲染中文与 LaTeX 公式。\n>\n> 旧英文 Markdown 研究笔记仍保留作历史记录。
 
 This is a modular reproduction-code framework for OLC-style read overlap experiments.
 
