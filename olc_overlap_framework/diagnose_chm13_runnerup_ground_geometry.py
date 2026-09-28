@@ -121,18 +121,27 @@ def move_neighbors(st,ep,r2,r3,allowed):
                 yield ns,fam,ti
 
 
-def reachable_r2(start,target,ep,r2,cap=100000):
+def shortest_r2_route(start,target,ep,r2,cap=100000,allowed=None):
     idx={e:i for i,e in enumerate(ep)}
     s0=frozenset(idx[e] for e in start);tgt=frozenset(idx[e] for e in target)
-    q=deque([s0]);seen={s0}
-    while q and len(seen)<cap:
+    q=deque([s0]);prev={s0:None};how={}
+    while q and len(prev)<cap:
         s=q.popleft()
-        if s==tgt:return True,len(seen)
-        for tpl in r2:
+        if s==tgt:break
+        for ti,tpl in enumerate(r2):
             nb=applicable(s,tpl)
-            if nb is not None and nb not in seen:
-                seen.add(nb);q.append(nb)
-    return tgt in seen,len(seen)
+            if nb is None or nb in prev:continue
+            if allowed is not None:
+                nbe=frozenset(ep[i] for i in nb)
+                if nbe not in allowed:continue
+            prev[nb]=s;how[nb]=ti;q.append(nb)
+    if tgt not in prev:return None,len(prev)
+    route=[];cur=tgt
+    while prev[cur] is not None:
+        route.append({"template":how[cur],"state_ids":cur})
+        cur=prev[cur]
+    route.reverse()
+    return route,len(prev)
 
 
 def shortest_feasible_route(start,target,ep,r2,r3,allowed):
@@ -194,7 +203,8 @@ def main():
 
     allowed={frozenset(st) for _,_,st in rows}
     route=shortest_feasible_route(rs,gs,ep,r2,r3,allowed)
-    r2_reach,r2_component_size=reachable_r2(rs,gs,ep,r2)
+    r2_route,r2_component_size=shortest_r2_route(rs,gs,ep,r2)
+    r2_feasible_route,_=shortest_r2_route(rs,gs,ep,r2,allowed=allowed)
 
     runner_rank=project_rank(rids,rs)
     rankfree=array_bqm(ep,cost,incoming,outgoing,runner_rank,0.0)
@@ -218,8 +228,10 @@ def main():
       "minimum_contiguous_segment_relocation":segment_relocation(rp,gp),
       "direct_structured_moves_to_ground":direct,
       "shortest_feasible_only_r2_r3_route":route,
-      "ground_reachable_from_runner_by_r2_only":r2_reach,
+      "ground_reachable_from_runner_by_r2_only":r2_route is not None,
       "runner_r2_component_size":r2_component_size,
+      "shortest_r2_only_steps":len(r2_route) if r2_route is not None else None,
+      "shortest_feasible_only_r2_steps":len(r2_feasible_route) if r2_feasible_route is not None else None,
       "rankfree_fixed_cardinality_delta_ground_minus_runner":de_rankfree,
       "stale_runner_rank_A4_delta_ground_minus_runner":de_stale,
       "sqa_snapshot":{
