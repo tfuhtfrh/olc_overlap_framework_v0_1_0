@@ -100,6 +100,7 @@ def attempt_exchange(abqm,slices,s,kt,rng):
 
 def attempt_reconnect(abqm,slices,s,kt,rng,templates,ep,mode,stats):
     stats["attempted"]+=1
+    cross=False
     if mode=="static_uniform":
         ti=rng.randrange(len(templates))
         side1,side2=templates[ti]
