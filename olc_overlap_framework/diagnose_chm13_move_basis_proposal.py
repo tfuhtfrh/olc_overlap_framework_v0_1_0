@@ -379,7 +379,7 @@ def main():
         },
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(jso.dumps(result, indent=2) + "\n")
+    OUT.write_text(json.dumps(result, indent=2) + "\n")
     print("RESULT", json.dumps(result), flush=True)
 
 
