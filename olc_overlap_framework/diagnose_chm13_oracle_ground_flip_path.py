@@ -241,6 +241,26 @@ def main():
         ))
         best = routes[0]
         route_count = len(routes)
+        route_catalog = []
+        for rr in routes:
+            vals = [s["valid_path"] for s in rr["steps"]]
+            scores = [s["path_score"] for s in rr["steps"] if s["path_score"] is not None]
+            route_catalog.append({
+                "order": rr["order"],
+                "valid_pattern": vals,
+                "cycle_pattern": [s["cycle_count"] for s in rr["steps"]],
+                "path_scores": [s["path_score"] for s in rr["steps"]],
+                "all_valid_after_first": bool(vals and all(vals[1:])),
+                "all_valid": all(vals),
+                "min_valid_score": min(scores) if scores else None,
+                "max_energy_barrier_from_start": rr["max_energy_barrier_from_start"],
+            })
+        route_catalog.sort(key=lambda x: (
+            not x["all_valid_after_first"],
+            x["cycle_pattern"],
+            -1 if x["min_valid_score"] is None else -x["min_valid_score"],
+            x["max_energy_barrier_from_start"],
+        ))
     else:
         # Fallback greedy: prefer open path first, then smallest immediate dE.
         remaining = set(range(n))
@@ -263,6 +283,7 @@ def main():
             remaining.remove(i)
         best = route_eval(order, comps, stuck, rids, ranks, reward, abqm, ep)
         route_count = None
+        route_catalog = []
 
     # Also report the direct optimum symmetric-difference flip size.
     result = {
@@ -277,6 +298,7 @@ def main():
         "components": clean_comps,
         "component_order_routes_enumerated": route_count,
         "best_component_route": best,
+        "best_feasibility_routes": route_catalog[:12],
         "interpretation": (
             "Oracle geometry only: target optimum is used to expose the exact "
             "alternating-component path. A production sampler must discover "
