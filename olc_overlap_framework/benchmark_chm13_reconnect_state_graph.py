@@ -78,11 +78,15 @@ RIDS=[];EP=[]
 
 def main():
     global RIDS,EP
-    RIDS,EP,reward,cost,incoming,outgoing=load_problem()
+    # Use exactly the same graph that the exact Hamilton-path enumerator uses.
+    # This avoids any representation/filtering mismatch with projected-solver
+    # helper loaders.
+    graph=nx.read_graphml(DATASET_DIR/"graph.graphml")
+    RIDS=list(graph.nodes())
+    EP=list(graph.edges())
     idx={e:i for i,e in enumerate(EP)}
     templates=build_reconnect_templates(EP)
 
-    graph=nx.read_graphml(DATASET_DIR/"graph.graphml")
     enum=enumerate_paths(graph,limit=1000,timeout_ms=60000)
     paths=enum["paths"]
     ham_states={state_from_order(p,idx):i for i,p in enumerate(paths)}
