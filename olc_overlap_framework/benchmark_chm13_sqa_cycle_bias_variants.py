@@ -30,7 +30,7 @@ CERT=1_343_093
 SEEDS=(202609291,202609292,202609293,202609294)
 OUTER=12
 ORDER_SCHEDULE=(0.0,0.25,0.5,1.0,2.0,4.0,8.0,16.0,32.0)
-CONFIGS=("none","rank","avg_1","avg_4","slack_4","break_4")
+CONFIGS=("none","rank","avg_1","avg_4","slack_4","break_4","rosen_4")
 
 
 def current_cycles(rids,selected):
@@ -97,6 +97,39 @@ def add_break_cuts(bqm,cycles,A):
     return meta
 
 
+def add_rosenberg_cuts(bqm,cycles,A):
+    """Sparse exact quadratization of A*prod_{e in C} x_e.
+
+    Chain products for the first L-1 variables using Rosenberg AND penalties,
+    then couple the final partial product quadratically to the last edge.
+    M=4A > A makes cheating on an auxiliary more expensive than the forbidden
+    full-cycle penalty.
+    """
+    meta=[]
+    M=4.0*float(A)
+    for ci,cyc in enumerate(cycles):
+        L=len(cyc)
+        if L<2:continue
+        if L==2:
+            bqm.add_quadratic(cyc[0],cyc[1],float(A))
+            meta.append({"kind":"rosen","cycle":cyc,"labels":[]})
+            continue
+        labels=[]
+        prev=cyc[0]
+        # z_i = prev * x_i for i=1..L-2
+        for ai,i in enumerate(range(1,L-1)):
+            x=cyc[i];z=("rosen",ci,ai);labels.append(z)
+            # M*(prev*x - 2 prev*z - 2 x*z + 3z)
+            bqm.add_quadratic(prev,x,M)
+            bqm.add_quadratic(prev,z,-2.0*M)
+            bqm.add_quadratic(x,z,-2.0*M)
+            bqm.add_linear(z,3.0*M)
+            prev=z
+        bqm.add_quadratic(prev,cyc[-1],float(A))
+        meta.append({"kind":"rosen","cycle":cyc,"labels":labels})
+    return meta
+
+
 def warm(bqm,ep,selected,meta):
     sm={v:0 for v in bqm.variables}
     if selected is not None:
@@ -113,6 +146,12 @@ def warm(bqm,ep,selected,meta):
             for i,e in enumerate(item["cycle"]):
                 if e not in selected:pick=i;break
             sm[item["labels"][pick]]=1
+        elif item["kind"]=="rosen":
+            vals=[int(e in selected) for e in item["cycle"]]
+            prod=vals[0]
+            for lab,v in zip(item["labels"],vals[1:-1]):
+                prod*=v
+                sm[lab]=prod
     return sm
 
 
@@ -154,6 +193,7 @@ def run(config,seed):
         if kind=="avg":meta=add_avg_bias(bqm,cyc,A)
         elif kind=="slack":meta=add_slack_cuts(bqm,cyc,A)
         elif kind=="break":meta=add_break_cuts(bqm,cyc,A)
+        elif kind=="rosen":meta=add_rosenberg_cuts(bqm,cyc,A)
 
         selected,sec,nv,nq=sqa(bqm,ep,selected,meta,seed+1000*it)
         ranks=project_rank(rids,selected);met=graph_metrics(rids,selected,ranks,reward)
