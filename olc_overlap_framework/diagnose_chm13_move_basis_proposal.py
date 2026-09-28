@@ -318,17 +318,29 @@ def main():
     r3 = build_r3_templates(ep)
     print(json.dumps({"r2_templates": len(r2), "r3_templates": len(r3)}), flush=True)
 
+    # Exact Hamilton-path enumeration uses graph.graphml directly.  Keep its
+    # edge representation separate from load_problem(): the latter applies the
+    # projected-solver loader/filtering/order and is the correct representation
+    # for the sampler checkpoint.  Mixing the two was the source of an earlier
+    # KeyError in this diagnostic.
     graph = nx.read_graphml(DATASET_DIR / "graph.graphml")
-    ham, hp_stats = hamilton_path_move_stats(graph, ep, reward, r2, r3)
-    bridge = r3_bridge_audit(ham, r2, r3)
+    graph_ep = list(graph.edges())
+    graph_r2 = fc.build_reconnect_templates(graph_ep)
+    graph_r3 = build_r3_templates(graph_ep)
+    ham, hp_stats = hamilton_path_move_stats(graph, graph_ep, reward, graph_r2, graph_r3)
+    bridge = r3_bridge_audit(ham, graph_r2, graph_r3)
+    bridge["graph_edge_count"] = len(graph_ep)
+    bridge["graph_r2_templates"] = len(graph_r2)
+    bridge["graph_r3_templates"] = len(graph_r3)
     print("BRIDGE", json.dumps(bridge), flush=True)
 
     (rids2, ep2, reward2, cost2, incoming2, outgoing2,
      selected, ranks, op) = replay_stuck_checkpoint()
-    assert ep2 == ep
+    checkpoint_r2 = fc.build_reconnect_templates(ep2)
+    checkpoint_r3 = build_r3_templates(ep2)
     checkpoint = diagnose_checkpoint(
         rids2, ep2, reward2, cost2, incoming2, outgoing2,
-        selected, ranks, op, {"r2": r2, "r3": r3},
+        selected, ranks, op, {"r2": checkpoint_r2, "r3": checkpoint_r3},
     )
     print("CHECKPOINT", json.dumps(checkpoint), flush=True)
 
