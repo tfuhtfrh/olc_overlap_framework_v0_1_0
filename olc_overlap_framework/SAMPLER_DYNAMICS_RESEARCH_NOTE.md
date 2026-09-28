@@ -465,3 +465,8 @@ This note should be updated when:
 - the first full-space multi-k benchmark is complete;
 - a formal effective-exchange derivation is added;
 - reverse SQA or QPU reverse annealing is actually tested.
+
+
+## Latest follow-up
+
+First full-space and late multi-k results are recorded in [FULLSPACE_SAMPLER_FOLLOWUP_20260928.md](FULLSPACE_SAMPLER_FOLLOWUP_20260928.md).
