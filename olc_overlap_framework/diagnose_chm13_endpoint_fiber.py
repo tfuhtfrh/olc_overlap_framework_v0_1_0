@@ -6,7 +6,7 @@ Therefore they preserve the source and sink identities of a degree-correct
 sequence of R_k moves of any order can ever reach a Hamilton path.
 """
 from __future__ import annotations
-import json, sys
+import csv, json, sys
 from collections import Counter
 from pathlib import Path
 import networkx as nx
@@ -31,16 +31,24 @@ def main():
     source,sink=sources[0],sinks[0]
 
     graph=nx.read_graphml(DATASET_DIR/"graph.graphml")
+    with (DATASET_DIR/"nodes.tsv").open(newline="",encoding="utf-8") as handle:
+        rows=list(csv.DictReader(handle,delimiter="\t"))
+    oriented_to_normalized={row["node"]:row["read_id"] for row in rows}
     enum=enumerate_paths(graph,limit=1000,timeout_ms=60000)
     paths=enum["paths"]
-    endpoint_counts=Counter((p[0],p[-1]) for p in paths)
-    same=[p for p in paths if p[0]==source and p[-1]==sink]
-    reverse=[p for p in paths if p[0]==sink and p[-1]==source]
+    normalized_paths=[
+        [oriented_to_normalized.get(v,v.rstrip("+-")) for v in p]
+        for p in paths
+    ]
+    endpoint_counts=Counter((p[0],p[-1]) for p in normalized_paths)
+    same=[p for p in normalized_paths if p[0]==source and p[-1]==sink]
+    reverse=[p for p in normalized_paths if p[0]==sink and p[-1]==source]
 
     result={
       "stuck_source":source,
       "stuck_sink":sink,
       "exact_hamilton_paths":len(paths),
+      "endpoint_ids_compared_after_orientation_to_normalized_mapping":true,
       "distinct_endpoint_pairs":len(endpoint_counts),
       "same_endpoint_hamilton_paths":len(same),
       "reverse_endpoint_hamilton_paths":len(reverse),
