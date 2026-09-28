@@ -92,7 +92,7 @@ def main():
     ham_states={state_from_order(p,idx):i for i,p in enumerate(paths)}
     assert len(ham_states)==192
 
-    ref=json.loads((DATASET_DIR/"reference_path.json").read_text())["normalized_nodes"]
+    ref=json.loads((DATASET_DIR/"reference_path.json").read_text())["nodes"]
     start=state_from_order(ref,idx)
 
     dist,seen,hist,mincyc,capped=bfs(start,templates,set(ham_states))
