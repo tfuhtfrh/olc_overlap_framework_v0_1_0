@@ -121,6 +121,20 @@ def move_neighbors(st,ep,r2,r3,allowed):
                 yield ns,fam,ti
 
 
+def reachable_r2(start,target,ep,r2,cap=100000):
+    idx={e:i for i,e in enumerate(ep)}
+    s0=frozenset(idx[e] for e in start);tgt=frozenset(idx[e] for e in target)
+    q=deque([s0]);seen={s0}
+    while q and len(seen)<cap:
+        s=q.popleft()
+        if s==tgt:return True,len(seen)
+        for tpl in r2:
+            nb=applicable(s,tpl)
+            if nb is not None and nb not in seen:
+                seen.add(nb);q.append(nb)
+    return tgt in seen,len(seen)
+
+
 def shortest_feasible_route(start,target,ep,r2,r3,allowed):
     q=deque([frozenset(start)])
     prev={frozenset(start):None};how={}
@@ -180,6 +194,7 @@ def main():
 
     allowed={frozenset(st) for _,_,st in rows}
     route=shortest_feasible_route(rs,gs,ep,r2,r3,allowed)
+    r2_reach,r2_component_size=reachable_r2(rs,gs,ep,r2)
 
     runner_rank=project_rank(rids,rs)
     rankfree=array_bqm(ep,cost,incoming,outgoing,runner_rank,0.0)
@@ -203,6 +218,8 @@ def main():
       "minimum_contiguous_segment_relocation":segment_relocation(rp,gp),
       "direct_structured_moves_to_ground":direct,
       "shortest_feasible_only_r2_r3_route":route,
+      "ground_reachable_from_runner_by_r2_only":r2_reach,
+      "runner_r2_component_size":r2_component_size,
       "rankfree_fixed_cardinality_delta_ground_minus_runner":de_rankfree,
       "stale_runner_rank_A4_delta_ground_minus_runner":de_stale,
       "sqa_snapshot":{
