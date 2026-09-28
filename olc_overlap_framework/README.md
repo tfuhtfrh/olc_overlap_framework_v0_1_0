@@ -2,6 +2,8 @@
 
 Version: 0.1.0
 
+> **Active research note:** [Sampler dynamics, effective exchange, and reverse annealing](SAMPLER_DYNAMICS_RESEARCH_NOTE.md) — current CHM13 complex144 work on full-space vs fixed-cardinality SQA, exchange/reconnect kernels, the effective second-order exchange idea, and future reverse-annealing experiments.
+
 This is a modular reproduction-code framework for OLC-style read overlap experiments.
 
 Pipeline:
