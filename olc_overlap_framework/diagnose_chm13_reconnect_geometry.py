@@ -21,7 +21,10 @@ import networkx as nx
 import benchmark_chm13_fixed_cardinality_kernels as fc
 from benchmark_chm13_projected_edge_hybrid import load_problem, project_rank, graph_metrics
 
-OUT=Path("debug/qubo/chm13_reconnect_geometry_diagnostic_20260928.json")\n# Match the long-budget time_phase experiment exactly.\nfc.SWEEPS=1500\nfc.READS=2
+OUT=Path("debug/qubo/chm13_reconnect_geometry_diagnostic_20260928.json")
+# Match the long-budget time_phase experiment exactly.
+fc.SWEEPS=1500
+fc.READS=2
 SEEDS=[20370928,20380928,20390928]
 CHECKPOINT=11  # end of exchange-only phase in prior time_phase benchmark
 
