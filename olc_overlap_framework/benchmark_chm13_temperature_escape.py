@@ -71,18 +71,12 @@ def cycle_count_degree_correct(rids,ep,state):
     return cycles
 
 
-def run(beta,seed,anneal=False):
-    rids,ep,reward,cost,incoming,outgoing,selected,ranks,op=replay_stuck_checkpoint()
-    fixed_bqm=fc.build_bqm_fixed_cardinality(
-        ep,cost,incoming,outgoing,ranks,
-        degree_conflict_penalty=288.0,order_penalty=op)
-    abqm=fc.ArrayBQM.from_bqm(fixed_bqm,ep)
-    idx={e:i for i,e in enumerate(ep)}
+def run(ctx,beta,seed,anneal=False):
+    rids=ctx["rids"];ep=ctx["ep"];reward=ctx["reward"];selected=ctx["selected"]
+    abqm=ctx["abqm"];idx=ctx["idx"];r2=ctx["r2"];r3=ctx["r3"];templates=ctx["templates"]
     state=frozenset(idx[e] for e in selected)
     x=[1 if i in state else 0 for i in range(len(ep))]
     e0=abqm.energy(x);best_e=e0
-    r2=fc.build_reconnect_templates(ep);r3=build_r3_templates(ep)
-    templates=[("r2",t) for t in r2]+[("r3",t) for t in r3]
     rng=random.Random(seed)
     attempted={"r2":0,"r3":0};eligible={"r2":0,"r3":0};accepted={"r2":0,"r3":0}
     uphill=0;first_feasible=None;best_score=None;best_cycles=cycle_count_degree_correct(rids,ep,state)
@@ -132,12 +126,24 @@ def run(beta,seed,anneal=False):
 
 
 def main():
+    rids,ep,reward,cost,incoming,outgoing,selected,ranks,op=replay_stuck_checkpoint()
+    fixed_bqm=fc.build_bqm_fixed_cardinality(
+        ep,cost,incoming,outgoing,ranks,
+        degree_conflict_penalty=288.0,order_penalty=op)
+    abqm=fc.ArrayBQM.from_bqm(fixed_bqm,ep)
+    idx={e:i for i,e in enumerate(ep)}
+    r2=fc.build_reconnect_templates(ep);r3=build_r3_templates(ep)
+    ctx={
+      "rids":rids,"ep":ep,"reward":reward,"selected":selected,
+      "abqm":abqm,"idx":idx,"r2":r2,"r3":r3,
+      "templates":[("r2",t) for t in r2]+[("r3",t) for t in r3],
+    }
     rows=[]
     for beta in BETAS:
         for seed in SEEDS:
-            r=run(beta,seed,False);rows.append(r);print("ROW",json.dumps(r),flush=True)
+            r=run(ctx,beta,seed,False);rows.append(r);print("ROW",json.dumps(r),flush=True)
     for seed in SEEDS:
-        r=run(0.0,seed,True);rows.append(r);print("ROW",json.dumps(r),flush=True)
+        r=run(ctx,0.0,seed,True);rows.append(r);print("ROW",json.dumps(r),flush=True)
     agg={}
     modes=sorted(set((r["mode"],r["beta"]) for r in rows),key=str)
     for mode,beta in modes:
