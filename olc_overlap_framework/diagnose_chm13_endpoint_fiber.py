@@ -48,7 +48,7 @@ def main():
       "stuck_source":source,
       "stuck_sink":sink,
       "exact_hamilton_paths":len(paths),
-      "endpoint_ids_compared_after_orientation_to_normalized_mapping":true,
+      "endpoint_ids_compared_after_orientation_to_normalized_mapping":True,
       "distinct_endpoint_pairs":len(endpoint_counts),
       "same_endpoint_hamilton_paths":len(same),
       "reverse_endpoint_hamilton_paths":len(reverse),
