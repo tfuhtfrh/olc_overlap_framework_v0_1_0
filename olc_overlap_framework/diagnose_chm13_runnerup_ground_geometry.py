@@ -212,6 +212,26 @@ def main():
     de_rankfree=energy(rankfree,ep,gs)-energy(rankfree,ep,rs)
     de_stale=energy(stale,ep,gs)-energy(stale,ep,rs)
 
+    r2_route_detail=None
+    if r2_route is not None:
+        base_e=energy(rankfree,ep,rs)
+        detail=[]
+        prev_e=base_e
+        for step,row in enumerate(r2_route,1):
+            sel={ep[i] for i in row["state_ids"]}
+            en=energy(rankfree,ep,sel)
+            met=graph_metrics(rids,sel,project_rank(rids,sel),reward)
+            detail.append({
+              "step":step,"template":row["template"],
+              "delta_from_previous":en-prev_e,
+              "energy_from_runner":en-base_e,
+              "cycle_count":met["cycle_count"],
+              "valid_path":met["valid_path"],
+              "path_score":met["path_score"],
+            })
+            prev_e=en
+        r2_route_detail=detail
+
     # single-slice action if all neighboring slices remain runner-up.
     kt=-0.5*math.log(math.tanh(BETA*GAMMA/P))
     flip_count=len(rs^gs)
@@ -232,6 +252,7 @@ def main():
       "runner_r2_component_size":r2_component_size,
       "shortest_r2_only_steps":len(r2_route) if r2_route is not None else None,
       "shortest_feasible_only_r2_steps":len(r2_feasible_route) if r2_feasible_route is not None else None,
+      "shortest_r2_only_route_detail":r2_route_detail,
       "rankfree_fixed_cardinality_delta_ground_minus_runner":de_rankfree,
       "stale_runner_rank_A4_delta_ground_minus_runner":de_stale,
       "sqa_snapshot":{
