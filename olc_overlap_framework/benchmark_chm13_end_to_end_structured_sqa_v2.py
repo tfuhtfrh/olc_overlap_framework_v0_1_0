@@ -58,7 +58,13 @@ def cyclic_worldline_repair(method,rids,ep,reward,selected,abqm,r2,r3,exactA,see
     heads,tails=templates_by_shared_endpoint(ep)
     rng=random.Random(seed)
     accepted=eligible=0
+    accepted_by_family={"sink_transfer":0,"source_transfer":0,"r2":0,"r3":0}
     initial=base.state_metrics(rids,selected,reward)
+    effective_cycle_pressure=(
+      exactA if method=="exact_cut" else
+      (min(4.0,max((len(c) for c in cycles_edges),default=0)*exactA)
+       if method=="rank_ensemble" else 0.0)
+    )
 
     for t in range(REPAIR_ATTEMPTS):
         met=base.state_metrics(rids,{ep[i] for i in st},reward)
@@ -67,6 +73,9 @@ def cyclic_worldline_repair(method,rids,ep,reward,selected,abqm,r2,r3,exactA,see
               "hp_hit":True,"attempts":t,"accepted":accepted,"eligible":eligible,
               "initial_cycles":initial["cycle_count"],"final_cycles":0,
               "final_score":met["path_score"],
+              "method":method,"local_exact_scale":exactA,
+              "effective_cycle_pressure":effective_cycle_pressure,
+              "accepted_by_family":accepted_by_family,
             }
 
         z=rng.random()
@@ -92,6 +101,7 @@ def cyclic_worldline_repair(method,rids,ep,reward,selected,abqm,r2,r3,exactA,see
         if de<=0 or rng.random()<math.exp(-min(700.0,BETA_REPAIR*de)):
             for i in flips:x[i]^=1
             st=nb;accepted+=1
+            accepted_by_family[fam]+=1
 
     final={ep[i] for i in st}
     fm=base.state_metrics(rids,final,reward)
@@ -100,6 +110,9 @@ def cyclic_worldline_repair(method,rids,ep,reward,selected,abqm,r2,r3,exactA,see
       "accepted":accepted,"eligible":eligible,
       "initial_cycles":initial["cycle_count"],"final_cycles":fm["cycle_count"],
       "final_score":fm["path_score"],
+      "method":method,"local_exact_scale":exactA,
+      "effective_cycle_pressure":effective_cycle_pressure,
+      "accepted_by_family":accepted_by_family,
     }
 
 
