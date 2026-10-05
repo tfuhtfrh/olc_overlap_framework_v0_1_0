@@ -1,0 +1,376 @@
+% ============================================================
+\section{循環 OLC グラフに対する QUBO アルゴリズム}
+% ============================================================
+
+第3章では、候補 overlap 辺を二値変数とする weighted Hamiltonian path の QUBO を用い、
+DAG 上での挙動を調べた。
+DAG では directed cycle が存在しないため、各 read の入次数と出次数、および選択辺数を
+適切に制約すれば、選択辺は一本の Hamilton path として連結される。
+一方、実データから得られる OLC グラフには repeat や競合する overlap によって cycle が現れる。
+この場合、同じ局所制約を満たしていても、一本の path と複数の cycle が共存する解が残る。
+本章では、このような循環グラフを対象として、cycle を排除しながら高重みの Hamilton path を
+探索するための QUBO アルゴリズムを構成する。
+
+% ============================================================
+\subsection{循環グラフで生じる問題と評価データ}
+% ============================================================
+
+候補 overlap 辺 $e=(u,v)\in E$ を使用するかどうかを
+$x_e\in\{0,1\}$ で表す。
+第3章で用いた edge-variable QUBO の基本形は
+
+\begin{equation}
+H_0
+=
+H_{\mathrm{weight}}
++
+H_{\mathrm{degree}}
++
+H_{\mathrm{count}}
+\label{eq:cyclic_base_hamiltonian}
+\end{equation}
+
+である。
+$H_{\mathrm{weight}}$ は overlap weight の高い辺を選択する目的項、
+$H_{\mathrm{degree}}$ は一つの read に複数の predecessor または successor が接続する状態を抑える項である。
+Hamilton path が $N$ 頂点に対して $N-1$ 本の辺を持つことから、
+
+\begin{equation}
+H_{\mathrm{count}}
+=
+A_{\mathrm{count}}
+\left(
+\sum_{e\in E}x_e-(N-1)
+\right)^2
+\label{eq:cyclic_count_constraint}
+\end{equation}
+
+を加える。
+
+$d_v^{\mathrm{in}}\leq 1$、$d_v^{\mathrm{out}}\leq 1$ が全頂点で成り立つ selected graph は、
+directed path と directed cycle の直和として表される。
+path component の数を $p$ とすると、path は頂点数より一本少ない辺を持ち、cycle は頂点数と同数の辺を持つため、
+selected edge の総数は $N-p$ である。
+したがって $\sum_e x_e=N-1$ ならば $p=1$ であるが、cycle の個数は 0 に限定されない。
+すなわち式~\eqref{eq:cyclic_base_hamiltonian} の局所制約だけでは、
+
+\begin{equation}
+\text{one open path}+\text{one or more directed cycles}
+\label{eq:path_plus_cycles}
+\end{equation}
+
+を Hamilton path から区別できない。
+DAG では存在しなかったこの自由度が、循環 OLC グラフを扱う際の追加条件となる。
+
+本章の評価には CHM13 complex144 を用いる。
+これは CHM13 v1.1 の HiFi primary-alignment data から構成した read-level OLC benchmark である。
+元データから品質条件を満たす read を抽出して代表骨格を作成し、exact all-vs-all overlap graph の
+トポロジーに基づいて複雑な連続区間を選択した後、98\% identity 以上で他の read に完全包含される
+9 reads を除去している。
+最終的な benchmark は 144 reads、261 directed candidate edges からなり、
+最大の nontrivial strongly connected component は 112 頂点である。
+全 Hamilton paths を厳密列挙すると 192 通り存在し、単一の単純 cycle ではなく、
+多数の分岐と競合する overlap を含む。
+
+benchmark の整理と read orientation の統一には CHM13 reference alignment を利用しているが、
+QUBO の edge weight は read--read overlap の alignment のみから計算する。
+主結果で用いる edge weight は、matching bases を $M$、alignment block length を $B$、
+$d=B-M$ として
+
+\begin{equation}
+w_e=M-49d
+\label{eq:complex144_weight}
+\end{equation}
+
+とした整数値であり、reference coordinate を目的関数へ加えていない。
+このため、known reference は benchmark の整理と事後検証に用い、layout score 自体は overlap 情報から定まる。
+
+\begin{figure}[tbp]
+\centering
+\fbox{\parbox[c][48mm][c]{0.88\linewidth}{\centering
+\textbf{図挿入予定：CHM13 complex144 の directed overlap graph}\\[2mm]
+144 reads、261 candidate edges、主要 SCC と分岐構造を表示する。}}
+\caption{CHM13 complex144 のトポロジー。図は後に差し替える。}
+\label{fig:complex144_topology_placeholder}
+\end{figure}
+
+% ============================================================
+\subsection{順序変数を用いた QUBO}
+% ============================================================
+
+cycle を QUBO 内で直接排除する方法として、頂点または辺の順序を二値変数で表す方法がある。
+N{\"u}{\ss}lein \textit{et al.}\ \cite{nusslein2022qubo} は Hamiltonian cycle に対して、
+選択辺に cycle 上の位置を対応させる order-variable formulation を提案している。
+候補辺 $(a,b)$ の order を $P_{ab}$ とすると、$P_{ab}=0$ は未選択、
+$P_{ab}>0$ は選択された辺の cycle 上の位置を表す。
+これを
+
+\begin{equation}
+P_{ab}=\sum_{k=0}^{K-1}2^k p_{ab,k},
+\qquad
+K=\left\lceil\log_2(N+1)\right\rceil
+\label{eq:nusslein_binary_order}
+\end{equation}
+
+のように二進展開し、接続する選択辺の order が連続するように制約することで subtour を排除する。
+この考え方は Hamiltonian path にも拡張できるが、weighted path では edge selection、始点・終点、
+順序 certificate、overlap objective を同時に整合させる必要がある。
+
+本研究では、この order-variable の考え方を残しつつ、Hamilton path の無閉路性に必要な条件を弱めた。
+選択された edge $u\rightarrow v$ に対して、rank が厳密に増加すれば directed cycle は存在できるため、
+
+\begin{equation}
+x_{uv}=1
+\quad\Longrightarrow\quad
+P_v>P_u
+\label{eq:strict_rank_condition}
+\end{equation}
+
+のみを課す。
+$P_v=P_u+1$ のように位置を連続させる必要はなく、rank 間に gap があってもよい。
+この変更により、rank は経路の絶対位置ではなく、選択辺が一方向に進むことを証明する certificate として扱われる。
+
+各 read $v$ に $K=\lceil\log_2 N\rceil$ 個の rank bits $p_{v,k}$ を割り当て、
+
+\begin{equation}
+P_v=\sum_{k=0}^{K-1}2^k p_{v,k}
+\label{eq:latent_vertex_rank}
+\end{equation}
+
+とする。
+式~\eqref{eq:strict_rank_condition} は、$P_v-P_u-1$ の二進減算における borrow を用いて判定する。
+edge $e=(u,v)$ の bit $k$ に対する borrow-in を $b$、borrow-out を $c$ とすると、
+$c$ は $p_{u,k}$、$b$、$1-p_{v,k}$ の majority である。
+この関係は binary variables に対して
+
+\begin{align}
+R(u,v,b,c)
+={}&u+b+c+ub-uv-bv \notag\\
+&-2uc-2bc+2vc
+\label{eq:borrow_quadratic_penalty}
+\end{align}
+
+という二次式で厳密に表現でき、正しい borrow のときに限り $R=0$ となる。
+最下位 bit の borrow-in を 1 として各 bit の borrow を順に計算すると、最終 borrow は
+
+\begin{equation}
+b_{e,K}=1
+\quad\Longleftrightarrow\quad
+P_v\leq P_u
+\label{eq:final_borrow_order}
+\end{equation}
+
+となる。
+したがって selected edge に対してのみ
+
+\begin{equation}
+H_{\mathrm{gate}}
+=
+A_{\mathrm{gate}}
+\sum_{e=(u,v)\in E}
+ x_e b_{e,K}
+\label{eq:strict_rank_gate}
+\end{equation}
+
+を課せば、式~\eqref{eq:strict_rank_condition} が成立する。
+
+Hamilton path の始点と終点は固定しない。
+各頂点 $v$ に source variable $s_v$ と sink variable $t_v$ を置き、
+
+\begin{align}
+s_v+\sum_{u:(u,v)\in E}x_{uv}&=1,\\
+t_v+\sum_{w:(v,w)\in E}x_{vw}&=1,
+\label{eq:strict_rank_path_degree}
+\end{align}
+
+および
+
+\begin{equation}
+\sum_v s_v=1,
+\qquad
+\sum_v t_v=1
+\label{eq:strict_rank_endpoint_count}
+\end{equation}
+
+を課す。
+source と sink が同一頂点になる退化解は $s_vt_v$ に対する penalty で除外する。
+これらの次数制約と式~\eqref{eq:strict_rank_condition} を同時に満たす selected graph は、
+一つの source から一つの sink まで全頂点を通る Hamilton path となる。
+実際、directed cycle が存在すると
+
+\begin{equation}
+P_{v_1}<P_{v_2}<\cdots<P_{v_L}<P_{v_1}
+\end{equation}
+
+が必要となり、矛盾するためである。
+weighted objective は第3章と同様に selected edges の overlap weight を用いる。
+
+% ============================================================
+\subsection{complex144 における順序変数 QUBO の評価}
+% ============================================================
+
+complex144 では $N=144$、$M=261$ であり、rank bits は一頂点あたり $K=8$ となる。
+上記の strict-rank comparator は、261 個の edge variables、288 個の source/sink variables、
+1152 個の vertex-rank bits、2088 個の borrow bits を用いるため、論理変数数は
+
+\begin{equation}
+Q
+=M+2N+NK+MK
+=3789
+\label{eq:strict_rank_variable_count}
+\end{equation}
+
+となる。
+
+この formulation では、order difference を一つの整数平方として展開せず、
+bit ごとの borrow relation を局所的な二次式として表す。
+そのため、初期に用いた edge-position formulation と比較して、二次係数の最大絶対値を大幅に抑えられた。
+表~\ref{tab:order_qubo_comparison} に complex144 での比較を示す。
+
+\begin{table}[tbp]
+\centering
+\caption{complex144 に対する order-variable QUBO の比較。}
+\label{tab:order_qubo_comparison}
+\begin{tabular}{lrrr}
+\hline
+formulation & logical variables & quadratic terms & max $|J|$ \\
+\hline
+edge-position & 2637 & 77843 & 9437184 \\
+strict-rank comparator & 3789 & 33376 & 576 \\
+\hline
+\end{tabular}
+\end{table}
+
+既知の Hamilton path を binary state に符号化した audit では、degree、endpoint、borrow comparator、
+selected-edge order のすべてで constraint residual は 0 となった。
+また、rank を $0,1,2,\ldots$ と連続に与えた場合だけでなく、全 rank を一定量だけ平行移動した場合や、
+順序を保ったまま非一様な gap を入れた場合も同じ objective energy を与えた。
+したがって、この formulation は rank の絶対値や間隔ではなく、selected edges 上の順序だけを符号化している。
+
+一方、汎用 QUBO solver を用いた初期テストでは、borrow recurrence 自体は満たせても、
+Hamilton path と globally consistent な rank assignment を同時に得ることが難しかった。
+基準 penalty では 135--138 本程度の selected edges が得られたが、degree residual と selected-edge order violation が残った。
+order gate を強くすると order violation は除けるものの、selected edges が約 80--83 本まで減少し、
+一つの Hamilton path へ連結しなかった。
+この結果は comparator circuit の不正確さではなく、edge topology を変更すると同時に、
+多数の rank bits と borrow bits を整合させなければならないことに起因する。
+
+係数幅を $10^7$ 程度から $10^3$ 未満まで抑えても、logical variables は 3789 個残る。
+さらに、二つの Hamilton paths がグラフ上では数本の edge の付け替えで近接していても、
+order-variable representation では edge variables に加えて rank certificate も更新する必要がある。
+局所的な single-bit update を用いる solver では、この coordinated update が探索障壁となる。
+このため、無閉路性を完全に QUBO 内部へ保持する代わりに、
+cycle の判定そのものを古典計算へ戻し、QUBO には edge variables だけを残す方法を検討した。
+
+% ============================================================
+\subsection{edge-only QUBO と古典計算による cycle feedback}
+% ============================================================
+
+edge-only 表現では、探索変数を 261 個の candidate-edge variables $x_e$ に戻し、
+式~\eqref{eq:cyclic_base_hamiltonian} を基本 Hamiltonian とする。
+この Hamiltonian は cycle を完全には禁止しないが、solver が返した selected graph から
+cycle を検出すること自体は難しい最適化問題ではない。
+strongly connected components や directed cycle は $O(|V|+|E|)$ のグラフ探索で求められるため、
+3789-variable QUBO の内部で rank certificate を毎回更新する必要はない。
+
+そこで、QUBO optimization と classical graph analysis を交互に行う。
+第 $t$ 反復で得られた selected graph を $G_x^{(t)}$ とし、そこから検出した directed cycles の集合を
+$\mathcal{C}^{(t)}$ とする。
+一つの cycle $C$ に対して、特定の一辺を cycle-breaking edge として固定すると、
+その選択に依存した bias が生じる。
+本研究では、cycle 内の全辺に同じ重みで弱い penalty を分配し、
+
+\begin{equation}
+H_{\mathrm{cyc}}(C)
+=
+\frac{A_{\mathrm{cyc}}}{|C|}
+\sum_{e\in C}x_e
+\label{eq:uniform_cycle_penalty}
+\end{equation}
+
+とする。
+これは、長さ $|C|$ の directed cycle に対して可能な $|C|$ 個の cycle-breaking 位置を等価に扱い、
+一つの backward edge をあらかじめ指定しない penalty である。
+補助変数を追加しないため、cycle feedback を加えても logical variable 数は 261 のままである。
+
+次反復の Hamiltonian は
+
+\begin{equation}
+H^{(t+1)}
+=
+H_0
++
+\sum_{C\in\mathcal{C}^{(t)}}
+H_{\mathrm{cyc}}(C)
+\label{eq:iterative_cycle_hamiltonian}
+\end{equation}
+
+とする。
+ここで過去に検出した cycle penalty を蓄積するのではなく、各反復で現在の selected graph を解析し、
+その時点の cycle に対して Hamiltonian を再構成する。
+従って、global order を多数の二値変数として保持する代わりに、
+solver が生成した候補解に必要な topology information だけを古典計算で求め、次の QUBO へ戻す構成となる。
+
+\begin{figure}[tbp]
+\centering
+\begin{tikzpicture}[
+  >=Latex,
+  box/.style={draw,rounded corners=1.5mm,minimum width=32mm,minimum height=10mm,align=center,font=\small},
+  node distance=12mm and 15mm
+]
+\node[box] (qubo) {QUBO optimization\\$H^{(t)}$};
+\node[box,right=of qubo] (state) {selected graph\\$G_x^{(t)}$};
+\node[box,right=of state] (check) {classical\\cycle detection};
+\node[box,below=of state] (update) {Hamiltonian update\\$H^{(t+1)}$};
+\draw[->,thick] (qubo) -- (state);
+\draw[->,thick] (state) -- (check);
+\draw[->,thick] (check) |- (update);
+\draw[->,thick] (update) -| (qubo);
+\end{tikzpicture}
+\caption{edge-only QUBO と古典的 cycle 判定を交互に用いる反復計算。}
+\label{fig:iterative_cycle_feedback}
+\end{figure}
+
+この構成の中心は特定の solver に依存しない。
+式~\eqref{eq:iterative_cycle_hamiltonian} が QUBO である限り、SQA、量子アニーリング、
+SA、tabu search などを各反復の optimizer として用いることができる。
+本報告では、order-variable formulation と同一条件で比較しやすいよう OpenJij の SQA を用いて評価する。
+
+% ============================================================
+\subsection{数値評価の設定}
+% ============================================================
+
+正式評価では、3789-variable strict-rank comparator と、261-variable iterative edge-QUBO を
+complex144 上で比較する。
+比較の目的は、無閉路性を rank variables として QUBO 内に保持する方法と、
+cycle 判定を古典計算へ移して小さい QUBO を反復更新する方法の違いを確認することである。
+fixed $H_0$ に対する追加 baseline は置かず、両 formulation に同程度の SQA 計算量を与える。
+
+solver には OpenJij SQASampler の standard single-spin-flip update を用いる。
+両方法とも一回の反復で 8 samples を取得し、各 sample 当たり 1400 sweeps、
+$\beta=5$、transverse-field scale $\Gamma=1$、Trotter 数 $P=8$ とする。
+一つの run は 16 反復で構成し、初回は全変数 0 から開始する。
+各反復では 8 samples のうち QUBO energy が最小の状態を次反復へ引き継ぐ。
+strict-rank comparator では Hamiltonian を固定したまま計算を継続し、
+iterative edge-QUBO ではその間に selected graph の cycle を古典計算で検出して
+式~\eqref{eq:iterative_cycle_hamiltonian} を更新する。
+cycle penalty は $A_{\mathrm{cyc}}=4$ とし、formal evaluation の前に固定する。
+
+各方法について独立な 24 runs を実行する。
+評価時には sampler が返した全 samples から edge selection を取り出し、
+Hamilton path の有無と path weight を formulation の補助変数とは独立に検査する。
+各 run について、少なくとも一度 Hamilton path を得たか、得られた Hamilton paths の最大 score、
+および certified optimum への到達回数を記録する。
+score については 24 runs の median、interquartile range、overall best を用いる。
+strict-rank comparator ではこれに加えて comparator/order constraint residual を記録し、
+iterative edge-QUBO では各反復で検出された cycle 数を記録する。
+実行時間も保存するが、主比較は variable 数と得られる Hamilton path の品質に置く。
+
+% TODO(report-20261005):
+% 正式 benchmark 実行後、ここに結果表と score distribution を追加する。
+% 表の候補列：method / variables / HP runs / median best score / IQR / overall best / optimum hits / runtime.
+% strict-rank comparator の既存 audit 値と新しい matched-budget SQA 結果を混同しないこと。
+
+以上の構成により、循環グラフの無閉路性を一つの大きな QUBO に完全符号化する方法と、
+小規模な edge-QUBO と古典的な cycle 判定を交互に用いる方法を、同一の実データ上で比較できる。
+次章では、この cyclic optimization problem を大規模な OLC graph からどのように切り出すかを扱う。
