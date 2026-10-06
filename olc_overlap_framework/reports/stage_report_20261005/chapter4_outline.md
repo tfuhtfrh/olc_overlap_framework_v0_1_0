@@ -1,145 +1,52 @@
-# 第4章改稿メモ — 2026-10-05
+# 第4章改稿メモ — 2026-10-06
 
-対象: 段階報告の第4章。目的は **循環 OLC グラフに対する QUBO アルゴリズムの構成** を成果として説明すること。
-研究過程を時系列で列挙せず、最終的な設計判断だけを残す。
+## 位置づけ
 
-## 章の論理
+第4章の目的は、循環を含む OLC グラフに対する QUBO アルゴリズムを示すことである。
+研究の試行錯誤を時系列に並べず、最終的に採用する二つの定式化と、その比較だけを記述する。
 
-1. 第3章の weighted Hamiltonian path / edge-variable QUBO は DAG では成立するが、循環グラフでは `one path + cycles` を排除できない。
-2. 評価データとして CHM13 complex144 を先に定義する。144 reads、261 candidate edges、最大 SCC 112、exact Hamilton paths 192。
-3. Nüßlein et al. の order-variable Hamiltonian-cycle formulation を出発点として、weighted Hamiltonian path 用の順序表現を構成する。
-4. 代表 formulation は latent strict-rank comparator: selected edge `u->v` に `P_v > P_u` のみを要求する。`+1` の連続順位は不要。
-5. complex144 では 3789 variables、33376 quadratic terms、max |J|=576。既知経路の audit は成立するが、solver は edge topology と rank/comparator bits を同時に整合させにくい。
-6. global acyclicity をすべて QUBO 変数に保持せず、edge-only 261-variable QUBO に戻す。selected graph の cycle/SCC 判定は古典計算で安価に実行できる。
-7. 現在の cycle に対して均等な弱い penaltyを加え、QUBO optimization と classical cycle detection を反復する。
-8. 正式評価では 3789-variable strict-rank comparator と 261-variable iterative edge-QUBO を同程度の SQA 計算量で比較する。
+## 構成
 
-## 掲載しない内容
+1. 第3章の辺変数型 QUBO が循環グラフでは「一本の経路 + サイクル」を許すことを示す。
+2. CHM13 complex144 の作成方法とグラフの特徴を説明する。
+3. Nüßlein et al. の順序変数型定式化を示し、本研究では selected edge に対して P_u < P_v のみを課す順位比較型へ変更する。
+4. complex144 上で順位比較型 QUBO の変数数、係数幅、既知経路の制約検証、QBSolv の結果を示す。
+5. 順序変数を除き、261 個の辺変数だけを残す。得られた解のサイクルは古典計算で検出する。
+6. 検出したサイクルの全辺へ均等に弱いペナルティを加え、QUBO 求解とサイクル検出を交互に行う。
+7. 正式評価では 3789 変数の順位比較型と 261 変数の反復更新型を同じ SQA 条件で比較する。
 
-- R2 / R3 / endpoint transfer / whole-worldline proposal kernel
-- 192 HP の詳細な state-neighborhood 解析
-- reverse annealing
-- reachability partial order
-- alternative-rank / 4+2+2 の read allocation
-- multiple explorers / population search
-- bounded `+1` formulation
+## 正式評価の予定
 
-これらは研究上の診断としては有用だが、第4章の成果説明には含めない。
-
-## complex144 の記述上の注意
-
-データ package の README に合わせる。
-
-- official CHM13 v1.1 HiFi primary-alignment data を出発点とする。
-- benchmark の整理、骨格生成、orientation normalization には reference alignment を利用している。
-- final graph は 144 physical reads / 261 directed edges。
-- edge weight は read-read overlap のみから計算し、reference coordinate reward は含めない。
-- main weight: `w = M - 49 d`, `d=B-M`。
-- exact enumeration: 192 Hamilton paths。
-
-「reference は graph construction に一切使っていない」とは書かない。
-
-## strict-rank comparator の主要式
-
-Vertex rank:
-
-`P_v = sum_k 2^k p[v,k]`, `K=ceil(log2 N)`.
-
-Selected edge condition:
-
-`x_uv=1 => P_v>P_u`.
-
-Borrow comparator:
-
-`b[e,K]=1 <=> P_v<=P_u`.
-
-Gate:
-
-`H_gate = A_gate sum_e x_e b[e,K]`.
-
-Variable count for complex144:
-
-`Q=M+2N+NK+MK=3789`.
-
-## iterative edge-QUBO
-
-Base:
-
-`H0 = H_weight + H_degree + H_count`.
-
-For detected cycle `C`:
-
-`H_cyc(C) = A_cyc/|C| * sum_{e in C} x_e`.
-
-Update:
-
-`H^(t+1) = H0 + sum_{C in C^(t)} H_cyc(C)`.
-
-- past cycle penalties are not accumulated;
-- current selected graph is re-analysed each iteration;
-- no auxiliary variables are added;
-- logical variables remain 261.
-
-## 正式 benchmark — 固定条件
-
-Compare only:
-
-1. strict-rank comparator: 3789 variables, fixed Hamiltonian;
-2. iterative edge-QUBO: 261 variables + classical current-cycle feedback.
-
-No fixed-H0 baseline in the report.
-
-SQA settings for both:
-
-- OpenJij SQASampler, standard SingleSpinFlip
+- OpenJij SQASampler
 - beta = 5
 - gamma = 1
 - Trotter P = 8
-- num_sweeps = 1400
-- num_reads = 8 per iteration
-- 16 iterations per run
-- first state: all zero
-- 24 independent runs per method
+- 1400 sweeps / sample
+- num_reads = 8
+- 16 iterations / trial
+- 24 independent trials / formulation
+- uniform cycle penalty A_cyc = 4
 
-Between iterations:
+順位比較型は Hamiltonian を固定し、各反復で最低エネルギーのサンプルを次の初期状態とする。
+辺変数型は同じ手順の間にサイクルを検出し、次の Hamiltonian のサイクルペナルティを更新する。
 
-- choose the minimum-QUBO-energy sample among the 8 returned samples as the next state;
-- strict-rank: Hamiltonian remains fixed;
-- iterative edge-QUBO: detect current cycles and rebuild the uniform cycle penalty before the next solve.
+記録する量:
+- Hamilton path を得た試行数
+- 各試行で得た Hamilton path の最大重み
+- 最大重みの中央値・四分位範囲・全体最大値
+- 既知最適値への到達回数
+- 制約違反数（順位比較型）
+- 各反復のサイクル数（辺変数型）
+- 実行時間
 
-Uniform penalty strength fixed before formal evaluation:
+## 本文に入れない内容
 
-`A_cyc = 4`.
+R2/R3、sampling kernel の変更、reverse annealing、reachability、alternative rank、4+2+2、multiple explorers は第4章では扱わない。
 
-## 統計
+## 文体
 
-For every returned sample, decode selected edges and audit graph validity separately from auxiliary-variable consistency.
-
-Per run record:
-
-- whether any valid Hamilton path was observed;
-- best Hamilton-path score observed;
-- whether certified optimum was observed;
-- strict-rank constraint residuals;
-- iterative edge-QUBO cycle counts by iteration;
-- runtime (secondary).
-
-Aggregate over 24 runs:
-
-- HP-hit runs / 24;
-- median best score;
-- IQR of best score;
-- overall best score;
-- optimum-hit count;
-- runtime summary if useful.
-
-The chapter should not make optimum hit a prerequisite for method validity; the report-wide evaluation criterion will be handled earlier in the document later.
-
-## Writing policy
-
-- 成果を説明し、試行錯誤の時系列を書かない。
-- 1 paragraph = 1 technical point。不要な「一方で」「さらに」の連鎖を避ける。
-- solver-specific implementation details are minimized; SQA/QA/Tabu are optimizers for the QUBO, not the conceptual center of the method.
-- internal class/script names are not used in the report body.
-- “reads” is reserved for DNA reads. SQA output uses “samples” or 「独立試行」.
-- numerical claims must correspond to recorded repository data or the forthcoming formal benchmark.
+- 日本語で自然に言い換えられる用語は日本語を使う。
+- 会話中の shorthand や実装上のラベルを本文へ持ち込まない。
+- 数式は定式化や導出に必要な場合だけ使い、文章の強調には使わない。
+- 一段落で扱う論点を増やしすぎない。
+- 「試した結果こう考えた」という研究過程ではなく、「この定式化では何を表し、結果がどうであったか」を書く。
