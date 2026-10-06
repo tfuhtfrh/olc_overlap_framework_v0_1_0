@@ -1,15 +1,10 @@
-# Stage report working files — 2026-10-05
+# Stage report working files — 2026-10-06
 
-This directory is reserved for the current stage-report rewrite and is intentionally separated from solver/source-code development.
+This directory contains the working source for the current stage report.
 
-- `chapter4.tex`: current Chapter 4 source. This is the report-side source of truth while Chapter 4 is being revised.
-- `chapter4_outline.md`: agreed Chapter 4 logic, exclusions, equations, and formal benchmark protocol.
+- `stage_report.tex`: full report source. This is the source of truth.
+- `chapter4_outline.md`: Chapter 4 structure, terminology, and pending numerical evaluation.
 
-Current policy:
+Chapter 4 is being rewritten as a paper section rather than a record of the research process. The current text follows the user's annotations: Japanese terminology is preferred where a natural equivalent exists, formulas are used only where needed for the derivation, and internal experiment labels are kept out of the report body.
 
-- do not update research code for report editing;
-- maintain Chapter 4 TeX here as the report draft evolves;
-- add formal Chapter 4 numerical results only after the matched-budget benchmark is run;
-- later revisions may update cross-chapter introductions/summary once Chapter 4 is stable.
-
-The user-provided full report was compiled locally after inserting this Chapter 4; the rewritten chapter itself introduces no LaTeX compilation errors.
+The full TeX source has been compiled with `uplatex` after the Chapter 4 rewrite. Formal numerical results for the final Chapter 4 comparison have not yet been inserted.
