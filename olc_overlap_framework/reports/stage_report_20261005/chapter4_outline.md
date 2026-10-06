@@ -73,15 +73,15 @@ b[e,0]=1 とし、
 - beta = 5
 - gamma = 1
 - Trotter P = 8
-- 1400 sweeps
 - num_reads = 8
-- 16 SQA calls / independent trial
+- 順位比較型: 20800 sweeps を 1 回 / independent trial
+- 反復更新型: 1300 sweeps × 16 回 / independent trial
 - 24 independent trials / formulation
 
-各 SQA call の最低 QUBO energy sample を次回の initial state とする。
+両定式化で 1 trial 当たりの sweep 数を 20800 に揃える。
 
-- 順位比較型: 16 回とも Hamiltonian は固定
-- 反復更新型: 各 call 後に cycle を検出して線形 penalty を更新
+- 順位比較型: Hamiltonian を固定して 1 回の長い SQA を実行
+- 反復更新型: 各 call の最低 QUBO energy sample を次回の initial state とし、call 後に cycle を検出して線形 penalty を更新
 
 A_cyc は per-edge penalty への変更後、正式計算前に固定し、全試行で共通とする。
 
