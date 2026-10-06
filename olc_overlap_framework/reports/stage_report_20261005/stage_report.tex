@@ -785,8 +785,6 @@ $B$ や $C$ も同様に assembly 全体を参照する二次形式であるた�
 \subsection{循環グラフで生じる問題と評価データ}
 % ============================================================
 
-% TODO: 第3章の weighted edge-variable QUBO を確定した後、その式をここで参照し、
-% 本章で用いる基本 Hamiltonian を H_0 と定義する。
 候補辺 $e=(u,v)\in E$ を選ぶとき $x_e=1$、選ばないとき $x_e=0$ とする。
 第3章の辺変数型 QUBO では、各頂点の入次数と出次数を 1 以下に抑え、
 選択辺数を $N-1$ とすることで経路構造を表した。
@@ -802,18 +800,17 @@ DAG ではサイクルが存在しないため、これらの条件を満たす�
 144 本の read を用いる。
 対象は chr2 の約 89.6--91.2 Mb に対応する区間であり、全 read 対の overlap 計算から得られた
 グラフのうち、大きな強連結成分を含む区間を選択した。
-候補 overlap は一致率 98\% 以上、overlap 長 300 bp 以上の suffix-to-prefix 接続に限定し、
-同一 read 対に複数の候補がある場合は後述の重みが最大となるものを残した。
-さらに、98\% 以上の一致率で他の read に完全包含される 9 本を除外した。
-read の向きは CHM13 参照配列への primary alignment の鎖方向に合わせて統一した。
+候補 overlap は一致率 98\% 以上、overlap 長 300 bp 以上の接続に限定する。
+さらに他の read に完全包含される read を除外した。
+read の向きは CHM13 参照配列の方向に合わせて統一した。
 
 最終的な OLC グラフは 144 頂点と 261 本の有向辺からなり、
 2 頂点以上を含む強連結成分は 112 頂点と 11 頂点の二つである。
 全 Hamilton path を厳密に列挙すると 192 通り存在するため、
 単一の回り道だけでなく、複数の分岐が組み合わさった評価例になっている。
 
-辺の重みには参照配列上の位置を用いず、read 間のアラインメントだけを用いる。
-辺 $e$ の一致塩基数を $M_e$、アラインメントブロック長を $B_e$、
+辺の重みには参照配列を用いず、read 間のアラインメントだけを用いる。
+辺 $e$ の overlap 一致塩基数を $M_e$、overlap 長を $B_e$、
 $d_e=B_e-M_e$ とすると、
 \begin{equation}
 w_e=M_e-49d_e
@@ -841,8 +838,10 @@ CHM13 complex144 の OLC グラフ\\[2mm]
 
 サイクルを QUBO の制約として直接排除する方法として、経路上の順序を補助変数で表す方法がある。
 N{\"u}{\ss}lein \textit{et al.}\ \cite{nusslein2022qubo} は Hamiltonian cycle に対し、
-候補辺 $(a,b)$ に整数 $P_{ab}$ を割り当て、$P_{ab}=0$ を未選択、
+候補辺 $(a,b)\in E$ に整数 $P_{ab}$ を割り当て、$P_{ab}=0$ を未選択、
 $P_{ab}>0$ をサイクル上の位置として表す定式化を示した。
+OLC グラフの有向辺を $(i,j)\in E$ と表す記法は第2章で導入済みであり、
+ここでも同じ意味で $(a,b)$ を用いる。
 $P_{ab}$ は
 \begin{equation}
 P_{ab}
@@ -864,13 +863,11 @@ P_{bc}=P_{ab}+1
 \label{eq:nusslein_successive_square}
 \end{equation}
 のような二乗項で表せる。
-実際の Hamiltonian では未選択辺にこの条件を課さないための条件付けと、
-cycle の端点を接続するための境界条件も加わる。
-この方法では、選択した辺の順序を QUBO の内部で同時に決めることによって部分サイクルを排除する。
+このように、選択された辺の順序を QUBO 内に持たせることで部分サイクルを排除する。
 
 本研究で必要なのは Hamiltonian cycle ではなく、始点と終点を持つ Hamilton path である。
 また、サイクルを排除するためには、選択辺の位置が必ず 1 ずつ連続する必要はない。
-そこで、各 read $v$ に順位値 $P_v$ を持たせ、選択した辺 $(u,v)$ に対して
+そこで、辺ではなく各 read $v$ に順位値 $P_v$ を持たせ、選択した辺 $(u,v)$ に対して
 \begin{equation}
 x_{uv}=1
 \quad\Longrightarrow\quad
@@ -884,8 +881,7 @@ $v_1\rightarrow v_2\rightarrow\cdots\rightarrow v_L\rightarrow v_1$
 $P_{v_1}<P_{v_2}<\cdots<P_{v_L}<P_{v_1}$ が必要となるため、
 式~\eqref{eq:strict_rank_condition} を満たすことはできない。
 
-以下、この条件を二次式だけで表す。
-まず、各 read $v$ の順位値を
+各 read $v$ の順位値は
 \begin{equation}
 P_v
 =
@@ -896,17 +892,17 @@ p_{v,k}\in\{0,1\},
 K=\left\lceil\log_2N\right\rceil
 \label{eq:latent_vertex_rank}
 \end{equation}
-とする。
+と二進展開する。
 
 候補辺 $e=(u,v)$ ごとに、$P_v-P_u-1$ の二進減算を行うための
 桁借り変数 $b_{e,k}$ を導入する。
-$b_{e,k}$ は第 $k$ 桁へ入る桁借り、$b_{e,k+1}$ は第 $k$ 桁から出る桁借りを表し、
-$-1$ を含めるため最下位桁への入力を
+$b_{e,k}$ は第 $k$ 桁へ入る桁借り、$b_{e,k+1}$ は第 $k$ 桁から出る桁借りを表す。
+$-1$ を含めるため、最下位桁への入力は
 \begin{equation}
 b_{e,0}=1
 \end{equation}
 と固定する。
-第 $k$ 桁では $p_{v,k}$ から $p_{u,k}+b_{e,k}$ を引くので、
+第 $k$ 桁では $p_{v,k}$ から $p_{u,k}+b_{e,k}$ を引くため、
 \begin{equation}
 b_{e,k+1}=1
 \quad\Longleftrightarrow\quad
@@ -915,47 +911,66 @@ p_{u,k}+b_{e,k}>p_{v,k}
 \end{equation}
 である。
 
-二値変数 $a,d,b,c$ に対し、
-\begin{equation}
-R(a,d,b,c)
-=
-a+b+c+ab-ad-bd-2ac-2bc+2dc
+この桁借り関係は、各 bit について次の二次式で表せる。
+\begin{align}
+R_{e,k}
+={}&
+p_{u,k}+b_{e,k}+b_{e,k+1}
++p_{u,k}b_{e,k}
+-p_{u,k}p_{v,k}
+-b_{e,k}p_{v,k}
+\nonumber\\
+&-2p_{u,k}b_{e,k+1}
+-2b_{e,k}b_{e,k+1}
++2p_{v,k}b_{e,k+1}.
 \label{eq:borrow_quadratic_penalty}
-\end{equation}
-とおく。
-ここで
-\[
-a=p_{u,k},\qquad
-d=p_{v,k},\qquad
-b=b_{e,k},\qquad
-c=b_{e,k+1}
-\]
-である。
-式~\eqref{eq:borrow_relation} を満たす $c$ を選んだときに限って $R=0$ となるため、
-全候補辺の全 bit に対する桁借り制約は
+\end{align}
+二値変数に対して、式~\eqref{eq:borrow_relation} を満たす
+$b_{e,k+1}$ を選んだときに限り $R_{e,k}=0$ となる。
+したがって、全候補辺の桁借り関係を
 \begin{equation}
 H_{\mathrm{cmp}}
 =
 A_{\mathrm{cmp}}
 \sum_{e=(u,v)\in E}
 \sum_{k=0}^{K-1}
-R\!\left(
-p_{u,k},p_{v,k},b_{e,k},b_{e,k+1}
-\right)
+R_{e,k}
 \label{eq:comparator_hamiltonian}
 \end{equation}
-と書ける。
+で与える。
 $b_{e,0}$ は定数 1 であり、実際に追加する桁借り変数は
 $b_{e,1},\ldots,b_{e,K}$ の $K$ 個である。
 
-最上位桁まで減算した後、
+桁借りの動作を 3 bit の例で示す。
+$P_u=3=(011)_2$、$P_v=5=(101)_2$ とすると、
+$P_v-P_u-1=1\geq 0$ である。
+最下位 bit から順に式~\eqref{eq:borrow_relation} を適用すると表~\ref{tab:borrow_example} のようになる。
+
+\begin{table}[htbp]
+\centering
+\caption{$P_u=3$、$P_v=5$ に対する桁借りの例。}
+\label{tab:borrow_example}
+\begin{tabular}{ccccc}
+\hline
+$k$ & $p_{u,k}$ & $p_{v,k}$ & $b_{e,k}$ & $b_{e,k+1}$ \\
+\hline
+0 & 1 & 1 & 1 & 1 \\
+1 & 1 & 0 & 1 & 1 \\
+2 & 0 & 1 & 1 & 0 \\
+\hline
+\end{tabular}
+\end{table}
+
+最上位桁まで減算した後の $b_{e,K}$ は、減算結果が負になったかどうかを表す。
+すなわち
 \begin{equation}
 b_{e,K}=1
 \quad\Longleftrightarrow\quad
 P_v\leq P_u
 \label{eq:final_borrow_order}
 \end{equation}
-となる。
+である。
+表~\ref{tab:borrow_example} では $b_{e,3}=0$ となり、$P_u<P_v$ を正しく判定している。
 したがって、選択した辺だけについて最終桁借りを禁止する
 \begin{equation}
 H_{\mathrm{ord}}
@@ -965,7 +980,7 @@ A_{\mathrm{ord}}
 x_e b_{e,K}
 \label{eq:strict_rank_gate}
 \end{equation}
-を加えると、式~\eqref{eq:strict_rank_condition} が得られる。
+を加えると、式~\eqref{eq:strict_rank_condition} を満たすことができる。
 
 次に Hamilton path の始点と終点を表す。
 頂点 $v$ が始点であるとき $s_v=1$、終点であるとき $t_v=1$ とする。
@@ -1029,34 +1044,35 @@ A_{\mathrm{weight}}
 \end{equation}
 とする。
 
-以上を合わせ、本節で用いる順位比較型 QUBO は
+以上より、本節で用いる順位比較型 QUBO は
 \begin{equation}
 H_{\mathrm{rank}}
 =
-H_{\mathrm{weight}}
+H_{\mathrm{cmp}}
++
+H_{\mathrm{ord}}
 +
 H_{\mathrm{deg}}
 +
 H_{\mathrm{end}}
 +
-H_{\mathrm{cmp}}
-+
-H_{\mathrm{ord}}
+H_{\mathrm{weight}}
 \label{eq:strict_rank_total}
 \end{equation}
 である。
-式~\eqref{eq:strict_rank_degree_hamiltonian} と
-式~\eqref{eq:strict_rank_endpoint_hamiltonian} が一本の開いた経路の次数条件を与え、
-式~\eqref{eq:comparator_hamiltonian} と式~\eqref{eq:strict_rank_gate} が
-その経路にサイクルが含まれないことを保証する。
+式~\eqref{eq:comparator_hamiltonian} と式~\eqref{eq:strict_rank_gate} が選択辺の順序を表し、
+式~\eqref{eq:strict_rank_degree_hamiltonian} と式~\eqref{eq:strict_rank_endpoint_hamiltonian} が
+一本の開いた経路の次数条件を与える。
+その上で式~\eqref{eq:strict_rank_weight_hamiltonian} により overlap 重みを最適化する。
 
 % ============================================================
-\subsection{順序変数 QUBO の規模と予備検証}
+\subsection{順序変数 QUBO の規模と検証}
 % ============================================================
 
-complex144 では $N=144$、$M=261$ であり、一頂点あたりの順位ビット数は $K=8$ となる。
+complex144 では $N=144$、$M=261$ であり、一頂点あたりの順位 bit 数は $K=8$ となる。
 式~\eqref{eq:strict_rank_total} では、261 個の辺変数、288 個の始点・終点変数、
-1152 個の順位ビット、2088 個の桁借り変数を用いる。したがって論理変数数は
+1152 個の順位 bit、2088 個の桁借り変数を用いる。
+したがって論理変数数は
 \begin{equation}
 Q=M+2N+NK+MK=3789
 \label{eq:strict_rank_variable_count}
@@ -1084,60 +1100,92 @@ complex144 に対して実装した場合、最大二次係数は約 $9.44\times
 \end{tabular}
 \end{table}
 
-まず、既知の Hamilton path を二値変数へ符号化し、各制約を個別に確認した。
+既知の Hamilton path を二値変数へ符号化し、各制約を個別に確認した。
 次数、始点・終点、各桁の桁借り、選択辺の順位関係はいずれも違反数 0 となった。
 また、同じ頂点順序に対して順位値を連続に与えた場合、全順位を一定値だけずらした場合、
-順位間隔を不均一にした場合で目的関数値は変化しなかった。
-この結果から、順位比較型 QUBO が順位の絶対値ではなく前後関係だけを用いて
+順位間隔を不均一にした場合でも目的関数値は変化しなかった。
+したがって、順位比較型 QUBO は順位の絶対値ではなく前後関係だけを用いて
 Hamilton path を表していることを確認した。
 
-定式化の基本的な挙動を確認するため、QBSolv による予備計算も行った。
-基準のペナルティ設定では 135--138 本の辺が選択され、桁借り制約の違反は 0 であったが、
-次数制約と選択辺の順位関係には違反が残った。
-順位違反のペナルティを強くすると順位関係は満たされる一方、
-選択辺数は約 80--83 本まで減少し、全頂点を結ぶ経路にはならなかった。
-
-順位比較型では大きな二次係数を避けられるが、
-261 本の候補辺を扱うために 3789 個の論理変数を探索する必要がある。
-また、経路の一部をつなぎ替えると、対応する辺変数だけでなく、
-順位 bit と各候補辺の桁借り変数も整合する値へ変化しなければならない。
-この補助変数の更新を QUBO 探索に含めることが、次に小規模化すべき部分である。
-正式な solver 比較は第4.5節の条件で行う。
+一方、complex144 に対しては 261 個の候補辺を扱うために 3789 個の論理変数を必要とする。
+経路の一部をつなぎ替える場合にも、対応する辺変数だけでなく、
+順位 bit と各候補辺の桁借り変数を整合する値へ変化させる必要がある。
+そこで次節では、無閉路性の判定を QUBO の補助変数として持たせず、
+得られた辺集合に対して古典計算で行う方法を用いる。
 
 % ============================================================
 \subsection{辺変数 QUBO とサイクル情報による反復更新}
 % ============================================================
 
-順位変数と桁借り変数を QUBO から除き、候補辺 $x_e$ だけを探索変数とする。
-本節では、第3章で用いた辺変数型の構造項に
-式~\eqref{eq:complex144_weight} の overlap 重みを加えたものを
-基本 Hamiltonian $H_0$ とする。
-% TODO: 第3章改稿後、H_0 は第3章の該当式を直接参照する。
-概念的には
+順位 bit、桁借り変数、始点・終点変数を QUBO から除き、
+候補辺 $x_e$ だけを探索変数とする。
+頂点 $v$ に入る候補辺集合と出る候補辺集合をそれぞれ
+\begin{equation}
+E_v^{\mathrm{in}}
+=
+\{(u,v)\in E\},
+\qquad
+E_v^{\mathrm{out}}
+=
+\{(v,w)\in E\}
+\label{eq:edge_only_incident_sets}
+\end{equation}
+とする。
+
+overlap の目的項には式~\eqref{eq:strict_rank_edge_cost} の $c_e$ を用い、
+\begin{equation}
+H_{\mathrm{weight}}^{(0)}
+=
+A_{\mathrm{weight}}
+\sum_{e\in E}c_ex_e
+\label{eq:edge_only_weight_hamiltonian}
+\end{equation}
+とする。
+一つの頂点で二本以上の入辺または出辺が同時に選ばれる状態は
+\begin{equation}
+H_{\mathrm{degree}}^{(0)}
+=
+A_{\mathrm{degree}}
+\sum_{v\in V}
+\left[
+\sum_{\substack{e<f\\ e,f\in E_v^{\mathrm{in}}}}x_ex_f
++
+\sum_{\substack{e<f\\ e,f\in E_v^{\mathrm{out}}}}x_ex_f
+\right]
+\label{eq:edge_only_degree_hamiltonian}
+\end{equation}
+で抑える。
+また、Hamilton path が $N-1$ 本の辺を持つことから
+\begin{equation}
+H_{\mathrm{count}}^{(0)}
+=
+A_{\mathrm{count}}
+\left(
+\sum_{e\in E}x_e-(N-1)
+\right)^2
+\label{eq:edge_only_count_hamiltonian}
+\end{equation}
+を加える。
+したがって、サイクルに関する項を加える前の QUBO は
 \begin{equation}
 H_0
 =
-H_{\mathrm{weight}}
+H_{\mathrm{weight}}^{(0)}
 +
-H_{\mathrm{degree}}
+H_{\mathrm{degree}}^{(0)}
 +
-H_{\mathrm{count}}
+H_{\mathrm{count}}^{(0)}
 \label{eq:edge_only_base_hamiltonian}
 \end{equation}
-であり、complex144 では 261 個の辺変数だけを用いる。
+である。
+complex144 では、この QUBO の論理変数は 261 個の辺変数だけである。
 
 $H_0$ だけでは、第4.1節で述べた経路とサイクルの共存を排除できない。
-一方、ある $x_e$ が与えられた後に、その選択辺からなるグラフがサイクルを含むかどうかを調べることは容易である。
-強連結成分の分解や有向サイクルの検出は $O(|V|+|E|)$ のグラフ探索で実行できる。
-そこで、QUBO の中に全頂点の順位を保持する代わりに、QUBO を一度解いた後で
-サイクルを古典計算によって検出し、その情報を次の QUBO に反映する。
-
-第 $t$ 回の求解で得られた選択辺を $x^{(t)}$ とする。
-選択辺からなるグラフを強連結成分に分解し、2 頂点以上を含む各強連結成分から
-一つの有向サイクルを検出する。
-得られたサイクルの集合を $\mathcal{C}^{(t)}$ とする。
-サイクル $C$ に含まれるどの辺を外すかはあらかじめ指定せず、
-すべての辺に同じ線形ペナルティを与える。
+そこで、一回の QUBO 求解後に選択された辺からグラフを作り、
+有向サイクルを古典計算で検出する。
+第 $t$ 回の求解で検出したサイクルの集合を $\mathcal{C}^{(t)}$ とする。
+サイクル $C$ のどの辺を外すかはあらかじめ指定せず、
+$C$ に含まれるすべての辺に同じ線形ペナルティを与える。
 \begin{equation}
 H_{\mathrm{cyc}}^{(t)}
 =
@@ -1146,10 +1194,7 @@ A_{\mathrm{cyc}}
 \sum_{e\in C}x_e
 \label{eq:uniform_cycle_penalty}
 \end{equation}
-この定義では、サイクルの長さによらず各辺を選択することによる追加コストは
-$A_{\mathrm{cyc}}$ である。
-長いサイクルだけ一辺当たりのペナルティが小さくなることはない。
-
+とする。
 次回に解く QUBO は
 \begin{equation}
 H^{(t+1)}
@@ -1157,11 +1202,10 @@ H^{(t+1)}
 H_0+H_{\mathrm{cyc}}^{(t)}
 \label{eq:iterative_cycle_hamiltonian}
 \end{equation}
-とする。
+である。
 過去に検出したサイクルのペナルティは蓄積せず、
-各回の解からサイクルを検出し直して式~\eqref{eq:uniform_cycle_penalty} を作り直す。
-したがって論理変数数は 261 のままであり、
-順位比較型で用いた順位 bit、桁借り変数、始点・終点変数を探索変数として持たない。
+各回の解からサイクルを検出し直して $H_{\mathrm{cyc}}^{(t)}$ を作る。
+この処理では補助変数を追加しないため、論理変数数は 261 のままである。
 
 \begin{figure}[htbp]
 \centering
@@ -1179,13 +1223,13 @@ H_0+H_{\mathrm{cyc}}^{(t)}
 \draw[->,thick] (check) |- (update);
 \draw[->,thick] (update) -| (qubo);
 \end{tikzpicture}
-\caption{QUBO 求解と古典的なサイクル検出を交互に行う反復計算。}
+\caption{QUBO 求解とサイクル検出を交互に行う反復計算。}
 \label{fig:iterative_cycle_feedback}
 \end{figure}
 
-この方法で反復ごとに変更するのは QUBO の線形係数である。
-そのため、各回の QUBO を解く部分は特定の solver に依存せず、
-本報告では数値評価のために SQA を用いる。
+反復の間に変更するのは、検出したサイクルに対応する辺の線形係数である。
+各回の QUBO 求解には同じ形式の QUBO solver を利用できる。
+本報告では数値評価に SQA を用いる。
 
 % ============================================================
 \subsection{数値評価の方法}
@@ -1991,8 +2035,7 @@ Y_{r,m}(G^{\star,(b)})
 \frac{1}{B_{\mathrm{MC}}}
 \sum_{b=1}^{B_{\mathrm{MC}}}
 \bar Y_m^{(b)}
-\label{eq:qbar_ch5}
-\end{equation}
+\label{eq:qbar_ch5}\end{equation}
 
 を位置平均 block 確率の推定量とする。
 
