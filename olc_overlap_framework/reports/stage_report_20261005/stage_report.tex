@@ -1197,17 +1197,21 @@ complex144 上で比較する。
 後者は 261 論理変数を用い、各反復の間に
 式~\eqref{eq:iterative_cycle_hamiltonian} に従って線形項を更新する。
 
-計算量をそろえるため、一つの独立試行を両定式化とも 16 回の SQA 呼び出しで構成する。
-各呼び出しには OpenJij の SQASampler を用い、
-$\beta=5$、$\Gamma=1$、Trotter 数 $P=8$、1400 sweeps、
+両定式化には同程度の SQA 計算量を与える。
+OpenJij の SQASampler を用い、
+$\beta=5$、$\Gamma=1$、Trotter 数 $P=8$、
 \texttt{num\_reads}=8 とする。
-したがって、一つの独立試行で生成するサンプル数と sweep 数は両定式化で同じである。
-各呼び出しで得られた 8 サンプルのうち QUBO エネルギーが最も低い状態を
-次回の初期状態とする。
 
-順位比較型では 16 回を通して同一の Hamiltonian を用いる。
-反復更新型では各 SQA 呼び出しの後にサイクルを検出し、
-式~\eqref{eq:uniform_cycle_penalty} を用いて次回の Hamiltonian を作る。
+順位比較型では Hamiltonian を固定し、
+一つの独立試行につき 20800 sweeps の SQA を 1 回実行する。
+反復更新型では一回あたり 1300 sweeps の SQA を 16 回実行し、
+各回で得られた 8 サンプルのうち QUBO エネルギーが最も低い状態を
+次回の初期状態とする。
+各 SQA の後にサイクルを検出し、
+式~\eqref{eq:uniform_cycle_penalty} を用いて次回の Hamiltonian を構成する。
+したがって、両定式化について一つの独立試行に用いる sweep 数は
+$20800=16\times1300$ で等しい。
+
 $A_{\mathrm{cyc}}$ は規格化後の辺コストに対する一定値として正式計算前に固定し、
 全試行で同じ値を用いる。
 % TODO: 正式計算に用いた A_cyc の値を結果表と同時に記入する。
