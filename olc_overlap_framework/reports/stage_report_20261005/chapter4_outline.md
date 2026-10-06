@@ -21,45 +21,43 @@
 
 ### 順位比較型
 
+各 read の順位:
 `P_v = sum_k 2^k p[v,k]`
 
+選択辺の条件:
 `x_uv=1 => P_u<P_v`
 
-各候補辺 e=(u,v) について P_v-P_u-1 を減算する。
-b[e,0]=1 とし、
+各候補辺 e=(u,v) について `P_v-P_u-1` の桁借りを
+`b[e,0]=1` から順に計算する。
 
-`b[e,k+1]=1 <=> p[u,k]+b[e,k] > p[v,k]`
+各 bit の二次式:
+`R_e,k = p_u,k + b_e,k + b_e,k+1 + p_u,k b_e,k - p_u,k p_v,k - b_e,k p_v,k - 2 p_u,k b_e,k+1 - 2 b_e,k b_e,k+1 + 2 p_v,k b_e,k+1`
 
-を二次式 R で表す。
-
-`H_cmp = A_cmp sum_e sum_k R(...)`
+`H_cmp = A_cmp sum_e sum_k R_e,k`
 
 `H_ord = A_ord sum_e x_e b[e,K]`
 
-次数・始点終点:
+始点・終点と次数:
+`H_deg` と `H_end` を本文中で完全展開する。
 
-`H_deg = A_deg sum_v [(1-s_v-sum_in x)^2 + (1-t_v-sum_out x)^2]`
-
-`H_end = A_end[(1-sum s)^2+(1-sum t)^2] + A_diff sum_v s_v t_v`
-
-重みは complex144 の `w_e=M_e-49d_e` を規格化した edge cost を用いる。
+重み:
+complex144 の `w_e=M_e-49d_e` を規格化した edge cost `c_e` を用いる。
 
 完全形:
+`H_rank = H_cmp + H_ord + H_deg + H_end + H_weight`
 
-`H_rank = H_weight + H_deg + H_end + H_cmp + H_ord`
+桁借りの理解補助として、`P_u=3`, `P_v=5` の 3-bit 例を表で示す。
 
 ### 反復更新型
 
-辺変数だけの基本 Hamiltonian:
+頂点 v の incoming/outgoing candidate edge sets を定義し、
+辺変数だけの QUBO を完全に展開する。
 
-`H0 = H_weight + H_degree + H_count`
+`H0 = H_weight^(0) + H_degree^(0) + H_count^(0)`
 
-各反復で非自明 SCC からサイクルを検出し、
+cycle は QUBO 求解後に古典計算で検出し、
 
 `H_cyc^(t) = A_cyc sum_{C in C^(t)} sum_{e in C} x_e`
-
-とする。以前の `A/|C|` 正規化は使用しない。
-各 cycle edge の追加コストを cycle length に依存させないためである。
 
 `H^(t+1)=H0+H_cyc^(t)`
 
