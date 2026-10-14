@@ -79,7 +79,7 @@ Version 0.1.0 uses `parasail` for semi-global DP refinement. The demo also requi
 From PowerShell, enter the WSL project environment with:
 
 ```powershell
-wsl bash -lc "cd /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/olc_overlap_framework && source .venv/bin/activate && exec bash -i"
+.\olc_overlap_framework\tools\enter_wsl_venv.ps1
 ```
 
 Then run any demo from that activated WSL shell, for example:
@@ -426,7 +426,8 @@ WSL deployment:
 ```bash
 cd /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/olc_overlap_framework
 source .venv/bin/activate
-python -m pip install -e ".[qubo]"
+ln -sf /mnt/d/Pytnon/olc_overlap_framework_v0_1_0/minimap2/minimap2 .venv/bin/minimap2
+python -m pip install -e ".[qubo,sqa]"
 python demo.py
 ```
 
