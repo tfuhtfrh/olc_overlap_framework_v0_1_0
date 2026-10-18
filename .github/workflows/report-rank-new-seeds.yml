@@ -1,0 +1,97 @@
+name: Stage report rank SQA new seeds
+
+on:
+  push:
+    branches: [benchmark/qubo-solvers-20260922]
+    paths: [.github/workflows/report-rank-new-seeds.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  OMP_NUM_THREADS: "1"
+  OPENBLAS_NUM_THREADS: "1"
+  MKL_NUM_THREADS: "1"
+  PYTHONHASHSEED: "0"
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  rank:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        seed: [2026101901, 2026101902, 2026101903, 2026101904, 2026101905, 2026101906]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 50f98a69536db6788ae2235f50d3aa8e2f67cfc4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/download-artifact@v4
+        with:
+          name: report-environment
+          path: environment
+          run-id: 39140273162
+          github-token: ${{ github.token }}
+      - name: Install original frozen dependencies
+        run: |
+          python -m pip install -r environment/requirements-lock.txt
+          python -m pip install --no-deps -e ./olc_overlap_framework
+      - name: Run unchanged rank formulation with new seed
+        working-directory: olc_overlap_framework
+        env:
+          TRIAL_SEED: ${{ matrix.seed }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from report_sqa_benchmark import run
+          result = run("rank", int(os.environ["TRIAL_SEED"]), 0.1,
+                       "../rank-new-seeds/" + os.environ["TRIAL_SEED"],
+                       reads=50, iterations=16, sweeps=1300)
+          print(json.dumps(result, indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rank-new-seed-${{ matrix.seed }}
+          path: rank-new-seeds/
+          retention-days: 90
+
+  aggregate:
+    needs: rank
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rank-new-seed-*
+          path: trials
+          merge-multiple: true
+      - name: Summarize all six trials
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          rows = [json.loads(p.read_text()) for p in sorted(Path("trials").rglob("summary.json"))]
+          assert len(rows) == 6
+          assert {r["seed"] for r in rows} == set(range(2026101901, 2026101907))
+          scores = [r["best_score"] for r in rows if r["ever_feasible"]]
+          result = {"method": "rank", "source_code_sha": "50f98a69536db6788ae2235f50d3aa8e2f67cfc4",
+                    "dependency_source_run": 39140273162,
+                    "runs": len(rows), "feasible_runs": len(scores),
+                    "best": max(scores) if scores else None, "trials": rows}
+          Path("comparison.json").write_text(json.dumps(result, indent=2) + "\n")
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
+              f.write("## Rank SQA new seeds\n\n"+json.dumps(result, indent=2))
+          print(json.dumps(result, indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rank-new-seeds-results
+          path: comparison.json
+          retention-days: 90

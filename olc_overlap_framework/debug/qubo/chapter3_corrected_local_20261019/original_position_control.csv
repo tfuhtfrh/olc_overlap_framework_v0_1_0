@@ -1,0 +1,6 @@
+n,method,variables,quadratic_terms,completed,valid_trials,ground_trials,ground_samples,total_samples,best_energy,reference_energy
+8,position,64,686,6,6,6,31,600,0.0,0.0
+12,position,144,2618,6,1,1,1,600,0.0,0.0
+16,position,256,6630,6,0,0,0,600,40.0,0.0
+20,position,400,13490,6,0,0,0,600,40.0,0.0
+
