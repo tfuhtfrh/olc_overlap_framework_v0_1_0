@@ -28,7 +28,7 @@ from demo_chm13_edge_ordered_path_qubo import DATASET_DIR
 SEEDS = (2026101801, 2026101802, 2026101803, 2026101804, 2026101805, 2026101806)
 PILOT_SEEDS = (2026101811, 2026101812)
 PILOT_CYCLE_PENALTIES = (0.01, 0.05, 0.1, 0.5, 1.0, 4.0)
-READS = 32
+READS = 50
 ITERATIONS = 16
 SWEEPS_PER_ITERATION = 1300
 BETA, GAMMA, TROTTER = 5.0, 1.0, 8
@@ -167,7 +167,7 @@ def run(method, seed, cycle_penalty, out, reads=READS, iterations=ITERATIONS, sw
         for iteration in range(calls):
             bqm = rank_bqm(model) if method == "rank" else edge_bqm(model, edges, costs, cycles, cycle_penalty)
             call_seed = seed + 100000 * iteration
-            call_sweeps = iterations * sweeps if method == "rank" else sweeps
+            call_sweeps = sweeps
             samples, seconds = sample(bqm, initial, call_seed, reads, call_sweeps)
             valid_this_call, fully_feasible = 0, 0
             for read_index, (bits, energy, occurrences) in enumerate(samples):
@@ -193,7 +193,7 @@ def run(method, seed, cycle_penalty, out, reads=READS, iterations=ITERATIONS, sw
             initial = min(samples, key=lambda row: row[1])[0]
             metrics, _ = path_metrics(initial, model, edges, rewards)
             cycles = current_cycles(initial, model, edges)
-            entry = {"iteration": iteration, "call_seed": call_seed, "seconds": seconds,
+            entry = {"iteration": iteration, "call_seed": call_seed, "seconds": seconds, "num_sweeps": call_sweeps,
                      "variables": len(bqm.variables), "quadratic_terms": len(bqm.quadratic),
                      "valid_returned_reads": valid_this_call, "fully_feasible_returned_reads": fully_feasible,
                      "minimum_current_energy": min(en for _, en, _ in samples),
@@ -202,7 +202,7 @@ def run(method, seed, cycle_penalty, out, reads=READS, iterations=ITERATIONS, sw
             trace.append(entry)
             write_json(out / "trace.json", trace)
             print(json.dumps({"method": method, "seed": seed, **entry}), flush=True)
-    result = {"method": method, "seed": seed, "reads": reads, "iterations": iterations,
+    result = {"method": method, "seed": seed, "reads": reads, "iterations": calls,
               "sweeps_per_iteration": sweeps, "beta": BETA, "gamma": GAMMA, "trotter": TROTTER,
               "cycle_penalty": cycle_penalty if method == "edge" else None,
               "degree_penalty_edge": DEGREE_PENALTY, "count_penalty_edge": COUNT_PENALTY,
