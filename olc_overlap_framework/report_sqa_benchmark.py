@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import random
 import statistics
 import sys
 import time
@@ -149,7 +150,11 @@ def run(method, seed, cycle_penalty, out, reads=READS, iterations=ITERATIONS, sw
     out.mkdir(parents=True, exist_ok=True)
     model, rewards, cfg, edges, costs = problem()
     nvars = model.num_variables if method == "rank" else len(edges)
-    initial = [0] * nvars
+    initial_seed = seed ^ 0x5A17C9E3
+    rng = random.Random(initial_seed)
+    initial = [rng.getrandbits(1) for _ in range(nvars)]
+    write_json(out / "initial_state.json", {"mode": "random", "seed": initial_seed,
+               "bits": "".join(map(str, initial))})
     cycles = []
     incumbent, best_order, first_feasible = None, None, None
     trace, feasible_reads = [], 0
@@ -201,7 +206,7 @@ def run(method, seed, cycle_penalty, out, reads=READS, iterations=ITERATIONS, sw
               "sweeps_per_iteration": sweeps, "beta": BETA, "gamma": GAMMA, "trotter": TROTTER,
               "cycle_penalty": cycle_penalty if method == "edge" else None,
               "degree_penalty_edge": DEGREE_PENALTY, "count_penalty_edge": COUNT_PENALTY,
-              "initial_state": "all_zero", "subsequent_edge_initialization": "previous_minimum_current_energy",
+              "initial_state": "random", "initial_state_seed": initial_seed, "subsequent_edge_initialization": "previous_minimum_current_energy",
               "best_score": incumbent, "ever_feasible": incumbent is not None,
               "feasible_returned_reads": feasible_reads, "first_feasible": first_feasible,
               "sampling_seconds": sum(r["seconds"] for r in trace),
@@ -244,20 +249,13 @@ def preflight(out):
     write_json(out / "audit.json", {"reference_audit": check, "edge_reference": metrics,
                "environment": environment(), "dataset_hashes": {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
                for p in DATASET_DIR.iterdir() if p.is_file()}})
-    # Disjoint pilot seeds, fixed full iteration count, fewer reads; no optimum oracle in selection.
-    candidates = []
-    for penalty in PILOT_CYCLE_PENALTIES:
-        results = [run("edge", seed, penalty, out / f"pilot_A{penalty}_seed{seed}", reads=8)
-                   for seed in PILOT_SEEDS]
-        scores = [r["best_score"] for r in results if r["ever_feasible"]]
-        candidates.append({"cycle_penalty": penalty, "feasible_runs": len(scores),
-                           "median_score": statistics.median(scores) if scores else None})
-    best = max(candidates, key=lambda r: (r["feasible_runs"],
-               r["median_score"] if r["median_score"] is not None else float("-inf"), -r["cycle_penalty"]))
-    write_json(out / "selected_config.json", {"cycle_penalty": best["cycle_penalty"],
-               "pilot_candidates": candidates, "pilot_seeds": PILOT_SEEDS,
-               "selection_rule": "feasible-run count, then median feasible original weight, then smaller penalty",
-               "formal_seeds": SEEDS, "environment": environment()})
+    # Keep the zero-start pilot winner fixed to isolate initialization.
+    write_json(out / "selected_config.json", {
+        "cycle_penalty": 0.1,
+        "selection_rule": "reuse zero-start pilot winner; no random-start retuning",
+        "source_run": 39136141294,
+        "formal_seeds": SEEDS, "initial_state": "random",
+        "environment": environment()})
 
 
 def aggregate(root, out):
