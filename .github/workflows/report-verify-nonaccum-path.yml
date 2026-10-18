@@ -1,0 +1,39 @@
+name: Verify saved nonaccumulating paths
+on:
+  push:
+    branches: [benchmark/qubo-solvers-20260922]
+    paths: [.github/workflows/report-verify-nonaccum-path.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: report-formal-edge-*
+          merge-multiple: true
+          path: original
+          run-id: 39140273162
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: accum-formal-sqa-3
+          path: cumulative
+          run-id: 39141763797
+          github-token: ${{ github.token }}
+      - name: Compare saved paths
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          rows=[json.loads(p.read_text()) for p in Path("original").rglob("summary.json")]
+          cum=[json.loads(p.read_text()) for p in Path("cumulative").rglob("best_path.json")]
+          paths=[json.loads(p.read_text()) for p in Path("original").rglob("best_path.json")]
+          print("ORIGINAL_TRIALS", json.dumps([{"seed":r["seed"],"best_score":r["best_score"],"feasible":r["ever_feasible"]} for r in rows]))
+          print("CUMULATIVE_BEST",json.dumps(cum))
+          print("ORIGINAL_BEST_PATHS",json.dumps(paths))
+          print("MATCHING_BEST_PATHS", sum(p["order"]==cum[0]["order"] for p in paths if p["score"]==1320804))
+          assert len(rows)==6
+          PY
