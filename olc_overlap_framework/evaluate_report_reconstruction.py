@@ -51,6 +51,7 @@ def main():
             "method":"overlap-evidence end splice; no consensus or reference-guided polishing",
             "minimap2_version":subprocess.check_output(["minimap2","--version"],text=True).strip(),
             "edlib_version":__import__("importlib.metadata",fromlist=["version"]).version("edlib")},"results":{}}
+    assemblies = {}
     for label,order in orders.items():
         assert len(order)==len(set(order))==144 and set(order)==set(seq)
         selected=list(zip(order,order[1:])); score=sum(int(edges[p]["weight"]) for p in selected)
@@ -76,6 +77,7 @@ def main():
                           "matches":int(row["matching_bases"]),"errors":int(row["errors"]),
                           "reference_start_delta":int(byid[v]["start"])-int(byid[u]["start"]),
                           "reference_adjacency":(u,v) in goldedges})
+        assemblies[label] = assembly
         outfa=a.out/(label+".fasta"); outfa.write_text(">"+label+"\n"+"\n".join(assembly[i:i+80] for i in range(0,len(assembly),80))+"\n")
         paffile=a.out/(label+".paf")
         cmd=["minimap2","-x","asm5","-c","--eqx","--cs=long","-N","50","-t","2",str(a.dataset/"reference.fasta"),str(outfa)]
@@ -102,6 +104,11 @@ def main():
         report["results"][label]=res
         (a.out/(label+".joins.json")).write_text(json.dumps(joins,indent=2))
         print("RESULT",json.dumps({"label":label,**res}),flush=True)
+    pair = edlib.align(assemblies["sqa_1320804"], assemblies["optimum_1343093"], mode="NW", task="path")
+    counts = {op: sum(int(n) for n, code in re.findall(r"(\\d+)([=XIDM])", pair["cigar"]) if code == op) for op in "=XIDM"}
+    report["assembly_to_assembly"] = {"edit_distance": pair["editDistance"], "cigar_counts": counts,
+        "alignment_identity": counts["="] / sum(counts.values())}
+    print("PAIRWISE", json.dumps(report["assembly_to_assembly"]), flush=True)
     x=report["results"]["sqa_1320804"]; y=report["results"]["optimum_1343093"]
     report["comparison"]={"extra_global_edit_distance":x["global_edit_distance"]-y["global_edit_distance"],
       "global_edit_accuracy_difference_percentage_points":100*(x["global_edit_accuracy"]-y["global_edit_accuracy"]),
