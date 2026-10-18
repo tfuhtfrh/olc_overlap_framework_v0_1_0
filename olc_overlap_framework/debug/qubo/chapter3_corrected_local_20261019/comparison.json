@@ -1,0 +1,377 @@
+{
+  "complete": true,
+  "primary": [
+    {
+      "n": 8,
+      "method": "a",
+      "variables": 22,
+      "quadratic_terms": 231,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 600,
+      "total_samples": 600,
+      "best_energy": -280.0,
+      "reference_energy": -280.0
+    },
+    {
+      "n": 8,
+      "method": "b",
+      "variables": 38,
+      "quadratic_terms": 156,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 600,
+      "total_samples": 600,
+      "best_energy": -280.0,
+      "reference_energy": -280.0
+    },
+    {
+      "n": 8,
+      "method": "position",
+      "variables": 64,
+      "quadratic_terms": 840,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 46,
+      "total_samples": 600,
+      "best_energy": -280.0,
+      "reference_energy": -280.0
+    },
+    {
+      "n": 12,
+      "method": "a",
+      "variables": 38,
+      "quadratic_terms": 703,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 600,
+      "total_samples": 600,
+      "best_energy": -440.0,
+      "reference_energy": -440.0
+    },
+    {
+      "n": 12,
+      "method": "b",
+      "variables": 62,
+      "quadratic_terms": 312,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 600,
+      "total_samples": 600,
+      "best_energy": -440.0,
+      "reference_energy": -440.0
+    },
+    {
+      "n": 12,
+      "method": "position",
+      "variables": 144,
+      "quadratic_terms": 3036,
+      "completed": 6,
+      "valid_trials": 3,
+      "ground_trials": 3,
+      "ground_samples": 3,
+      "total_samples": 600,
+      "best_energy": -440.0,
+      "reference_energy": -440.0
+    },
+    {
+      "n": 16,
+      "method": "a",
+      "variables": 54,
+      "quadratic_terms": 1431,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 600,
+      "total_samples": 600,
+      "best_energy": -600.0,
+      "reference_energy": -600.0
+    },
+    {
+      "n": 16,
+      "method": "b",
+      "variables": 86,
+      "quadratic_terms": 500,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 597,
+      "total_samples": 600,
+      "best_energy": -600.0,
+      "reference_energy": -600.0
+    },
+    {
+      "n": 16,
+      "method": "position",
+      "variables": 256,
+      "quadratic_terms": 7440,
+      "completed": 6,
+      "valid_trials": 0,
+      "ground_trials": 0,
+      "ground_samples": 0,
+      "total_samples": 600,
+      "best_energy": -442.0,
+      "reference_energy": -600.0
+    },
+    {
+      "n": 20,
+      "method": "a",
+      "variables": 70,
+      "quadratic_terms": 2415,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 600,
+      "total_samples": 600,
+      "best_energy": -760.0,
+      "reference_energy": -760.0
+    },
+    {
+      "n": 20,
+      "method": "b",
+      "variables": 110,
+      "quadratic_terms": 720,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 592,
+      "total_samples": 600,
+      "best_energy": -760.0,
+      "reference_energy": -760.0
+    },
+    {
+      "n": 20,
+      "method": "position",
+      "variables": 400,
+      "quadratic_terms": 14820,
+      "completed": 6,
+      "valid_trials": 0,
+      "ground_trials": 0,
+      "ground_samples": 0,
+      "total_samples": 600,
+      "best_energy": -554.0,
+      "reference_energy": -760.0
+    },
+    {
+      "n": 35,
+      "method": "a",
+      "variables": 132,
+      "quadratic_terms": 8646,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 596,
+      "total_samples": 600,
+      "best_energy": -1360.0,
+      "reference_energy": -1360.0
+    },
+    {
+      "n": 35,
+      "method": "b",
+      "variables": 202,
+      "quadratic_terms": 1850,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 572,
+      "total_samples": 600,
+      "best_energy": -1360.0,
+      "reference_energy": -1360.0
+    },
+    {
+      "n": 70,
+      "method": "a",
+      "variables": 275,
+      "quadratic_terms": 37675,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 592,
+      "total_samples": 600,
+      "best_energy": -2760.0,
+      "reference_energy": -2760.0
+    },
+    {
+      "n": 70,
+      "method": "b",
+      "variables": 415,
+      "quadratic_terms": 6220,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 525,
+      "total_samples": 600,
+      "best_energy": -2760.0,
+      "reference_energy": -2760.0
+    },
+    {
+      "n": 100,
+      "method": "a",
+      "variables": 395,
+      "quadratic_terms": 77815,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 581,
+      "total_samples": 600,
+      "best_energy": -3960.0,
+      "reference_energy": -3960.0
+    },
+    {
+      "n": 100,
+      "method": "b",
+      "variables": 595,
+      "quadratic_terms": 11890,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 490,
+      "total_samples": 600,
+      "best_energy": -3960.0,
+      "reference_energy": -3960.0
+    }
+  ],
+  "original_position_control": [
+    {
+      "n": 8,
+      "method": "position",
+      "variables": 64,
+      "quadratic_terms": 686,
+      "completed": 6,
+      "valid_trials": 6,
+      "ground_trials": 6,
+      "ground_samples": 31,
+      "total_samples": 600,
+      "best_energy": 0.0,
+      "reference_energy": 0.0
+    },
+    {
+      "n": 12,
+      "method": "position",
+      "variables": 144,
+      "quadratic_terms": 2618,
+      "completed": 6,
+      "valid_trials": 1,
+      "ground_trials": 1,
+      "ground_samples": 1,
+      "total_samples": 600,
+      "best_energy": 0.0,
+      "reference_energy": 0.0
+    },
+    {
+      "n": 16,
+      "method": "position",
+      "variables": 256,
+      "quadratic_terms": 6630,
+      "completed": 6,
+      "valid_trials": 0,
+      "ground_trials": 0,
+      "ground_samples": 0,
+      "total_samples": 600,
+      "best_energy": 40.0,
+      "reference_energy": 0.0
+    },
+    {
+      "n": 20,
+      "method": "position",
+      "variables": 400,
+      "quadratic_terms": 13490,
+      "completed": 6,
+      "valid_trials": 0,
+      "ground_trials": 0,
+      "ground_samples": 0,
+      "total_samples": 600,
+      "best_energy": 40.0,
+      "reference_energy": 0.0
+    }
+  ],
+  "frozen_plan": {
+    "status": "frozen before corrected formal sampling",
+    "input_run": 39165072682,
+    "input_artifact": 12150177066,
+    "pilot_seeds": [
+      900011,
+      900013
+    ],
+    "formal_seeds": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
+    ],
+    "shared_objective": "minus 40 times overlap_length / maximum_overlap_length",
+    "primary_preset": "shared40",
+    "primary_coefficients": {
+      "position": {
+        "read": 140,
+        "position": 140,
+        "missing_edge": 110,
+        "reward": 40
+      },
+      "a": {
+        "edge_count": 40,
+        "degree": 60,
+        "reward": 40
+      },
+      "b": {
+        "read_and_endpoint_degree": 40,
+        "reward": 40
+      }
+    },
+    "primary_sizes": {
+      "position": [
+        8,
+        12,
+        16,
+        20
+      ],
+      "a": [
+        8,
+        12,
+        16,
+        20,
+        35,
+        70,
+        100
+      ],
+      "b": [
+        8,
+        12,
+        16,
+        20,
+        35,
+        70,
+        100
+      ]
+    },
+    "original_position_control": {
+      "preset": "scaled-pure",
+      "sizes": [
+        8,
+        12,
+        16,
+        20
+      ],
+      "all_constraint_coefficients": 40,
+      "reward": 0
+    },
+    "num_reads": 100,
+    "num_sweeps": 1000,
+    "trotter": 32,
+    "beta": 5,
+    "gamma": 1,
+    "initialization": "fresh saved random binary vector per read",
+    "sampling": "num_reads=1 for each of 100 distinct reproducible sampler seeds per trial",
+    "output_repair": false,
+    "auxiliary_terms": [],
+    "selection_reason": "Correct repeated-seed sampling and restore historical coefficient scale and overlap objective; freeze a common reward after disjoint-seed pilots.",
+    "ground_certificate": "Nonnegative pure constraints, or analytic lower bound -40*(N-1) attained by reference path under sufficient penalty inequalities."
+  }
+}
