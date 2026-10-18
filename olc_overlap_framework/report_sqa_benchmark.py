@@ -222,6 +222,7 @@ def preflight(out):
     encoded = encode_order(model, ref)
     check = rank_audit(encoded, model, rewards, cfg)
     assert check["valid_path"] and check["comparator_violations"] == 0
+    print("MODEL_SHAPE", model.num_variables, len(model.quadratic), max(abs(x) for x in model.quadratic.values()), flush=True)
     assert model.num_variables == 3789 and len(model.quadratic) == 33376
     assert max(abs(x) for x in model.quadratic.values()) == 576
     base = edge_bqm(model, edges, costs)
