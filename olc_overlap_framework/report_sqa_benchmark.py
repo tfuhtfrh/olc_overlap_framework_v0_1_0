@@ -223,7 +223,11 @@ def preflight(out):
     check = rank_audit(encoded, model, rewards, cfg)
     assert check["valid_path"] and check["comparator_violations"] == 0
     print("MODEL_SHAPE", model.num_variables, len(model.quadratic), max(abs(x) for x in model.quadratic.values()), flush=True)
-    assert model.num_variables == 3789 and len(model.quadratic) == 33376
+    assert model.num_variables == 3789 and len(model.quadratic) == 33520
+    endpoint_pairs = {tuple(sorted((model.source_index[v], model.sink_index[v]))) for v in model.read_ids}
+    assert len(endpoint_pairs) == 144
+    assert all(model.quadratic[pair] == cfg.endpoint_distinct_penalty for pair in endpoint_pairs)
+    assert sum(pair not in endpoint_pairs for pair in model.quadratic) == 33376
     assert max(abs(x) for x in model.quadratic.values()) == 576
     base = edge_bqm(model, edges, costs)
     assert len(base.variables) == 261
