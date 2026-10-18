@@ -105,7 +105,7 @@ def main():
         (a.out/(label+".joins.json")).write_text(json.dumps(joins,indent=2))
         print("RESULT",json.dumps({"label":label,**res}),flush=True)
     pair = edlib.align(assemblies["sqa_1320804"], assemblies["optimum_1343093"], mode="NW", task="path")
-    counts = {op: sum(int(n) for n, code in re.findall(r"(\\d+)([=XIDM])", pair["cigar"]) if code == op) for op in "=XIDM"}
+    counts = {op: sum(int(n) for n, code in re.findall(r"([0-9]+)([=XIDM])", pair["cigar"]) if code == op) for op in "=XIDM"}
     report["assembly_to_assembly"] = {"edit_distance": pair["editDistance"], "cigar_counts": counts,
         "alignment_identity": counts["="] / sum(counts.values())}
     print("PAIRWISE", json.dumps(report["assembly_to_assembly"]), flush=True)
