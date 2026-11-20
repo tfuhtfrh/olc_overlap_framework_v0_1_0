@@ -1,0 +1,31 @@
+name: CHM13 latent rank comparator penalty
+on:
+  push:
+    branches: [benchmark/qubo-solvers-20260922]
+    paths:
+      - "olc_overlap_framework/benchmark_chm13_latent_rank_comparator_penalty.py"
+      - ".github/workflows/chm13-latent-rank-comparator-penalty.yml"
+  workflow_dispatch:
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install -e ./olc_overlap_framework
+          python -m pip install "dwave-qbsolv==0.3.4"
+      - name: Run
+        working-directory: olc_overlap_framework
+        run: python benchmark_chm13_latent_rank_comparator_penalty.py
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: chm13-latent-rank-comparator-penalty
+          path: olc_overlap_framework/debug/qubo/chm13_latent_rank_comparator_penalty_20260926.json
+          if-no-files-found: error

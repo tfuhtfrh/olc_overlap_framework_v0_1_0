@@ -1,0 +1,30 @@
+name: CHM13 feasible-path move connectivity
+on:
+  push:
+    branches: [benchmark/qubo-solvers-20260922]
+    paths:
+      - "olc_overlap_framework/benchmark_chm13_feasible_path_move_connectivity.py"
+      - ".github/workflows/chm13-feasible-path-move-connectivity.yml"
+  workflow_dispatch:
+jobs:
+  connectivity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: |
+          python -m pip install -e ./olc_overlap_framework
+          python -m pip install "networkx>=3.2" "z3-solver>=4.12"
+      - name: Run
+        working-directory: olc_overlap_framework
+        run: python benchmark_chm13_feasible_path_move_connectivity.py
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: chm13-feasible-path-move-connectivity
+          path: olc_overlap_framework/debug/qubo/chm13_feasible_path_move_connectivity_20260926.json
+          if-no-files-found: error

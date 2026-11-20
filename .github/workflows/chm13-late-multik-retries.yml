@@ -1,0 +1,27 @@
+name: CHM13 late multi-k retry benchmark
+on:
+  push:
+    branches: [benchmark/qubo-solvers-20260922]
+    paths:
+      - "olc_overlap_framework/benchmark_chm13_late_multik_retries.py"
+      - ".github/workflows/chm13-late-multik-retries.yml"
+  workflow_dispatch:
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - name: Install
+        run: |
+          python -m pip install -e ./olc_overlap_framework
+          python -m pip install "dimod==0.12.22" "networkx>=3.2" "dwave-samplers==1.8.0"
+      - name: Run
+        working-directory: olc_overlap_framework
+        run: python benchmark_chm13_late_multik_retries.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chm13-late-multik-retries
+          path: olc_overlap_framework/debug/qubo/chm13_late_multik_retries_20260928.json

@@ -1,0 +1,33 @@
+name: CHM13 bounded adaptive penalty schedule
+
+on:
+  push:
+    branches:
+      - benchmark/qubo-solvers-20260922
+    paths:
+      - "olc_overlap_framework/benchmark_chm13_bounded_penalty_adaptive.py"
+      - ".github/workflows/chm13-bounded-penalty-adaptive.yml"
+  workflow_dispatch:
+
+jobs:
+  adaptive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: |
+          python -m pip install -e ./olc_overlap_framework
+          python -m pip install "dwave-samplers==1.8.0" "dimod==0.12.22"
+      - name: Run adaptive schedule
+        working-directory: olc_overlap_framework
+        run: python benchmark_chm13_bounded_penalty_adaptive.py
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: chm13-bounded-penalty-adaptive
+          path: olc_overlap_framework/debug/qubo/chm13_bounded_penalty_adaptive_20260925.json
+          if-no-files-found: error

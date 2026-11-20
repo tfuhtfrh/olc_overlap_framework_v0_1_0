@@ -1,0 +1,28 @@
+{
+  "status": "frozen before corrected formal sampling",
+  "input_run": 39165072682,
+  "input_artifact": 12150177066,
+  "pilot_seeds": [900011, 900013],
+  "formal_seeds": [40, 41, 42, 43, 44, 45],
+  "shared_objective": "minus 40 times overlap_length / maximum_overlap_length",
+  "primary_preset": "shared40",
+  "primary_coefficients": {
+    "position": {"read":140,"position":140,"missing_edge":110,"reward":40},
+    "a": {"edge_count":40,"degree":60,"reward":40},
+    "b": {"read_and_endpoint_degree":40,"reward":40}
+  },
+  "primary_sizes": {"position":[8,12,16,20],"a":[8,12,16,20,35,70,100],"b":[8,12,16,20,35,70,100]},
+  "original_position_control": {"preset":"scaled-pure","sizes":[8,12,16,20],"all_constraint_coefficients":40,"reward":0},
+  "num_reads":100,
+  "num_sweeps":1000,
+  "trotter":32,
+  "beta":5,
+  "gamma":1,
+  "initialization":"fresh saved random binary vector per read",
+  "sampling":"num_reads=1 for each of 100 distinct reproducible sampler seeds per trial",
+  "output_repair":false,
+  "auxiliary_terms":[],
+  "selection_reason":"Correct repeated-seed sampling and restore historical coefficient scale and overlap objective; freeze a common reward after disjoint-seed pilots.",
+  "ground_certificate":"Nonnegative pure constraints, or analytic lower bound -40*(N-1) attained by reference path under sufficient penalty inequalities."
+}
+

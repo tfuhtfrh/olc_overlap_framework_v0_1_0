@@ -1,0 +1,171 @@
+name: Chapter 3 unified QUBO benchmark
+
+on:
+  push:
+    branches: [benchmark/qubo-solvers-20260922]
+    paths:
+      - olc_overlap_framework/report_chapter3_benchmark.py
+      - .github/workflows/report-chapter3-benchmark.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  OMP_NUM_THREADS: "1"
+  OPENBLAS_NUM_THREADS: "1"
+  MKL_NUM_THREADS: "1"
+  PYTHONHASHSEED: "0"
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/download-artifact@v4
+        with:
+          name: report-environment
+          run-id: 39137698403
+          github-token: ${{ github.token }}
+          path: previous-environment
+      - name: Restore frozen experiment environment
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y minimap2
+          python -m pip install -r previous-environment/requirements-lock.txt
+          python -m pip install --no-deps -e ./olc_overlap_framework
+          mkdir -p environment
+          python -m pip freeze --exclude-editable > environment/requirements-lock.txt
+          python -m pip list --format=json > environment/packages.json
+          python --version > environment/python.txt
+          uname -a > environment/runner.txt
+          minimap2 --version > environment/minimap2.txt
+          git rev-parse HEAD > environment/commit.txt
+          sha256sum olc_overlap_framework/src/olc_pipeline/layout_solver.py > environment/solver-sha256.txt
+      - name: Audit formulas, prepare shared graphs, and independent-seed pilot
+        working-directory: olc_overlap_framework
+        run: python report_chapter3_benchmark.py prepare --out ../chapter3-inputs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chapter3-environment
+          path: environment/
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chapter3-inputs
+          path: chapter3-inputs/
+          retention-days: 90
+
+  formal:
+    needs: prepare
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        include:
+          - {method: position, n: 8}
+          - {method: position, n: 12}
+          - {method: position, n: 16}
+          - {method: position, n: 20}
+          - {method: a, n: 8}
+          - {method: a, n: 12}
+          - {method: a, n: 16}
+          - {method: a, n: 20}
+          - {method: a, n: 35}
+          - {method: a, n: 70}
+          - {method: a, n: 100}
+          - {method: b, n: 8}
+          - {method: b, n: 12}
+          - {method: b, n: 16}
+          - {method: b, n: 20}
+          - {method: b, n: 35}
+          - {method: b, n: 70}
+          - {method: b, n: 100}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/download-artifact@v4
+        with:
+          name: chapter3-environment
+          path: environment
+      - uses: actions/download-artifact@v4
+        with:
+          name: chapter3-inputs
+          path: chapter3-inputs
+      - name: Install identical dependencies
+        run: |
+          python -m pip install -r environment/requirements-lock.txt
+          python -m pip install --no-deps -e ./olc_overlap_framework
+      - name: Run six fixed seeds without output repair
+        working-directory: olc_overlap_framework
+        run: >-
+          python report_chapter3_benchmark.py run
+          --method ${{ matrix.method }} --n ${{ matrix.n }}
+          --data ../chapter3-inputs --out ../chapter3-trials
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chapter3-trials-${{ matrix.method }}-${{ matrix.n }}
+          path: chapter3-trials/
+          retention-days: 90
+
+  aggregate:
+    needs: [prepare, formal]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/download-artifact@v4
+        with:
+          name: chapter3-environment
+          path: environment
+      - uses: actions/download-artifact@v4
+        with:
+          name: chapter3-inputs
+          path: chapter3-inputs
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: chapter3-trials-*
+          path: chapter3-trials
+          merge-multiple: true
+      - name: Install identical dependencies
+        run: |
+          python -m pip install -r environment/requirements-lock.txt
+          python -m pip install --no-deps -e ./olc_overlap_framework
+      - name: Aggregate and require all 108 trials
+        working-directory: olc_overlap_framework
+        run: >-
+          python report_chapter3_benchmark.py aggregate
+          --data ../chapter3-inputs --out ../chapter3-trials
+      - name: Publish summary
+        if: always()
+        run: |
+          if [ -f chapter3-trials/comparison.json ]; then
+            echo '## Chapter 3 unified QUBO comparison' >> "$GITHUB_STEP_SUMMARY"
+            echo '```json' >> "$GITHUB_STEP_SUMMARY"
+            cat chapter3-trials/comparison.json >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chapter3-results
+          path: chapter3-trials/comparison.json
+          retention-days: 90
+
