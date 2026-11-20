@@ -1,0 +1,102 @@
+name: complex144 all-path assembly evaluation
+
+on:
+  push:
+    branches: [claude/qubo-main]
+    paths:
+      - .github/workflows/c144-all-paths-assembly-eval.yml
+      - olc_overlap_framework/assembly_eval/c144_eval.py
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: "0"
+  PYTHONUNBUFFERED: "1"
+  DATA: test_data/CHM13/CHM13_complex144
+  QUAST_TAG: quast_5.3.0
+
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: python -m pip install networkx==3.6.1
+      - name: Enumerate all Hamilton paths and build Plan B input graph
+        run: |
+          mkdir -p prep
+          python olc_overlap_framework/assembly_eval/c144_eval.py enumerate --data $DATA --out prep/paths.json
+          python olc_overlap_framework/assembly_eval/c144_eval.py graph --data $DATA --out prep/graph_planb.graphml
+          sha256sum prep/* $DATA/reads.fasta $DATA/reference.fasta | tee prep/SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with: {name: c144-prep, path: prep/, retention-days: 30}
+
+  evaluate:
+    needs: prepare
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - uses: actions/download-artifact@v4
+        with: {name: c144-prep, path: prep}
+      - name: Install evaluation environment
+        run: |
+          python -m pip install networkx==3.6.1 edlib joblib simplejson
+          git clone -q --depth 1 --branch $QUAST_TAG https://github.com/ablab/quast.git $RUNNER_TEMP/quast
+          python $RUNNER_TEMP/quast/quast.py --version
+      - name: Freeze and evaluate one shard (unmodified Plan B entry)
+        run: |
+          python olc_overlap_framework/assembly_eval/c144_eval.py candidates --graph prep/graph_planb.graphml \
+            --paths prep/paths.json --out $PWD/cand --shard ${{ matrix.shard }} --nshards 16
+          PKG=olc_overlap_framework/external/planb_metrics_r262
+          mkdir -p results logs
+          run_one() {
+            c=$1
+            python -I $PKG/run_metrics.py freeze --graph $PWD/prep/graph_planb.graphml --reads $PWD/$DATA/reads.fasta \
+              --chain $PWD/cand/$c/chain.txt --edges $PWD/cand/$c/edges.txt --reference $PWD/$DATA/reference.fasta \
+              --out $PWD/frozen/$c --id $c > logs/$c.freeze.log 2>&1 || { echo "$c FREEZE_FAIL"; return; }
+            python -I $PKG/run_metrics.py evaluate $PWD/frozen/$c/FROZEN_BATCH.json $PWD/eval/$c \
+              --quast $RUNNER_TEMP/quast/quast.py --threads 2 --eukaryote > logs/$c.eval.log 2>&1 || { echo "$c EVAL_FAIL"; return; }
+            mkdir -p results/$c
+            cp eval/$c/GENOME_FRACTION.json eval/$c/quast/report.tsv frozen/$c/audit/INDEPENDENT_AUDIT.json results/$c/
+            echo "$c done"
+          }
+          # warm up QUAST's bundled minimap2 build before running in parallel
+          first=$(ls cand | head -1); run_one $first
+          export -f run_one; export PKG DATA RUNNER_TEMP
+          ls cand | tail -n +2 | xargs -P 2 -I{} bash -c 'run_one {}'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: "c144-eval-${{ matrix.shard }}", path: "results/\nlogs/", retention-days: 30}
+
+  aggregate:
+    needs: [prepare, evaluate]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: python -m pip install networkx==3.6.1
+      - uses: actions/download-artifact@v4
+        with: {name: c144-prep, path: prep}
+      - uses: actions/download-artifact@v4
+        with: {pattern: "c144-eval-*", merge-multiple: true, path: shards}
+      - name: Join solver, order, evidence and sequence metrics
+        run: |
+          python olc_overlap_framework/assembly_eval/c144_eval.py aggregate --data $DATA --paths prep/paths.json \
+            --results shards/results --out summary
+          cp prep/SHA256.txt summary/
+      - uses: actions/upload-artifact@v4
+        with: {name: c144-summary, path: summary/, retention-days: 90}
