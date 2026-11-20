@@ -84,6 +84,8 @@ jobs:
     if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 20
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -98,5 +100,15 @@ jobs:
           python olc_overlap_framework/assembly_eval/c144_eval.py aggregate --data $DATA --paths prep/paths.json \
             --results shards/results --out summary
           cp prep/SHA256.txt summary/
+          echo "run_id=${{ github.run_id }} commit=${{ github.sha }} quast=$QUAST_TAG" > summary/RUN.txt
+      - name: Commit summary into the repository
+        run: |
+          DEST=olc_overlap_framework/debug/qubo/c144_all_paths_eval/run_${{ github.run_id }}
+          mkdir -p $DEST && cp summary/* $DEST/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add $DEST
+          git commit -m "Add complex144 all-path evaluation summary (run ${{ github.run_id }})"
+          for i in 1 2 3; do git pull --rebase -q origin ${{ github.ref_name }} && git push -q origin HEAD:${{ github.ref_name }} && break; sleep 5; done
       - uses: actions/upload-artifact@v4
         with: {name: c144-summary, path: summary/, retention-days: 90}
