@@ -1,0 +1,55 @@
+Assembly	cert_rank2_1338209
+# contigs (>= 0 bp)	1
+# contigs (>= 1000 bp)	1
+# contigs (>= 5000 bp)	1
+# contigs (>= 10000 bp)	1
+# contigs (>= 25000 bp)	1
+# contigs (>= 50000 bp)	1
+Total length (>= 0 bp)	1640189
+Total length (>= 1000 bp)	1640189
+Total length (>= 5000 bp)	1640189
+Total length (>= 10000 bp)	1640189
+Total length (>= 25000 bp)	1640189
+Total length (>= 50000 bp)	1640189
+# contigs	1
+Largest contig	1640189
+Total length	1640189
+Reference length	1647338
+GC (%)	43.15
+Reference GC (%)	43.21
+N50	1640189
+NG50	1640189
+N90	1640189
+NG90	1640189
+auN	1640189.0
+auNG	1633071.0
+L50	1
+LG50	1
+L90	1
+LG90	1
+# misassemblies	1
+# misassembled contigs	1
+Misassembled contigs length	1640189
+# local misassemblies	0
+# scaffold gap ext. mis.	0
+# scaffold gap loc. mis.	0
+# unaligned mis. contigs	0
+# unaligned contigs	0 + 0 part
+Unaligned length	0
+Genome fraction (%)	99.577
+Duplication ratio	1.000
+# N's per 100 kbp	0.00
+# mismatches per 100 kbp	9.75
+# indels per 100 kbp	183.82
+Largest alignment	1317930
+Total aligned length	1640189
+NA50	1317930
+NGA50	1317930
+NA90	322259
+NGA90	322259
+auNA	1122303.8
+auNGA	1117433.3
+LA50	1
+LGA50	1
+LA90	2
+LGA90	2
