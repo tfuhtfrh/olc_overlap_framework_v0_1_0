@@ -1,0 +1,251 @@
+{
+  "solver": "qbsolv",
+  "n_reads": 12,
+  "window": "last N reads of the complex144 reference order",
+  "variables": 187,
+  "quadratic_terms": 722,
+  "edges": 23,
+  "rank_bits": 4,
+  "qubo_config": {
+    "degree_penalty": 144.0,
+    "void_penalty": 144.0,
+    "comparator_penalty": 288.0,
+    "order_gate_penalty": 144.0,
+    "endpoint_distinct_penalty": 144.0,
+    "edge_cost_scale": 1.0
+  },
+  "hamilton_paths": 2,
+  "optimum_score": 112047,
+  "reference_path_score": 112047,
+  "reference_path_energy": 2.17170677644026,
+  "trials": 6,
+  "trials_with_valid_path": 6,
+  "optimum_hits": 6,
+  "best_score": 112047,
+  "seconds_per_trial": [
+    0.3322937810000042,
+    0.4736061479999947,
+    0.6638498940000019,
+    0.41509605800000315,
+    0.41231293399999913,
+    0.624860095999999
+  ],
+  "wall_seconds": 3.039602649999999,
+  "per_seed": [
+    {
+      "seed": 2026101801,
+      "ever_feasible": true,
+      "best_score": 112047,
+      "feasible_returned_reads": 18,
+      "seconds": 0.3322937810000042,
+      "lowest_energy": 146.17170677644026,
+      "lowest_energy_path": {
+        "valid_path": true,
+        "path_score": 112047,
+        "selected_edges": 11,
+        "sources": 1,
+        "sinks": 1,
+        "degree_conflicts": 0,
+        "edge_count_residual": 0
+      },
+      "lowest_energy_audit": {
+        "energy": 146.17170677644026,
+        "valid_path": false,
+        "path_score": null,
+        "selected_edges": 11,
+        "sources": 1,
+        "sinks": 1,
+        "degree_residual_sq": 0,
+        "void_residual_sq": 0,
+        "comparator_violations": 0,
+        "final_borrow_mismatch": 0,
+        "selected_order_violations": 1,
+        "distinct_ranks": 10,
+        "hamming_weight": 90
+      },
+      "optimum_hit": true,
+      "relative_gap": 0.0
+    },
+    {
+      "seed": 2026101802,
+      "ever_feasible": true,
+      "best_score": 112047,
+      "feasible_returned_reads": 19,
+      "seconds": 0.4736061479999947,
+      "lowest_energy": 146.17170677644026,
+      "lowest_energy_path": {
+        "valid_path": true,
+        "path_score": 112047,
+        "selected_edges": 11,
+        "sources": 1,
+        "sinks": 1,
+        "degree_conflicts": 0,
+        "edge_count_residual": 0
+      },
+      "lowest_energy_audit": {
+        "energy": 146.17170677644026,
+        "valid_path": false,
+        "path_score": null,
+        "selected_edges": 11,
+        "sources": 1,
+        "sinks": 1,
+        "degree_residual_sq": 0,
+        "void_residual_sq": 0,
+        "comparator_violations": 0,
+        "final_borrow_mismatch": 0,
+        "selected_order_violations": 1,
+        "distinct_ranks": 11,
+        "hamming_weight": 88
+      },
+      "optimum_hit": true,
+      "relative_gap": 0.0
+    },
+    {
+      "seed": 2026101803,
+      "ever_feasible": true,
+      "best_score": 112047,
+      "feasible_returned_reads": 21,
+      "seconds": 0.6638498940000019,
+      "lowest_energy": 146.17170677644026,
+      "lowest_energy_path": {
+        "valid_path": true,
+        "path_score": 112047,
+        "selected_edges": 11,
+        "sources": 1,
+        "sinks": 1,
+        "degree_conflicts": 0,
+        "edge_count_residual": 0
+      },
+      "lowest_energy_audit": {
+        "energy": 146.17170677644026,
+        "valid_path": false,
+        "path_score": null,
+        "selected_edges": 11,
+        "sources": 1,
+        "sinks": 1,
+        "degree_residual_sq": 0,
+        "void_residual_sq": 0,
+        "comparator_violations": 0,
+        "final_borrow_mismatch": 0,
+        "selected_order_violations": 1,
+        "distinct_ranks": 11,
+        "hamming_weight": 84
+      },
+      "optimum_hit": true,
+      "relative_gap": 0.0
+    },
+    {
+      "seed": 2026101804,
+      "ever_feasible": true,
+      "best_score": 112047,
+      "feasible_returned_reads": 18,
+      "seconds": 0.41509605800000315,
+      "lowest_energy": 146.17170677644026,
+      "lowest_energy_path": {
+        "valid_path": true,
+        "path_score": 112047,
+        "selected_edges": 11,
+        "sources": 1,
+        "sinks": 1,
+        "degree_conflicts": 0,
+        "edge_count_residual": 0
+      },
+      "lowest_energy_audit": {
+        "energy": 146.17170677644026,
+        "valid_path": false,
+        "path_score": null,
+        "selected_edges": 11,
+        "sources": 1,
+        "sinks": 1,
+        "degree_residual_sq": 0,
+        "void_residual_sq": 0,
+        "comparator_violations": 0,
+        "final_borrow_mismatch": 0,
+        "selected_order_violations": 1,
+        "distinct_ranks": 11,
+        "hamming_weight": 82
+      },
+      "optimum_hit": true,
+      "relative_gap": 0.0
+    },
+    {
+      "seed": 2026101805,
+      "ever_feasible": true,
+      "best_score": 112047,
+      "feasible_returned_reads": 20,
+      "seconds": 0.41231293399999913,
+      "lowest_energy": 146.17170677644026,
+      "lowest_energy_path": {
+        "valid_path": true,
+        "path_score": 112047,
+        "selected_edges": 11,
+        "sources": 1,
+        "sinks": 1,
+        "degree_conflicts": 0,
+        "edge_count_residual": 0
+      },
+      "lowest_energy_audit": {
+        "energy": 146.17170677644026,
+        "valid_path": false,
+        "path_score": null,
+        "selected_edges": 11,
+        "sources": 1,
+        "sinks": 1,
+        "degree_residual_sq": 0,
+        "void_residual_sq": 0,
+        "comparator_violations": 0,
+        "final_borrow_mismatch": 0,
+        "selected_order_violations": 1,
+        "distinct_ranks": 9,
+        "hamming_weight": 90
+      },
+      "optimum_hit": true,
+      "relative_gap": 0.0
+    },
+    {
+      "seed": 2026101806,
+      "ever_feasible": true,
+      "best_score": 112047,
+      "feasible_returned_reads": 19,
+      "seconds": 0.624860095999999,
+      "lowest_energy": 146.17170677644026,
+      "lowest_energy_path": {
+        "valid_path": true,
+        "path_score": 112047,
+        "selected_edges": 11,
+        "sources": 1,
+        "sinks": 1,
+        "degree_conflicts": 0,
+        "edge_count_residual": 0
+      },
+      "lowest_energy_audit": {
+        "energy": 146.17170677644026,
+        "valid_path": false,
+        "path_score": null,
+        "selected_edges": 11,
+        "sources": 1,
+        "sinks": 1,
+        "degree_residual_sq": 0,
+        "void_residual_sq": 0,
+        "comparator_violations": 0,
+        "final_borrow_mismatch": 0,
+        "selected_order_violations": 1,
+        "distinct_ranks": 9,
+        "hamming_weight": 91
+      },
+      "optimum_hit": true,
+      "relative_gap": 0.0
+    }
+  ],
+  "environment": {
+    "python": "3.10.22 (main, Oct  1 2026, 14:32:29) [GCC 15.2.0]",
+    "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+    "packages": {
+      "dwave-qbsolv": "0.3.4",
+      "dimod": "0.10.17",
+      "numpy": "1.26.4"
+    },
+    "commit": "eb130a493afc7e667829e28d6d70ac2d6d5c741c",
+    "run_id": "45549258049"
+  }
+}
