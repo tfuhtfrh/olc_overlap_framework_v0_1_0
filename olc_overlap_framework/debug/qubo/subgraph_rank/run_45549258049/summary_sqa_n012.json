@@ -1,0 +1,105 @@
+{
+  "solver": "sqa",
+  "n_reads": 12,
+  "window": "last N reads of the complex144 reference order",
+  "variables": 187,
+  "quadratic_terms": 722,
+  "edges": 23,
+  "rank_bits": 4,
+  "qubo_config": {
+    "degree_penalty": 144.0,
+    "void_penalty": 144.0,
+    "comparator_penalty": 288.0,
+    "order_gate_penalty": 144.0,
+    "endpoint_distinct_penalty": 144.0,
+    "edge_cost_scale": 1.0
+  },
+  "hamilton_paths": 2,
+  "optimum_score": 112047,
+  "reference_path_score": 112047,
+  "reference_path_energy": 2.17170677644026,
+  "trials": 6,
+  "trials_with_valid_path": 6,
+  "optimum_hits": 2,
+  "best_score": 112047,
+  "seconds_per_trial": [
+    22.707897836,
+    22.596264954000006,
+    22.624327839000003,
+    22.47671063,
+    22.624677921,
+    22.52642213499999
+  ],
+  "wall_seconds": 136.27883549799998,
+  "per_seed": [
+    {
+      "seed": 2026101801,
+      "ever_feasible": true,
+      "best_score": 82657,
+      "feasible_returned_reads": 32,
+      "seconds": 22.707897836,
+      "optimum_hit": false,
+      "relative_gap": 0.262300641695003
+    },
+    {
+      "seed": 2026101802,
+      "ever_feasible": true,
+      "best_score": 112047,
+      "feasible_returned_reads": 32,
+      "seconds": 22.596264954000006,
+      "optimum_hit": true,
+      "relative_gap": 0.0
+    },
+    {
+      "seed": 2026101803,
+      "ever_feasible": true,
+      "best_score": 82657,
+      "feasible_returned_reads": 32,
+      "seconds": 22.624327839000003,
+      "optimum_hit": false,
+      "relative_gap": 0.262300641695003
+    },
+    {
+      "seed": 2026101804,
+      "ever_feasible": true,
+      "best_score": 112047,
+      "feasible_returned_reads": 32,
+      "seconds": 22.47671063,
+      "optimum_hit": true,
+      "relative_gap": 0.0
+    },
+    {
+      "seed": 2026101805,
+      "ever_feasible": true,
+      "best_score": 82657,
+      "feasible_returned_reads": 32,
+      "seconds": 22.624677921,
+      "optimum_hit": false,
+      "relative_gap": 0.262300641695003
+    },
+    {
+      "seed": 2026101806,
+      "ever_feasible": true,
+      "best_score": 82657,
+      "feasible_returned_reads": 32,
+      "seconds": 22.52642213499999,
+      "optimum_hit": false,
+      "relative_gap": 0.262300641695003
+    }
+  ],
+  "environment": {
+    "python": "3.11.18 (main, Oct 26 2026, 02:48:29) [GCC 15.2.0]",
+    "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.43",
+    "packages": {
+      "openjij": "0.12.2",
+      "cimod": null,
+      "dimod": "0.12.22",
+      "numpy": "2.4.6",
+      "networkx": "3.6.1",
+      "dwave-samplers": "1.8.0"
+    },
+    "commit": "eb130a493afc7e667829e28d6d70ac2d6d5c741c",
+    "runner_image": "ubuntu26",
+    "runner_image_version": "20261116.202.1"
+  }
+}
