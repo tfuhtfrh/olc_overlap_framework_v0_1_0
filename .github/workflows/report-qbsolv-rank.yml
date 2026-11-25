@@ -1,0 +1,54 @@
+name: Report order-variable QUBO with QbSolv (tabu)
+
+on:
+  push:
+    branches: [claude/qubo-main]
+    paths:
+      - olc_overlap_framework/report_qbsolv_rank_benchmark.py
+      - .github/workflows/report-qbsolv-rank.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONHASHSEED: "0"
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  qbsolv:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install
+        run: |
+          python -m pip install --upgrade "pip<25"
+          python -m pip install -e ./olc_overlap_framework
+          python -m pip install "dwave-qbsolv==0.3.4"
+          python -m pip freeze --exclude-editable > requirements-lock.txt
+      - name: Run QbSolv on the six formal seeds
+        working-directory: olc_overlap_framework
+        run: python report_qbsolv_rank_benchmark.py --out ../qbsolv-out
+      - name: Commit summary into the repository
+        run: |
+          DEST=olc_overlap_framework/debug/qubo/report_qbsolv_rank/run_${{ github.run_id }}
+          mkdir -p $DEST
+          cp qbsolv-out/summary.json requirements-lock.txt $DEST/
+          echo "run_id=${{ github.run_id }} commit=${{ github.sha }}" > $DEST/RUN.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add $DEST
+          git commit -m "Add QbSolv order-variable QUBO summary (run ${{ github.run_id }})"
+          for i in 1 2 3; do git pull --rebase -q origin ${{ github.ref_name }} && git push -q origin HEAD:${{ github.ref_name }} && break; sleep 5; done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: report-qbsolv-rank
+          path: qbsolv-out/
+          retention-days: 90
