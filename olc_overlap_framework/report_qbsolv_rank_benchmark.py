@@ -20,7 +20,7 @@ from pathlib import Path
 
 from dwave_qbsolv import QBSolv, ENERGY_IMPACT
 
-from experimental_chm13_latent_rank_comparator_qubo import build_model, audit
+from experimental_chm13_latent_rank_comparator_qubo import build_model, audit, encode_order
 from demo_chm13_edge_ordered_path_qubo import DATASET_DIR
 
 SEEDS = (2026101801, 2026101802, 2026101803, 2026101804, 2026101805, 2026101806)
@@ -111,7 +111,9 @@ def main():
     # Offline evaluation only: the reference certificate is read after all sampling has finished.
     ref = json.loads((DATASET_DIR / "reference_path.json").read_text())["normalized_nodes"]
     ref_score = int(sum(rewards[e] for e in zip(ref, ref[1:])))
+    ref_energy = float(model.energy(encode_order(model, ref)))
     for r in results:
+        r["lowest_energy_minus_reference_energy"] = r["lowest_energy_sample"]["energy"] - ref_energy
         r["optimum_hit"] = r["best_score"] == ref_score
         r["relative_gap"] = None if r["best_score"] is None else (ref_score - r["best_score"]) / ref_score
     feasible = [r for r in results if r["ever_feasible"]]
@@ -119,12 +121,12 @@ def main():
         "solver": "dwave-qbsolv (classical tabu sub-solver, energy-impact decomposition)",
         "num_repeats": NUM_REPEATS, "subproblem_size": SUBPROBLEM_SIZE, "timeout_per_seed": TIMEOUT,
         "seeds": list(SEEDS), "qubo_config": cfg.__dict__, "variables": model.num_variables,
-        "quadratic_terms": len(model.quadratic), "reference_score": ref_score,
+        "quadratic_terms": len(model.quadratic), "reference_score": ref_score, "reference_energy": ref_energy,
         "trials_with_valid_path": len(feasible), "trials": len(results),
         "optimum_hits": sum(r["optimum_hit"] for r in results),
         "best_score": max((r["best_score"] for r in feasible), default=None),
         "per_seed": [{k: r[k] for k in ("seed", "seconds", "ever_feasible", "best_score", "optimum_hit", "relative_gap",
-                                         "valid_returned_samples", "returned_samples")}
+                                         "valid_returned_samples", "returned_samples", "lowest_energy_minus_reference_energy")}
                      | {"lowest_energy": r["lowest_energy_sample"]["energy"],
                         "lowest_energy_path": r["lowest_energy_sample"]["path"],
                         "lowest_energy_audit": r["lowest_energy_sample"]["rank_audit"]} for r in results],
