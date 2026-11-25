@@ -1,0 +1,5 @@
+dimod==0.10.17
+dwave-qbsolv==0.3.4
+numpy==1.26.4
+parasail==1.3.4
+pyparsing==2.4.7
